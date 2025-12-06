@@ -1,0 +1,159 @@
+---
+sidebar_position: 2
+---
+
+
+# Turns and Commits
+
+
+The two fundamental units of semantic version control.
+
+## Turns
+
+A **turn** is a single message in a conversation — either from a user, assistant, or system.
+
+### Turn structure
+
+```json
+{
+  "turn_hash": "sha256:abc123...",
+  "parent_turn_hash": "sha256:def456...",
+  "role": "user",
+  "content": "What's the best time to visit Tokyo?",
+  "rings": {
+    "ring1": { "keywords": ["best time", "visit", "Tokyo"] },
+    "ring2": { "intent": "question", "facets": ["timing", "travel"] },
+    "ring3": { "segments": ["What's the best time to visit Tokyo?"] }
+  },
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+### Turn chain
+
+Turns form a linked list via `parent_turn_hash`:
+
+```
+turn_1 (parent: null)
+   ↓
+turn_2 (parent: turn_1)
+   ↓
+turn_3 (parent: turn_2)
+```
+
+This creates an immutable, verifiable conversation history.
+
+### Turn hashing
+
+The `turn_hash` is computed from:
+- Role
+- Content
+- Parent turn hash
+- Timestamp
+
+Using JCS (JSON Canonicalization Scheme) + SHA-256.
+
+## Commits
+
+A **commit** snapshots semantic state at a point in time, similar to a Git commit.
+
+### Commit structure
+
+```json
+{
+  "commit_hash": "sha256:xyz789...",
+  "parent_hashes": ["sha256:abc123..."],
+  "branch": "main",
+  "message": "Finalized Tokyo itinerary",
+  "turn_window": {
+    "start_turn_hash": "sha256:start...",
+    "end_turn_hash": "sha256:end..."
+  },
+  "facet_snapshot": {
+    "entities": ["Tokyo", "Shinjuku", "Shibuya"],
+    "keywords": ["itinerary", "3-day", "budget"],
+    "topics": ["travel", "planning"]
+  },
+  "created_at": "2024-01-15T12:00:00Z"
+}
+```
+
+### Turn window
+
+A commit captures a range of turns:
+
+```
+turn_1 ─── turn_2 ─── turn_3 ─── turn_4 ─── turn_5
+           │                               │
+           └───────── commit_a ────────────┘
+                    (turns 2-5)
+```
+
+### Facet snapshot
+
+The commit stores aggregated facets from its turn window:
+- All entities mentioned
+- All keywords extracted
+- All topics identified
+
+This enables fast semantic comparison without re-parsing turns.
+
+## Turns vs Commits
+
+| Aspect | Turn | Commit |
+|--------|------|--------|
+| Granularity | Single message | Range of turns |
+| Purpose | Record conversation | Snapshot state |
+| Mutability | Immutable | Immutable |
+| Branching | No | Yes |
+| Contains | Raw content + rings | Turn window + facets |
+
+## Creating Commits
+
+### From CLI
+
+```bash
+# Commit recent turns
+T3x> /commit --api --msg "Research complete"
+
+# Commit specific turn range
+T3x> /commit turn_abc turn_xyz --msg "Specific range"
+```
+
+### From API
+
+```bash
+curl -X POST http://localhost:8000/api/v1/commits \
+  -H "Content-Type: application/json" \
+  -d '{
+    "project_id": "proj_123",
+    "conversation_id": "conv_456",
+    "turn_window": {
+      "start_turn_hash": "sha256:start...",
+      "end_turn_hash": "sha256:end..."
+    },
+    "message": "Finalized plan"
+  }'
+```
+
+## Viewing History
+
+### List turns
+
+```bash
+T3x> /turns --n 10
+T3x> /turns --role user
+```
+
+### List commits
+
+```bash
+T3x> /commits
+T3x> /log --n 5
+```
+
+## Best Practices
+
+1. **Commit meaningful checkpoints** — Not every turn, but when semantic state changes significantly
+2. **Write clear commit messages** — Future you will thank present you
+3. **Use turn ranges wisely** — Include all turns that contributed to the semantic shift

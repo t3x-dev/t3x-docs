@@ -1,0 +1,62 @@
+---
+sidebar_position: 8
+---
+
+
+# Export API
+
+
+Export projects in portable formats.
+
+## Export as cfpack
+
+```http
+GET /api/v1/export/cfpack?project_id=proj_abc123
+```
+
+### Response
+
+Content-Type: `application/vnd.contextflow.cfpack+json`
+
+```json
+{
+  "version": "1.0",
+  "project": {...},
+  "conversations": [...],
+  "turns": [...],
+  "commits": [...],
+  "aggregated_findings": {...},
+  "integrity_hash": "sha256:..."
+}
+```
+
+### Example
+
+```bash
+curl "http://localhost:8000/api/v1/export/cfpack?project_id=proj_abc123" \
+  -o project.cfpack.json
+```
+
+## Export as JSONL Ledger
+
+```http
+GET /api/v1/export/ledger?project_id=proj_abc123
+```
+
+### Response
+
+Content-Type: `application/x-ndjson`
+
+```jsonl
+{"type": "project", "id": "proj_abc123", "name": "my-project"}
+{"type": "conversation", "id": "conv_456"}
+{"type": "turn", "turn_hash": "sha256:...", "role": "user", "content": "..."}
+{"type": "commit", "commit_hash": "sha256:...", "branch": "main"}
+```
+
+### Example
+
+```bash
+curl "http://localhost:8000/api/v1/export/ledger?project_id=proj_abc123" \
+  -o project.jsonl
+```

@@ -1,0 +1,110 @@
+---
+sidebar_position: 2
+---
+
+
+# Quick Start
+
+
+Get T3x running in 5 minutes.
+
+## Prerequisites
+
+- Node.js 18+
+- Python 3.10+
+- An Anthropic API key (for Claude) or OpenAI API key
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/T3x/T3x.git
+cd T3x
+```
+
+### 2. Install the CLI
+
+```bash
+cd contextflow-cli
+npm install
+npm link  # Makes 'T3x' available globally
+```
+
+### 3. Install the Core API
+
+```bash
+cd ../contextflow-core
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Download spaCy models
+python -m spacy download en_core_web_sm
+```
+
+### 4. Start the Core API
+
+```bash
+cd contextflow-core
+uvicorn core_api.app:app --reload --port 8000
+```
+
+### 5. Configure the CLI
+
+```bash
+T3x
+T3x> /config
+config> /api sk-ant-your-api-key-here
+config> /back
+```
+
+## Your First Conversation
+
+### Create a project
+
+```bash
+T3x> /new my-first-project
+✓ Created project: my-first-project
+```
+
+### Chat with the LLM
+
+```bash
+T3x> What are the key benefits of semantic version control?
+```
+
+The assistant will respond, and T3x automatically:
+- Records the turn with a unique hash
+- Extracts semantic layers (clauses, relations, facets)
+- Links it to the conversation chain
+
+### View your turns
+
+```bash
+T3x> /turns --n 5
+```
+
+### Create a commit
+
+```bash
+T3x> /commit --api --msg "Initial exploration of SVC benefits"
+✓ Created commit: abc123...
+```
+
+### Check status
+
+```bash
+T3x> /status
+Project: my-first-project
+Branch: main
+Turns: 4
+Commits: 1
+Drafts: 0
+```
+
+## Next Steps
+
+- Learn about [Semantic Layers](/concepts/semantic-layers)
+- Explore [CLI Commands](/cli/commands)
+- Set up the [WebUI](/webui)

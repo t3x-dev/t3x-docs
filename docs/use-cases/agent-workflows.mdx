@@ -1,0 +1,116 @@
+---
+sidebar_position: 4
+---
+
+
+# Agent Workflows
+
+
+**Level 7** — Recursive prompt optimization for AI agents.
+
+## The Story
+
+You're building an AI agent (in LangChain, n8n, or custom code). The agent's behavior depends on its system prompt. You need to iterate, test, and improve the prompt systematically.
+
+## The Problem
+
+Without semantic version control:
+- Prompts are scattered in code files
+- "Which version worked better?" — nobody knows
+- Agent logs are disconnected from prompt changes
+- Manual copy-paste to test variations
+
+## The Solution
+
+T3x treats prompts as semantic artifacts with full version control.
+
+## Workflow
+
+### 1. Commit your initial prompt
+
+```bash
+T3x> /new travel-agent
+T3x> System prompt: You are a helpful travel booking assistant...
+T3x> /commit --api --msg "travel-agent-v1"
+```
+
+### 2. Create sandbox branch
+
+```bash
+T3x> /branch sandbox
+```
+
+### 3. Run agent, capture logs
+
+```bash
+# Your agent runs, logs come back
+T3x> Agent run: User asked about Tokyo. Response was helpful.
+     Success rate: 85%
+T3x> Agent run: User asked about refunds. Agent confused.
+     Error: Didn't know refund policy.
+```
+
+### 4. Draft improvements
+
+```bash
+T3x> /draft --api plan "Improve the prompt based on failure cases"
+```
+
+T3x analyzes logs and suggests:
+- Add refund policy to system prompt
+- Clarify edge case handling
+
+### 5. Auto-iterate on sandbox
+
+```bash
+# Commit improvement
+T3x> /commit --api --msg "Added refund policy handling"
+
+# Run again, capture new logs
+# Repeat...
+```
+
+### 6. Promote to production
+
+When sandbox is stable:
+
+```bash
+T3x> /checkout prod
+T3x> /diff prod sandbox  # Review changes
+T3x> /merge sandbox      # Requires human approval
+```
+
+## The Recursive Loop
+
+```
+Prompt → Agent Run → Logs → Draft → Commit → Repeat
+   ↑                                          │
+   └──────────────────────────────────────────┘
+```
+
+## Branch Model
+
+| Branch | Purpose | Merge Policy |
+|--------|---------|--------------|
+| `sandbox` | Experiments | Auto-merge |
+| `prod` | Stable prompts | Human review |
+
+## Key Benefits
+
+- **Every prompt version is traceable** — git blame for prompts
+- **Logs inform improvements** — Failures become draft input
+- **Safe iteration** — Sandbox experiments don't affect prod
+- **Clear promotion path** — Review before production
+- **Semantic diff** — See what changed at the clause level
+
+## Integration
+
+Works with:
+- LangChain
+- n8n
+- Flowise
+- AutoGPT
+- CrewAI
+- Custom agents
+
+The agent framework runs the prompt; T3x versions and improves it.

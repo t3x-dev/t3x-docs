@@ -1,0 +1,122 @@
+---
+sidebar_position: 4
+---
+
+
+# CLI Workflows
+
+
+Common patterns for using the CLI effectively.
+
+## Basic Conversation Workflow
+
+```bash
+# 1. Create project
+T3x> /new my-project
+
+# 2. Have a conversation
+T3x> What are the key considerations for X?
+T3x> Can you elaborate on point 2?
+T3x> Let's focus on the budget aspect
+
+# 3. Review what was discussed
+T3x> /turns --n 10
+
+# 4. Commit when you reach a milestone
+T3x> /commit --api --msg "Initial research complete"
+
+# 5. Check status
+T3x> /status
+```
+
+## Branching Workflow
+
+```bash
+# Start on main
+T3x> /project my-project
+
+# Do initial work
+T3x> [conversation...]
+T3x> /commit --api --msg "Base version"
+
+# Branch for exploration
+T3x> /branch alternative-approach
+
+# Explore on branch
+T3x> [alternative conversation...]
+T3x> /commit --api --msg "Alternative explored"
+
+# Compare results
+T3x> /diff main alternative-approach
+
+# If good, merge back
+T3x> /checkout main
+# (merge functionality coming soon)
+```
+
+## Draft and Refine Workflow
+
+```bash
+# Have initial conversation
+T3x> [conversation about a topic...]
+
+# Create a draft summary
+T3x> /draft summary
+
+# View the draft
+T3x> /draft show draft_abc123
+
+# Provide feedback
+T3x> /draft feedback draft_abc123 "Make it more concise" --must key-point budget
+
+# When satisfied, commit
+T3x> /commit draft_abc123 --msg "Finalized summary"
+```
+
+## Multi-Project Workflow
+
+```bash
+# Work on project A
+T3x> /project project-a
+T3x> [work...]
+T3x> /commit --api --msg "Progress on A"
+
+# Switch to project B
+T3x> /project project-b
+T3x> [work...]
+T3x> /commit --api --msg "Progress on B"
+
+# List all projects
+T3x> /project
+```
+
+## Session Management
+
+```bash
+# Start fresh within a project
+T3x> /clear
+
+# The conversation history is preserved in turns
+# But the LLM context window is reset
+
+# View full history
+T3x> /turns --n 100
+```
+
+## Integration with Core API
+
+```bash
+# Start the WebUI server
+T3x> /ui_init --port 8765
+
+# Now WebUI can connect to the same data
+# Open http://localhost:8765 in browser
+```
+
+## Tips
+
+1. **Commit often** — Create commits at meaningful milestones
+2. **Use branches** — Explore alternatives without losing main progress
+3. **Clear judiciously** — `/clear` resets LLM context but keeps history
+4. **Check status** — `/status` gives a quick overview
+5. **Use drafts** — Refine output before committing

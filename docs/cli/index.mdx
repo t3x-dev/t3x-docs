@@ -1,0 +1,103 @@
+---
+sidebar_position: 1
+---
+
+
+# CLI Overview
+
+
+The T3x CLI is an interactive shell for semantic version control of AI conversations.
+
+## Installation
+
+```bash
+cd contextflow-cli
+npm install
+npm link  # Makes 'T3x' available globally
+```
+
+## Starting the CLI
+
+```bash
+T3x
+```
+
+You'll see the interactive prompt:
+
+```
+T3x>
+```
+
+## Modes
+
+The CLI has two modes:
+
+### Chat Mode (default)
+
+For conversations and version control commands.
+
+```
+T3x> Hello, help me plan a trip to Japan
+T3x> /turns
+T3x> /commit --api --msg "Initial research"
+```
+
+### Config Mode
+
+For setting up API keys and preferences.
+
+```
+T3x> /config
+config> /api sk-ant-your-key
+config> /model claude-sonnet-4-20250514
+config> /back
+T3x>
+```
+
+## Command Syntax
+
+- **Slash commands** start with `/`
+- **Chat messages** are anything else
+- **Options** use `--flag` or `--flag value`
+
+```bash
+/command [args] [--options]
+```
+
+## Quick Reference
+
+| Command | Description |
+|---------|-------------|
+| `/new NAME` | Create project |
+| `/project` | List/switch projects |
+| `/turns` | List turns |
+| `/commit` | Create commit |
+| `/branch` | Manage branches |
+| `/diff` | Compare commits |
+| `/status` | Show statistics |
+| `/help` | Show all commands |
+
+## Configuration
+
+Settings stored in `~/.contextflow/config.json`:
+
+```json
+{
+  "anthropic_api_key": "sk-ant-...",
+  "default_model": "claude-sonnet-4-20250514",
+  "stream": true,
+  "proxy": null
+}
+```
+
+## Data Storage
+
+- **Config**: `~/.contextflow/config.json`
+- **Conversations**: `.contextflow/conversations/<project>/conversation.jsonl`
+- **Local cache**: SQLite database (optional)
+
+## Next Steps
+
+- [Command Reference](/cli/commands) — All commands in detail
+- [Configuration](/cli/configuration) — Setup options
+- [Workflows](/cli/workflows) — Common patterns

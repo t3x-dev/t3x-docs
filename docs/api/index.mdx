@@ -1,0 +1,108 @@
+---
+sidebar_position: 1
+---
+
+
+# API Overview
+
+
+The Core API provides REST endpoints for semantic version control operations.
+
+## Base URL
+
+```
+http://localhost:8000/api/v1/
+```
+
+## Starting the API
+
+```bash
+cd contextflow-core
+uvicorn core_api.app:app --reload --port 8000
+```
+
+## Authentication
+
+Currently, the API does not require authentication for local development.
+
+## Response Format
+
+All responses are JSON:
+
+```json
+{
+  "id": "...",
+  "created_at": "2024-01-15T10:00:00Z",
+  ...
+}
+```
+
+## Error Responses
+
+```json
+{
+  "detail": "Error message here"
+}
+```
+
+HTTP status codes:
+- `200` — Success
+- `201` — Created
+- `400` — Bad request
+- `404` — Not found
+- `500` — Server error
+
+## Endpoints Summary
+
+| Endpoint | Methods | Description |
+|----------|---------|-------------|
+| `/projects` | GET, POST | Project management |
+| `/conversations` | GET, POST | Conversation management |
+| `/turns` | GET, POST | Turn management |
+| `/commits` | GET, POST | Commit management |
+| `/branches` | GET, POST, DELETE | Branch management |
+| `/diff` | POST | Semantic diff |
+| `/merge` | POST | Three-way merge |
+| `/agent/drafts` | GET, POST, PATCH | Draft management |
+| `/export/cfpack` | GET | Export as cfpack |
+| `/export/ledger` | GET | Export as JSONL |
+| `/health` | GET | Health check |
+
+## Pagination
+
+List endpoints support pagination:
+
+```bash
+GET /projects?limit=10&offset=0
+```
+
+## Quick Example
+
+```bash
+# Create a project
+curl -X POST http://localhost:8000/api/v1/projects \
+  -H "Content-Type: application/json" \
+  -d '{"name": "my-project"}'
+
+# Create a turn
+curl -X POST http://localhost:8000/api/v1/turns \
+  -H "Content-Type: application/json" \
+  -d '{
+    "project_id": "proj_123",
+    "conversation_id": "conv_456",
+    "role": "user",
+    "content": "Hello, world!"
+  }'
+
+# List turns
+curl "http://localhost:8000/api/v1/turns?project_id=proj_123"
+```
+
+## OpenAPI Docs
+
+Interactive API documentation available at:
+
+```
+http://localhost:8000/docs      # Swagger UI
+http://localhost:8000/redoc     # ReDoc
+```

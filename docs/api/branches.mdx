@@ -1,0 +1,93 @@
+---
+sidebar_position: 5
+---
+
+
+# Branches API
+
+
+Manage parallel semantic timelines.
+
+## Create Branch
+
+```http
+POST /api/v1/branches
+```
+
+### Request
+
+```json
+{
+  "project_id": "proj_abc123",
+  "name": "budget-version"
+}
+```
+
+### Response
+
+```json
+{
+  "name": "budget-version",
+  "project_id": "proj_abc123",
+  "head_commit": "sha256:...",
+  "created_at": "2024-01-15T12:00:00Z"
+}
+```
+
+## List Branches
+
+```http
+GET /api/v1/branches?project_id=proj_abc123
+```
+
+### Response
+
+```json
+{
+  "branches": [
+    {"name": "main", "head_commit": "sha256:..."},
+    {"name": "budget-version", "head_commit": "sha256:..."}
+  ]
+}
+```
+
+## Get Current Branch
+
+```http
+GET /api/v1/branches/current?project_id=proj_abc123
+```
+
+## Switch Branch
+
+```http
+POST /api/v1/branches/switch
+```
+
+### Request
+
+```json
+{
+  "project_id": "proj_abc123",
+  "branch": "budget-version",
+  "create_if_not_exists": false
+}
+```
+
+## Delete Branch
+
+```http
+DELETE /api/v1/branches
+```
+
+### Request
+
+```json
+{
+  "project_id": "proj_abc123",
+  "name": "old-branch"
+}
+```
+
+:::warning
+Cannot delete the currently checked-out branch.
+:::

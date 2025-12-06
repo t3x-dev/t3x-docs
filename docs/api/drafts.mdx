@@ -1,0 +1,68 @@
+---
+sidebar_position: 7
+---
+
+
+# Drafts API
+
+
+Manage draft generation and refinement.
+
+## Create Draft
+
+```http
+POST /api/v1/agent/drafts
+```
+
+### Request
+
+```json
+{
+  "project_id": "proj_abc123",
+  "conversation_id": "conv_456",
+  "bridge_id": "summary",
+  "intent": "Summarize the trip planning discussion"
+}
+```
+
+**Bridge types:** `summary`, `plan`, `explain`, `clarify`
+
+### Response
+
+```json
+{
+  "draft_id": "draft_xyz",
+  "status": "created",
+  "bridge_id": "summary",
+  "must_have": ["Tokyo", "budget", "March"],
+  "mustnt_have": [],
+  "validation_passed": true,
+  "created_at": "2024-01-15T12:00:00Z"
+}
+```
+
+## Get Draft
+
+```http
+GET /api/v1/agent/drafts/{draft_id}
+```
+
+## Update Draft
+
+```http
+PATCH /api/v1/agent/drafts/{draft_id}
+```
+
+### Request
+
+```json
+{
+  "feedback": "Make it more concise",
+  "must_have": ["Tokyo", "budget"],
+  "mustnt_have": ["luxury"]
+}
+```
+
+### Response
+
+Updated draft with new constraints applied.

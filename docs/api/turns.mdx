@@ -1,0 +1,89 @@
+---
+sidebar_position: 3
+---
+
+
+# Turns API
+
+
+Manage conversation turns with automatic semantic extraction.
+
+## Create Turn
+
+```http
+POST /api/v1/turns
+```
+
+### Request
+
+```json
+{
+  "project_id": "proj_abc123",
+  "conversation_id": "conv_456",
+  "role": "user",
+  "content": "What's the best time to visit Tokyo?"
+}
+```
+
+### Response
+
+```json
+{
+  "turn_hash": "sha256:abc123...",
+  "parent_turn_hash": "sha256:def456...",
+  "role": "user",
+  "content": "What's the best time to visit Tokyo?",
+  "rings": {
+    "ring1": {
+      "keywords": ["best time", "visit", "Tokyo"],
+      "entities": ["Tokyo"]
+    },
+    "ring2": {
+      "intent": "question",
+      "facets": ["timing", "travel"]
+    },
+    "ring3": {
+      "segments": ["What's the best time to visit Tokyo?"]
+    }
+  },
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+Semantic rings are automatically extracted on creation.
+
+## List Turns
+
+```http
+GET /api/v1/turns
+```
+
+### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `project_id` | string | Filter by project |
+| `conversation_id` | string | Filter by conversation |
+| `role` | string | Filter by role (user/assistant/system) |
+| `limit` | int | Max results (default: 50) |
+| `offset` | int | Skip results |
+
+### Example
+
+```bash
+curl "http://localhost:8000/api/v1/turns?project_id=proj_abc123&role=user&limit=10"
+```
+
+## Get Turn
+
+```http
+GET /api/v1/turns/{turn_hash}
+```
+
+### Response
+
+Returns full turn with semantic rings.
+
+```bash
+curl http://localhost:8000/api/v1/turns/sha256:abc123
+```

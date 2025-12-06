@@ -1,0 +1,209 @@
+---
+sidebar_position: 4
+---
+
+
+# Diff and Merge
+
+
+Compare semantic changes and combine branches intelligently.
+
+## Semantic Diff
+
+Unlike text diff that shows character changes, semantic diff shows **meaning changes**.
+
+### What gets compared
+
+| Layer | Comparison Method |
+|-------|-------------------|
+| Facets | Keyword overlap + embedding similarity |
+| Clauses | MiniLM embeddings (threshold: 0.70) |
+| Relations | Graph structure comparison |
+
+### Running a Diff
+
+#### From CLI
+
+```bash
+T3x> /diff main budget-version
+```
+
+#### From API
+
+```bash
+curl -X POST http://localhost:8000/api/v1/diff \
+  -H "Content-Type: application/json" \
+  -d '{
+    "base_commit_hash": "sha256:abc...",
+    "target_commit_hash": "sha256:xyz..."
+  }'
+```
+
+### Diff Output
+
+```json
+{
+  "facet_changes": [
+    {
+      "type": "added",
+      "facet": "budget",
+      "keywords": ["$1000", "cheap", "hostel"]
+    },
+    {
+      "type": "removed",
+      "facet": "luxury",
+      "keywords": ["5-star", "premium"]
+    },
+    {
+      "type": "modified",
+      "facet": "accommodation",
+      "added_keywords": ["Airbnb", "capsule hotel"],
+      "removed_keywords": ["Ritz-Carlton"]
+    }
+  ],
+  "segment_changes": [
+    {
+      "type": "semantic_shift",
+      "similarity": 0.45,
+      "base_segment": "Stay at luxury hotels in Ginza",
+      "target_segment": "Book affordable hostels in Asakusa"
+    }
+  ]
+}
+```
+
+### Interpreting Diff Results
+
+- **Added facets** — New concepts introduced
+- **Removed facets** — Concepts no longer present
+- **Modified facets** — Same concept, different keywords
+- **Semantic shift** — Similar intent, different expression (similarity < 0.70)
+
+## Three-Way Merge
+
+Merge combines changes from two branches relative to a common ancestor.
+
+```
+          base (common ancestor)
+         /    \
+      main    feature
+         \    /
+          merge
+```
+
+### Running a Merge
+
+#### From CLI
+
+```bash
+T3x> /checkout main
+T3x> /merge feature-branch
+```
+
+#### From API
+
+```bash
+curl -X POST http://localhost:8000/api/v1/merge \
+  -H "Content-Type: application/json" \
+  -d '{
+    "base_commit_hash": "sha256:base...",
+    "source_commit_hash": "sha256:feature...",
+    "target_commit_hash": "sha256:main..."
+  }'
+```
+
+### Merge Output
+
+```json
+{
+  "auto_merged_facets": [
+    {
+      "facet": "transportation",
+      "merged_keywords": ["Shinkansen", "JR Pass", "subway"]
+    }
+  ],
+  "merge_conflicts": [
+    {
+      "facet": "accommodation",
+      "conflict_type": "semantic_divergence",
+      "main_keywords": ["luxury hotel", "Ginza"],
+      "feature_keywords": ["budget hostel", "Asakusa"],
+      "similarity": 0.32
+    }
+  ]
+}
+```
+
+### Conflict Resolution
+
+When semantic similarity falls below threshold (0.70), a conflict is detected.
+
+**Auto-merge** happens when:
+- Both branches add non-conflicting facets
+- Keywords are complementary, not contradictory
+
+**Manual resolution** required when:
+- Same facet has divergent keywords
+- Relations contradict each other
+
+### Resolving Conflicts
+
+1. Review the conflict details
+2. Choose which version to keep (or combine manually)
+3. Create a new commit with resolved state
+
+```bash
+T3x> /merge feature-branch
+⚠ Conflict detected in 'accommodation' facet
+
+# Review and resolve
+T3x> [conversation to resolve conflict]
+T3x> /commit --api --msg "Merged feature-branch, resolved accommodation conflict"
+```
+
+## Use Cases
+
+### Comparing Prompt Versions
+
+```bash
+# See what changed between prompt iterations
+T3x> /diff prompt-v1 prompt-v2
+```
+
+### Merging Team Contributions
+
+```bash
+# Alice's research
+T3x> /checkout alice-research
+# Bob's research
+T3x> /checkout bob-research
+
+# Combine on main
+T3x> /checkout main
+T3x> /merge alice-research
+T3x> /merge bob-research
+```
+
+### Agent Prompt A/B Testing
+
+```bash
+# Compare two agent configurations
+T3x> /diff agent-config-a agent-config-b
+
+# If B is better, merge to prod
+T3x> /checkout prod
+T3x> /merge agent-config-b
+```
+
+## Embedding-Based Comparison
+
+T3x uses **MiniLM** (sentence-transformers) for semantic similarity:
+
+1. Convert text segments to embeddings
+2. Compute cosine similarity
+3. Threshold at 0.70 for "same meaning"
+
+This allows detecting:
+- Paraphrases (high similarity, different words)
+- Semantic drift (same topic, evolved meaning)
+- Contradictions (low similarity, same facet)

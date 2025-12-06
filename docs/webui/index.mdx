@@ -1,0 +1,50 @@
+---
+sidebar_position: 1
+---
+
+
+# WebUI Overview
+
+
+Visual interface for managing semantic workflows.
+
+## Starting the WebUI
+
+```bash
+cd contextflow-webui
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` in your browser.
+
+## Features
+
+- **Workflow Management** — Create, browse, and delete projects
+- **Semantic Ledger** — Timeline view of turns and commits
+- **Canvas Editor** — Visual node-based conversation view
+- **Commit History** — Browse commits across branches
+
+## Pages
+
+### Semantic Ledger (`/`)
+
+The main dashboard with tabs:
+
+- **Workflows** — List of all projects
+- **Ledger** — Timeline of semantic findings
+- **Latest Commits** — Recent commit history
+- **Manage** — Project settings
+
+### Workflow Detail (`/workflow/:id`)
+
+Deep dive into a specific project:
+
+- **Editor Mode** — Visual canvas with draggable nodes
+- **Execution Mode** — Debug output and logs
+
+## Connecting to Core API
+
+The WebUI connects to the Core API at `http://localhost:8000`.
+
+Ensure the Core API is running before using the WebUI.

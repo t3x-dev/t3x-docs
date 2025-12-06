@@ -1,0 +1,144 @@
+---
+sidebar_position: 1
+---
+
+
+# Semantic Layers
+
+
+T3x extracts meaning from text through three concentric layers, each providing a different level of semantic granularity.
+
+## Overview
+
+```
+┌─────────────────────────────────────┐
+│           FACETS (outer)            │  Keywords, entities, topics
+│  ┌─────────────────────────────┐    │
+│  │      RELATIONS (middle)     │    │  How clauses connect
+│  │  ┌─────────────────────┐    │    │
+│  │  │   CLAUSES (core)    │    │    │  Units of intent
+│  │  │                     │    │    │
+│  │  │       TEXT          │    │    │
+│  │  └─────────────────────┘    │    │
+│  └─────────────────────────────┘    │
+└─────────────────────────────────────┘
+```
+
+## Layer 1: Clauses
+
+**The minimal unit of intent.**
+
+A clause contains enough context to compare, bridge, and track meaning. It's typically a subject-verb-object structure that expresses a complete thought.
+
+### What gets extracted
+
+- **Assertions** — Statements of fact or opinion
+- **Conditionals** — If-then relationships
+- **Questions** — Queries seeking information
+- **Commands** — Directives or requests
+
+### Example
+
+Input text:
+> "If we visit Tokyo in spring, we should see the cherry blossoms at Ueno Park."
+
+Extracted clauses:
+```json
+{
+  "clauses": [
+    {
+      "type": "conditional",
+      "text": "If we visit Tokyo in spring",
+      "condition": true
+    },
+    {
+      "type": "assertion",
+      "text": "we should see the cherry blossoms at Ueno Park",
+      "consequence": true
+    }
+  ]
+}
+```
+
+## Layer 2: Relations
+
+**How clauses connect within text.**
+
+Relations describe the semantic links between clauses, forming a graph of meaning.
+
+### Relation types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `supports` | Clause A provides evidence for B | "The weather is nice. We should go outside." |
+| `contradicts` | Clause A conflicts with B | "It's raining. The forecast said sunny." |
+| `elaborates` | Clause A adds detail to B | "Visit Kyoto. The temples are beautiful." |
+| `depends-on` | Clause A requires B | "Book the hotel after confirming dates." |
+
+### Example
+
+```json
+{
+  "relations": [
+    {
+      "source": "clause_1",
+      "target": "clause_2",
+      "type": "elaborates",
+      "confidence": 0.85
+    }
+  ]
+}
+```
+
+## Layer 3: Facets
+
+**Keywords that anchor meaning.**
+
+Facets are the terms humans can see and verify. They provide a stable vocabulary for tracking semantic changes across versions.
+
+### Facet types
+
+- **Entities** — Named things (people, places, organizations)
+- **Terms** — Domain-specific keywords
+- **Topics** — High-level subject categories
+
+### Example
+
+Input text:
+> "We should book the Shinkansen from Tokyo to Kyoto for March 15th."
+
+Extracted facets:
+```json
+{
+  "facets": {
+    "entities": ["Shinkansen", "Tokyo", "Kyoto"],
+    "terms": ["book", "March 15th"],
+    "topics": ["transportation", "travel planning"]
+  }
+}
+```
+
+## Why Three Layers?
+
+Each layer serves a different purpose in semantic version control:
+
+| Layer | Purpose | Used for |
+|-------|---------|----------|
+| Clauses | Compare intent | Diff, bridge prompts |
+| Relations | Track structure | Merge conflict detection |
+| Facets | Human verification | Anchors, constraints |
+
+### In practice
+
+1. **Diffing** compares clauses to find what changed
+2. **Merging** uses relations to detect conflicts
+3. **Drafting** uses facets as constraints (must-have/must-not keywords)
+
+## Implementation
+
+T3x uses:
+- **spaCy** for English NLP (clause extraction, entity recognition)
+- **Jieba** for Chinese text segmentation
+- **MiniLM** for semantic similarity (embedding-based comparison)
+
+The extraction is deterministic — the same input always produces the same semantic layers, enabling reproducible diffs.
