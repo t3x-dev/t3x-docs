@@ -4,6 +4,9 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     'intro',
     'quickstart',
+    'release/index',
+    'local/index',
+    'yops/index',
     {
       type: 'category',
       label: 'Concepts',
@@ -18,34 +21,8 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'CLI',
-      collapsed: false,
-      items: [
-        'cli/index',
-        'cli/commands',
-        'cli/configuration',
-        'cli/workflows',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'API',
-      collapsed: false,
-      items: [
-        'api/index',
-        'api/projects',
-        'api/turns',
-        'api/commits',
-        'api/branches',
-        'api/diff-merge',
-        'api/drafts',
-        'api/export',
-      ],
-    },
-    {
-      type: 'category',
       label: 'WebUI',
-      collapsed: true,
+      collapsed: false,
       items: [
         'webui/index',
         'webui/workflows',
@@ -54,13 +31,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Use Cases',
-      collapsed: true,
+      label: 'Preview',
+      collapsed: false,
       items: [
-        'use-cases/trip-planning',
-        'use-cases/meeting-notes',
-        'use-cases/product-specs',
-        'use-cases/agent-workflows',
+        'preview/cli',
+        'preview/mcp',
+        'preview/api',
+        'preview/runner',
       ],
     },
   ],

@@ -2,215 +2,23 @@
 sidebar_position: 5
 ---
 
-
 # Import and Export
 
+T3X is designed around portable semantic content.
 
-Move semantic data between systems with full fidelity.
+## Import
 
-## Export Formats
+Source material can come from prompts, chat transcripts, release notes, meeting
+notes, specs, or other text-heavy workflows. The WebUI keeps source material
+visible while meaning is extracted and reviewed.
 
-T3x supports two export formats:
+## Export
 
-| Format | Extension | Use Case |
-|--------|-----------|----------|
-| cfpack | `.cfpack.json` | Full project bundle |
-| JSONL Ledger | `.jsonl` | Streaming, backup |
+Committed knowledge should remain useful outside the first workspace. Export
+formats and integrations may evolve during alpha, but the core expectation is
+stable: source evidence, semantic trees, relations, and commit identity should
+travel together.
 
-## cfpack Format
+## Current alpha scope
 
-A self-contained bundle with complete semantic history.
-
-### Structure
-
-```json
-{
-  "version": "1.0",
-  "project": {
-    "id": "proj_123",
-    "name": "japan-trip",
-    "created_at": "2024-01-15T10:00:00Z"
-  },
-  "conversations": [...],
-  "turns": [
-    {
-      "turn_hash": "sha256:...",
-      "role": "user",
-      "content": "...",
-      "rings": {...}
-    }
-  ],
-  "commits": [
-    {
-      "commit_hash": "sha256:...",
-      "branch": "main",
-      "facet_snapshot": {...}
-    }
-  ],
-  "aggregated_findings": {
-    "entities": ["Tokyo", "Kyoto", "Osaka"],
-    "keywords": ["travel", "itinerary", "budget"],
-    "topics": ["trip planning", "accommodation"]
-  },
-  "integrity_hash": "sha256:jcs-hash-of-content"
-}
-```
-
-### Exporting cfpack
-
-#### From API
-
-```bash
-curl "http://localhost:8000/api/v1/export/cfpack?project_id=proj_123" \
-  -o japan-trip.cfpack.json
-```
-
-#### Response headers
-
-```
-Content-Type: application/vnd.contextflow.cfpack+json
-Content-Disposition: attachment; filename="japan-trip.cfpack.json"
-```
-
-### Integrity Verification
-
-The `integrity_hash` is computed using:
-1. JCS canonicalization of content
-2. SHA-256 hash
-
-This ensures the export hasn't been tampered with.
-
-## JSONL Ledger Format
-
-One JSON object per line, chronological order.
-
-### Structure
-
-```jsonl
-{"type": "project", "id": "proj_123", "name": "japan-trip"}
-{"type": "conversation", "id": "conv_456", "project_id": "proj_123"}
-{"type": "turn", "turn_hash": "sha256:...", "role": "user", "content": "..."}
-{"type": "turn", "turn_hash": "sha256:...", "role": "assistant", "content": "..."}
-{"type": "commit", "commit_hash": "sha256:...", "branch": "main"}
-```
-
-### Exporting JSONL
-
-```bash
-curl "http://localhost:8000/api/v1/export/ledger?project_id=proj_123" \
-  -o japan-trip.jsonl
-```
-
-### Use Cases
-
-- **Backup** — Append-only format, easy to backup
-- **Streaming** — Process line by line without loading full file
-- **ETL** — Import into data pipelines
-
-## Import Methods
-
-### Via API
-
-Import turns and commits directly:
-
-```bash
-# Create project
-curl -X POST http://localhost:8000/api/v1/projects \
-  -d '{"name": "imported-project"}'
-
-# Import turns
-curl -X POST http://localhost:8000/api/v1/turns \
-  -d '{"project_id": "...", "role": "user", "content": "..."}'
-```
-
-### Via CLI
-
-Place JSONL files in the project directory:
-
-```
-~/.contextflow/conversations/my-project/conversation.jsonl
-```
-
-### Programmatic Import
-
-```python
-import requests
-
-def import_cfpack(filepath: str, api_url: str):
-    with open(filepath) as f:
-        data = json.load(f)
-
-    # Create project
-    project = requests.post(f"{api_url}/projects",
-        json={"name": data["project"]["name"]}).json()
-
-    # Import turns
-    for turn in data["turns"]:
-        requests.post(f"{api_url}/turns", json={
-            "project_id": project["id"],
-            "role": turn["role"],
-            "content": turn["content"]
-        })
-
-    # Import commits
-    for commit in data["commits"]:
-        requests.post(f"{api_url}/commits", json={
-            "project_id": project["id"],
-            "turn_window": commit["turn_window"],
-            "message": commit.get("message", "Imported")
-        })
-```
-
-## Sharing Semantic Units
-
-T3x supports sharing at different granularities:
-
-### Project Level
-
-```
-T3x-myapp@latest          # Full history
-T3x-myapp@v1.0            # Tagged version
-```
-
-### Commit Level
-
-```
-T3x-myapp@a3f2c1          # Specific commit
-```
-
-### Conversation Level
-
-```
-T3x-myapp/conv/design-review    # Single thread
-```
-
-## Interoperability
-
-### With Git
-
-Store `.cfpack.json` in your Git repo:
-
-```bash
-T3x export my-project.cfpack.json
-git add my-project.cfpack.json
-git commit -m "Semantic snapshot"
-```
-
-### With Other Tools
-
-The JSONL format works with:
-- **jq** for command-line processing
-- **pandas** for data analysis
-- **Spark** for large-scale processing
-
-```bash
-# Count turns by role
-cat project.jsonl | jq -r 'select(.type=="turn") | .role' | sort | uniq -c
-```
-
-## Best Practices
-
-1. **Export regularly** — Backup your semantic history
-2. **Verify integrity** — Check `integrity_hash` on import
-3. **Use cfpack for sharing** — Complete, self-contained
-4. **Use JSONL for processing** — Streaming, line-by-line
+For public alpha usage, start with `@t3x-dev/local` and `@t3x-dev/yops`.

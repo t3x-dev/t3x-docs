@@ -1,0 +1,34 @@
+---
+sidebar_position: 3
+slug: /release
+---
+
+# Release Status
+
+:::caution v0.3.0 publish pending
+The T3X alpha v0.3.0 package release is being prepared. The docs are already
+aligned to the release surface, but npm install commands become available only
+after the publish workflow completes.
+:::
+
+## Public alpha surface
+
+| Package | Version | Status | Purpose |
+| --- | --- | --- | --- |
+| `@t3x-dev/local` | `0.3.0` | Publish pending | Packaged local T3X experience and no-key demo entrypoint. |
+| `@t3x-dev/yops` | `0.3.0` | Publish pending | Deterministic YAML operation engine. |
+
+## Preview surfaces
+
+CLI, MCP, API, and runner workflows are documented as previews. They are useful
+for evaluation and integration work, but they are not part of the current public
+alpha release surface.
+
+## After publish completes
+
+The intended public commands are:
+
+```bash
+npx -p @t3x-dev/local t3x-local start
+npm install @t3x-dev/yops
+```

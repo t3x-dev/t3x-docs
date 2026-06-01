@@ -2,147 +2,22 @@
 sidebar_position: 3
 ---
 
-
 # Branching
 
+Branches let you explore alternative semantic states without losing the stable
+line of work.
 
-Explore parallel semantic timelines without losing history.
-
-## What is a Branch?
-
-A branch is a named pointer to a commit, allowing you to:
-- Explore alternative approaches
-- Work on variations in isolation
-- Merge successful experiments back
-
-```
-main:     commit_1 ─── commit_2 ─── commit_3
-                            │
-budget:                     └─── commit_4 ─── commit_5
+```text
+main:      commit_1 -> commit_2
+                         \
+experiment:               commit_3 -> commit_4
 ```
 
-## Creating Branches
+Use branches when you want to compare possible interpretations, product
+directions, prompt versions, or document revisions before merging the useful
+knowledge back.
 
-### From CLI
+## Branches are semantic
 
-```bash
-# Create and switch to new branch
-T3x> /branch budget-version
-
-# Or use checkout with -b flag
-T3x> /checkout -b alternative-plan
-```
-
-### From API
-
-```bash
-curl -X POST http://localhost:8000/api/v1/branches \
-  -H "Content-Type: application/json" \
-  -d '{
-    "project_id": "proj_123",
-    "name": "budget-version"
-  }'
-```
-
-## Switching Branches
-
-```bash
-T3x> /checkout main
-✓ Switched to branch: main
-
-T3x> /checkout budget-version
-✓ Switched to branch: budget-version
-```
-
-## Listing Branches
-
-```bash
-T3x> /branch
-* main
-  budget-version
-  luxury-version
-```
-
-## Branch Workflows
-
-### Exploration Pattern
-
-1. Start on `main` with initial research
-2. Branch to explore a specific direction
-3. If successful, merge back to main
-4. If not, the branch remains as a record
-
-```bash
-T3x> /new trip-planning
-T3x> [research conversation...]
-T3x> /commit --api --msg "Initial research"
-
-T3x> /branch budget-option
-T3x> What if I only have $1000?
-T3x> [budget conversation...]
-T3x> /commit --api --msg "Budget constraints explored"
-
-T3x> /checkout main
-T3x> /merge budget-option
-```
-
-### A/B Testing Pattern
-
-Run parallel conversations to compare approaches:
-
-```bash
-# Main branch: formal tone
-T3x> /checkout main
-T3x> Write a formal project proposal
-
-# Branch: casual tone
-T3x> /branch casual-version
-T3x> Write a casual project pitch
-
-# Compare results
-T3x> /diff main casual-version
-```
-
-### Agent Sandbox Pattern
-
-For AI agent prompt optimization:
-
-```bash
-# Production branch: stable prompts
-T3x> /checkout prod
-
-# Sandbox branch: experimental
-T3x> /branch sandbox
-T3x> [run experiments, auto-commit iterations]
-
-# When stable, merge to prod
-T3x> /checkout prod
-T3x> /merge sandbox --review
-```
-
-## Branch Isolation
-
-Each branch maintains its own:
-- Commit history from branch point
-- Turn sequence
-- Semantic state
-
-Changes on one branch don't affect others until merged.
-
-## Deleting Branches
-
-```bash
-T3x> /branch -d budget-version
-✓ Deleted branch: budget-version
-```
-
-:::warning
-You cannot delete the currently checked-out branch. Switch to another branch first.
-:::
-
-## Best Practices
-
-1. **Name branches descriptively** — `budget-option` not `branch1`
-2. **Branch early, branch often** — Exploration is cheap
-3. **Keep main stable** — Merge only validated changes
-4. **Delete stale branches** — Clean up after merging
+In T3X, branches point at commits of meaning. They are not separate copies of
+raw text; they are alternate reviewed semantic histories.

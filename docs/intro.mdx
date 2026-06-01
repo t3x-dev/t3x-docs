@@ -3,98 +3,57 @@ sidebar_position: 1
 slug: /
 ---
 
-import DocBadges from '@site/src/components/DocBadges';
-
 # Introduction
 
-<DocBadges status="dev" verified="unverified" />
+**T3X is Git for meaning.** It turns unstructured material such as prompts,
+meeting notes, transcripts, specs, and conversations into structured knowledge
+that can be reviewed, committed, diffed, and reused.
 
-**T3x** is semantic version control for AI conversations. It captures meaning — across conversations, drafts, and revisions — as a verifiable semantic lineage that teams can branch, compare, and commit with deterministic clarity.
+<img
+  src="/img/screenshots/chat-light.png"
+  alt="T3X chat landing page"
+/>
 
-## What is Semantic Version Control?
+## Public alpha surface
 
-Traditional version control (like Git) tracks changes in **code**. T3x applies the same principles to **meaning**.
+The v0.3.0 public alpha surface is intentionally small and currently publish
+pending:
 
-| Git (Code) | T3x (Meaning) |
-|------------|---------------|
-| Lines of code | **Clauses** — atomic units of intent |
-| File changes | **Turns** — each message in a conversation |
-| Commits | **Commits** — snapshot semantic state |
-| Branches | **Branches** — parallel exploration of ideas |
-| Diff | **Diff** — what changed at the semantic level |
-| Merge | **Merge** — combine branches with conflict detection |
+| Package | Version | Use it for |
+| --- | --- | --- |
+| `@t3x-dev/local` | `0.3.0` | Running the packaged local T3X experience and no-key demo. |
+| `@t3x-dev/yops` | `0.3.0` | Applying deterministic YAML operations inside your own app. |
 
-**The key insight:** When you track *meaning* instead of *text*, you can compare what someone *said* across versions — not just how they typed it.
+Other packages in the repository may be useful internally, but they are not part
+of the current public contract.
 
-## Architecture
+## Preview surfaces
 
-T3x consists of three components:
+CLI, MCP, API, and runner workflows are documented as previews. They are useful
+for evaluation and integration work, but they are not release-committed public
+surfaces yet.
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **CLI** | TypeScript/Node.js | Interactive shell for conversations |
-| **Core API** | Python/FastAPI | Semantic processing engine |
-| **WebUI** | React/TypeScript | Visual workflow management |
+## How T3X works
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│    CLI      │────▶│  Core API   │◀────│   WebUI     │
-│  (chat)     │     │ (semantic)  │     │  (visual)   │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+T3X follows a reviewable pipeline:
 
-## Core Concepts
-
-### Three Semantic Layers
-
-Every piece of text is analyzed through three layers:
-
-1. **Clauses** — The minimal unit of intent. Subject-verb-object structures that carry complete meaning.
-
-2. **Relations** — How clauses connect. Supports, contradicts, elaborates.
-
-3. **Facets** — Keywords that anchor meaning. Entities, terms, topics that humans can verify.
-
-### The Lineage Protocol
-
-Every turn and commit is cryptographically linked:
-
-```
-turn_1 → turn_2 → turn_3
-           ↓
-       commit_a → commit_b
+```text
+Source -> Meaning -> Commit -> Leaf
 ```
 
-- Turn chain: `prev_turn_hash → turn_hash` (SHA-256)
-- Commit chain: `parent_hashes → commit_hash`
-- JCS canonicalization for deterministic hashing
+- **Source** keeps the original material visible.
+- **Meaning** extracts structured facts, decisions, risks, and relations.
+- **Commit** records reviewed knowledge in an immutable semantic snapshot.
+- **Leaf** turns committed knowledge into reusable outputs.
 
-## Quick Example
+The mutation layer is deterministic. LLMs can propose YOps YAML, but the engine
+validates and applies those operations without relying on an LLM.
 
-```bash
-# Start a conversation
-T3x> /new japan-trip
-T3x> What's the best time to visit Tokyo?
+## Next steps
 
-# LLM responds...
-
-# Create a draft from the conversation
-T3x> /draft summary
-
-# Commit when satisfied
-T3x> /commit draft_abc123 --msg "Initial trip research"
-
-# Later, branch to explore alternatives
-T3x> /branch budget-version
-T3x> What if I only have 5 days?
-
-# Compare versions
-T3x> /diff main budget-version
-```
-
-## Next Steps
-
-- [Quick Start](./quickstart) — Get up and running in 5 minutes
-- [CLI Reference](./cli) — Full command reference
-- [API Reference](./api) — REST API documentation
-- [Concepts](./concepts/semantic-layers) — Deep dive into semantic layers
+- [Quickstart](./quickstart)
+- [Release status](./release)
+- [Local alpha](./local)
+- [YOps](./yops)
+- [WebUI](./webui)
+- [Preview surfaces](./preview/cli)

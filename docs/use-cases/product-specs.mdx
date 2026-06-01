@@ -1,64 +1,13 @@
 ---
-sidebar_position: 3
+slug: /use-cases/product-specs
 ---
 
+# Product Specs Example
 
-# Product Specs
+:::caution Retired example
+This older example is kept for existing links while the public alpha docs are
+being narrowed to Local, YOps, WebUI, and preview surfaces.
+:::
 
-
-**Level 4** — Iterate on requirements with semantic tracking.
-
-## The Story
-
-You're writing a PRD with AI assistance. Requirements evolve, stakeholders have different opinions, and you need to merge competing proposals.
-
-## Workflow
-
-### 1. Initial requirements
-
-```bash
-T3x> /new product-spec-v1
-T3x> Help me write requirements for a travel booking app.
-     Target: millennials, budget: MVP under $100k.
-T3x> /commit --api --msg "Initial requirements"
-```
-
-### 2. Stakeholder input
-
-```bash
-T3x> /branch marketing-input
-T3x> Marketing wants social sharing features and influencer integration.
-T3x> /commit --api --msg "Marketing requirements"
-
-T3x> /checkout main
-T3x> /branch engineering-input
-T3x> Engineering suggests starting with core booking only, add features later.
-T3x> /commit --api --msg "Engineering constraints"
-```
-
-### 3. Compare proposals
-
-```bash
-T3x> /diff marketing-input engineering-input
-```
-
-See the semantic differences:
-- Marketing adds: social, influencers
-- Engineering removes: advanced features
-- Both agree on: core booking
-
-### 4. Merge and resolve
-
-```bash
-T3x> /checkout main
-T3x> /merge marketing-input
-T3x> /merge engineering-input
-```
-
-Resolve conflicts by choosing which features make the MVP cut.
-
-## Value
-
-- **No lost proposals** — Every input is a branch
-- **Clear tradeoffs** — Diff shows what each stakeholder adds/removes
-- **Auditable decisions** — Why did we cut feature X? Check the merge history.
+Start with [Quickstart](../quickstart) or [WebUI](../webui) for the current
+workflow.

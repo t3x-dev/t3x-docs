@@ -1,73 +1,13 @@
 ---
-sidebar_position: 1
+slug: /use-cases/trip-planning
 ---
 
+# Trip Planning Example
 
-# Trip Planning
+:::caution Retired example
+This older example is kept for existing links while the public alpha docs are
+being narrowed to Local, YOps, WebUI, and preview surfaces.
+:::
 
-
-**Level 1** — Start here to experience semantic version control.
-
-## The Story
-
-You're planning a 7-day trip to Japan. You want to explore options, refine your itinerary, and keep track of how your plans evolve.
-
-## Workflow
-
-### 1. Create the project
-
-```bash
-T3x> /new japan-trip
-```
-
-### 2. Research phase
-
-```bash
-T3x> What's the best time to visit Tokyo?
-T3x> What should I prioritize: Tokyo, Kyoto, or Osaka?
-T3x> What's a reasonable budget for 7 days?
-```
-
-### 3. Draft an itinerary
-
-```bash
-T3x> /draft plan
-```
-
-The draft extracts key decisions from your conversation and organizes them into a structured itinerary.
-
-### 4. Refine with feedback
-
-```bash
-T3x> /draft feedback draft_123 "Add more food recommendations" --must ramen sushi
-```
-
-### 5. Commit the first version
-
-```bash
-T3x> /commit draft_123 --msg "Initial itinerary v1"
-```
-
-### 6. Explore alternatives
-
-```bash
-T3x> /branch budget-version
-T3x> What if I only have $1000?
-T3x> /commit --api --msg "Budget constraints explored"
-```
-
-### 7. Compare versions
-
-```bash
-T3x> /diff main budget-version
-```
-
-See exactly what changed between your original plan and the budget version.
-
-## What You Learn
-
-- How turns capture conversation flow
-- How drafts organize semantic content
-- How commits snapshot your decisions
-- How branches let you explore without losing progress
-- How diff shows meaningful changes
+Start with [Quickstart](../quickstart) or [WebUI](../webui) for the current
+workflow.

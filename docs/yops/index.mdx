@@ -1,0 +1,54 @@
+---
+sidebar_position: 4
+---
+
+# YOps
+
+`@t3x-dev/yops` is the deterministic YAML operation engine used by T3X.
+
+:::caution v0.3.0 publish pending
+`@t3x-dev/yops@0.3.0` is part of the intended public alpha release surface, but
+the npm publish is still in progress. The install command below becomes
+available after publish completes.
+:::
+
+```bash
+npm install @t3x-dev/yops
+```
+
+YOps expresses tree mutations as declarative YAML-compatible operations. The
+engine validates and applies them deterministically, so mutation behavior is
+auditable and repeatable.
+
+## Example
+
+```ts
+import { applyYOps } from '@t3x-dev/yops';
+
+const document = {
+  project: {
+    goals: ['draft docs'],
+  },
+};
+
+const next = applyYOps(document, [
+  {
+    append: {
+      path: 'project/goals',
+      value: 'publish local alpha',
+    },
+  },
+]);
+```
+
+## Operation families
+
+| Family | Examples | Purpose |
+| --- | --- | --- |
+| DDL | `define`, `drop`, `rename` | Create, remove, and rename keys. |
+| DML | `set`, `unset`, `populate`, `append` | Set values and add sequence items. |
+| DTL | `move`, `clone`, `nest`, `split`, `merge` | Reshape the tree. |
+| DCL | `assert` | Validate conditions without mutating. |
+
+The full runtime spec lives in the `t3x-core` repository at
+`packages/yops/yops.yaml`.

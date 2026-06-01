@@ -3,19 +3,19 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'T3x Documentation',
-  tagline: 'Semantic Version Control for AI Conversations',
+  title: 'T3X Documentation',
+  tagline: 'Git for meaning',
   favicon: 'img/favicon.svg',
 
   future: {
     v4: true,
   },
 
-  url: 'https://docs.t3x.dev',
+  url: 'https://t3x-docs.vercel.app',
   baseUrl: '/',
 
-  organizationName: 't3x',
-  projectName: 't3x',
+  organizationName: 't3x-dev',
+  projectName: 't3x-docs',
 
   onBrokenLinks: 'throw',
 
@@ -31,7 +31,7 @@ const config: Config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/t3x/t3x/tree/main/docs/',
+          editUrl: 'https://github.com/t3x-dev/t3x-docs/tree/main/',
         },
         blog: false,
         theme: {
@@ -42,14 +42,14 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/t3x-social-card.png',
+    image: 'img/screenshots/chat-light.png',
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'T3x',
+      title: 'T3X',
       logo: {
         alt: 'T3x Logo',
         src: 'img/logo.svg',
@@ -62,13 +62,13 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          to: '/cli',
-          label: 'CLI',
+          to: '/local',
+          label: 'Local',
           position: 'left',
         },
         {
-          to: '/api',
-          label: 'API',
+          to: '/yops',
+          label: 'YOps',
           position: 'left',
         },
         {
@@ -77,16 +77,34 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/preview/cli',
+          label: 'Preview',
+          position: 'left',
+        },
+        {
+          to: '/release',
+          label: 'v0.3.0 pending',
+          position: 'right',
+        },
+        {
           href: 'https://t3x.dev',
           label: 'Home',
           position: 'right',
         },
         {
-          href: 'https://github.com/t3x/t3x',
+          href: 'https://github.com/t3x-dev/t3x-core',
           label: 'GitHub',
           position: 'right',
         },
       ],
+    },
+    announcementBar: {
+      id: 'alpha-0-3-0-pending',
+      content:
+        'T3X alpha v0.3.0 is being prepared. npm commands become available after publish completes.',
+      backgroundColor: '#fef3c7',
+      textColor: '#111827',
+      isCloseable: false,
     },
     footer: {
       style: 'dark',
@@ -95,16 +113,24 @@ const config: Config = {
           title: 'Documentation',
           items: [
             {
-              label: 'Getting Started',
-              to: '/',
+              label: 'Quickstart',
+              to: '/quickstart',
             },
             {
-              label: 'CLI Reference',
-              to: '/cli',
+              label: 'Local Alpha',
+              to: '/local',
             },
             {
-              label: 'API Reference',
-              to: '/api',
+              label: 'YOps',
+              to: '/yops',
+            },
+            {
+              label: 'Preview',
+              to: '/preview/cli',
+            },
+            {
+              label: 'Release status',
+              to: '/release',
             },
           ],
         },
@@ -129,22 +155,18 @@ const config: Config = {
           title: 'Links',
           items: [
             {
-              label: 'Website',
-              href: 'https://t3x.dev',
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/t3x/t3x',
+              href: 'https://github.com/t3x-dev/t3x-core',
             },
           ],
         },
       ],
-      copyright: `T3x — Semantic Version Control`,
+      copyright: `T3X — Git for meaning`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'json', 'python', 'typescript'],
+      additionalLanguages: ['bash', 'json', 'yaml', 'typescript'],
     },
   } satisfies Preset.ThemeConfig,
 };

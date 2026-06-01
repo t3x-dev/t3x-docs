@@ -2,33 +2,22 @@
 sidebar_position: 2
 ---
 
-
 # Workflows
 
+T3X starts from source material and moves toward durable semantic commits.
 
-Managing projects through the WebUI.
+## Chat first
 
-## Creating a Workflow
+The `/chat` view is the first workspace. Paste material into the composer and
+let T3X keep the source visible while extracting reviewable meaning.
 
-1. Click **"New Workflow"** button
-2. Enter project name in the dialog
-3. Click **Create**
+## Review before committing
 
-## Browsing Workflows
+Extraction is not the final state. Review the proposed tree and YOps operations
+before creating a commit. The deterministic engine applies the final operations,
+so the committed state is auditable.
 
-The Workflows tab shows all projects with:
+## Reuse committed meaning
 
-- Project name
-- Creation date
-- Statistics (turns, commits)
-
-Click a workflow to open its detail page.
-
-## Deleting a Workflow
-
-1. Click the delete icon on a workflow card
-2. Confirm the deletion
-
-:::warning
-This permanently deletes all data including turns, commits, and branches.
-:::
+After committing, the same knowledge can feed leaves, comparison views, and
+future project work.
