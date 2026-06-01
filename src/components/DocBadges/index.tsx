@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ReactElement } from 'react';
 import styles from './styles.module.css';
 
 type DevStatus = 'released' | 'beta' | 'dev';
@@ -20,7 +21,7 @@ const verifyConfig: Record<VerifyStatus, { label: string; className: string }> =
   unverified: { label: 'Unverified', className: styles.unverified },
 };
 
-export default function DocBadges({ status, verified }: DocBadgesProps): JSX.Element | null {
+export default function DocBadges({ status, verified }: DocBadgesProps): ReactElement | null {
   if (!status && !verified) return null;
 
   return (

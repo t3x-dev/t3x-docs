@@ -1,70 +1,13 @@
 ---
-sidebar_position: 2
+slug: /use-cases/meeting-notes
 ---
 
+# Meeting Notes Example
 
-# Meeting Notes
+:::caution Retired example
+This older example is kept for existing links while the public alpha docs are
+being narrowed to Local, YOps, WebUI, and preview surfaces.
+:::
 
-
-**Level 3** — Track decisions and action items across team syncs.
-
-## The Story
-
-Your team has weekly syncs. Decisions are made, action items assigned, risks identified. Without proper tracking, things get lost.
-
-## Workflow
-
-### 1. Create meeting project
-
-```bash
-T3x> /new team-sync-q1
-```
-
-### 2. Capture discussion
-
-```bash
-T3x> Meeting notes: We decided to launch in March. Budget is $50k.
-     John owns the marketing plan. Risk: supply chain delays.
-```
-
-### 3. Extract structure
-
-```bash
-T3x> /draft summary
-```
-
-T3x automatically extracts:
-- **Decisions** — Launch date, budget
-- **Action items** — John's marketing plan
-- **Risks** — Supply chain
-
-### 4. Commit the meeting
-
-```bash
-T3x> /commit --api --msg "Week 1 sync - March launch decided"
-```
-
-### 5. Next meeting
-
-```bash
-T3x> Meeting update: Marketing plan 50% done. New risk: competitor launch.
-T3x> /commit --api --msg "Week 2 sync - Progress update"
-```
-
-### 6. Track evolution
-
-```bash
-T3x> /diff commit_week1 commit_week2
-```
-
-See what changed:
-- Action item progress
-- New risks added
-- Decision modifications
-
-## Value
-
-This isn't just meeting notes — it's **decision lineage**. You can always trace back:
-- When was this decided?
-- What changed between meetings?
-- Who was assigned what?
+Start with [Quickstart](../quickstart) or [WebUI](../webui) for the current
+workflow.

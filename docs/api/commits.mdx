@@ -1,74 +1,13 @@
 ---
-sidebar_position: 4
+slug: /api/commits
 ---
 
+# Commits API Preview
 
-# Commits API
+:::caution Preview surface
+Detailed endpoint reference is temporarily retired while the API contract is
+still stabilizing.
+:::
 
-
-Create and manage semantic commits.
-
-## Create Commit
-
-```http
-POST /api/v1/commits
-```
-
-### Request
-
-```json
-{
-  "project_id": "proj_abc123",
-  "conversation_id": "conv_456",
-  "turn_window": {
-    "start_turn_hash": "sha256:start...",
-    "end_turn_hash": "sha256:end..."
-  },
-  "message": "Initial research complete"
-}
-```
-
-### Response
-
-```json
-{
-  "commit_hash": "sha256:xyz789...",
-  "parent_hashes": ["sha256:prev..."],
-  "branch": "main",
-  "message": "Initial research complete",
-  "turn_window": {...},
-  "facet_snapshot": {
-    "entities": ["Tokyo", "Kyoto"],
-    "keywords": ["travel", "budget"],
-    "topics": ["trip planning"]
-  },
-  "created_at": "2024-01-15T12:00:00Z"
-}
-```
-
-## List Commits
-
-```http
-GET /api/v1/commits
-```
-
-### Query Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `project_id` | string | Filter by project |
-| `branch` | string | Filter by branch |
-| `limit` | int | Max results |
-| `offset` | int | Skip results |
-
-```bash
-curl "http://localhost:8000/api/v1/commits?project_id=proj_abc123&branch=main"
-```
-
-## Get Commit
-
-```http
-GET /api/v1/commits/{commit_hash}
-```
-
-Returns full commit with facet snapshot.
+This page is kept for old links. Use [API Preview](../preview/api) for the
+current status.

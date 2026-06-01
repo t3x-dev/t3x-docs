@@ -1,97 +1,13 @@
 ---
-sidebar_position: 6
+slug: /api/diff-merge
 ---
 
+# Diff and Merge API Preview
 
-# Diff & Merge API
+:::caution Preview surface
+Detailed endpoint reference is temporarily retired while the API contract is
+still stabilizing.
+:::
 
-
-Compare and combine semantic state.
-
-## Semantic Diff
-
-```http
-POST /api/v1/diff
-```
-
-### Request
-
-```json
-{
-  "base_commit_hash": "sha256:abc...",
-  "target_commit_hash": "sha256:xyz..."
-}
-```
-
-### Response
-
-```json
-{
-  "facet_changes": [
-    {
-      "type": "added",
-      "facet": "budget",
-      "keywords": ["$1000", "cheap"]
-    },
-    {
-      "type": "removed",
-      "facet": "luxury",
-      "keywords": ["5-star", "premium"]
-    },
-    {
-      "type": "modified",
-      "facet": "accommodation",
-      "added_keywords": ["hostel"],
-      "removed_keywords": ["hotel"]
-    }
-  ],
-  "segment_changes": [
-    {
-      "type": "semantic_shift",
-      "similarity": 0.45,
-      "base_segment": "Stay at luxury hotels",
-      "target_segment": "Book budget hostels"
-    }
-  ]
-}
-```
-
-## Three-Way Merge
-
-```http
-POST /api/v1/merge
-```
-
-### Request
-
-```json
-{
-  "base_commit_hash": "sha256:base...",
-  "source_commit_hash": "sha256:feature...",
-  "target_commit_hash": "sha256:main..."
-}
-```
-
-### Response
-
-```json
-{
-  "auto_merged_facets": [
-    {
-      "facet": "transportation",
-      "merged_keywords": ["train", "bus", "subway"]
-    }
-  ],
-  "merge_conflicts": [
-    {
-      "facet": "accommodation",
-      "conflict_type": "semantic_divergence",
-      "source_keywords": ["hostel"],
-      "target_keywords": ["hotel"],
-      "similarity": 0.32
-    }
-  ]
-}
-```
-
-Conflicts occur when similarity falls below 0.70 threshold.
+This page is kept for old links. Use [API Preview](../preview/api) for the
+current status.

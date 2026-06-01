@@ -2,109 +2,84 @@
 sidebar_position: 2
 ---
 
+# Quickstart
 
-# Quick Start
+Start with the public alpha surface:
 
+- `@t3x-dev/local` for the packaged local experience and no-key demo.
+- `@t3x-dev/yops` for the deterministic YAML operation engine.
 
-Get T3x running in 5 minutes.
+:::caution v0.3.0 publish pending
+The v0.3.0 release is being prepared. The npm commands below are the intended
+public entrypoints and become available after the publish workflow completes.
+:::
 
-## Prerequisites
+Other packages in the monorepo are still restricted candidates until they are
+promoted through the release surface process.
 
-- Node.js 18+
-- Python 3.10+
-- An Anthropic API key (for Claude) or OpenAI API key
-
-## Installation
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/T3x/T3x.git
-cd T3x
-```
-
-### 2. Install the CLI
+## Try T3X locally
 
 ```bash
-cd contextflow-cli
-npm install
-npm link  # Makes 'T3x' available globally
+npx -p @t3x-dev/local t3x-local start
 ```
 
-### 3. Install the Core API
+This starts the local T3X experience. Open the printed local URL and use the
+fixture demo if you want to explore the workflow without configuring a model
+provider.
+
+<img
+  src="/img/screenshots/chat-light.png"
+  alt="T3X WebUI chat landing page"
+/>
+
+## Use YOps in your app
 
 ```bash
-cd ../contextflow-core
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Download spaCy models
-python -m spacy download en_core_web_sm
+npm install @t3x-dev/yops
 ```
 
-### 4. Start the Core API
+```ts
+import { applyYOps } from '@t3x-dev/yops';
+
+const input = {
+  project: {
+    status: 'draft',
+  },
+};
+
+const result = applyYOps(input, [
+  {
+    set: {
+      path: 'project/status',
+      value: 'committed',
+    },
+  },
+]);
+```
+
+YOps is deterministic: the same input document and same operation list produce
+the same output or the same validation error.
+
+## Develop from source
+
+Use this path when contributing to T3X itself.
 
 ```bash
-cd contextflow-core
-uvicorn core_api.app:app --reload --port 8000
+git clone https://github.com/t3x-dev/t3x-core.git
+cd t3x-core
+pnpm install
+pnpm dev:api
+pnpm dev:webui
 ```
 
-### 5. Configure the CLI
+The source WebUI runs at `http://localhost:3000`; the API runs at
+`http://localhost:8000`.
 
-```bash
-T3x
-T3x> /config
-config> /api sk-ant-your-api-key-here
-config> /back
-```
+## What to read next
 
-## Your First Conversation
-
-### Create a project
-
-```bash
-T3x> /new my-first-project
-✓ Created project: my-first-project
-```
-
-### Chat with the LLM
-
-```bash
-T3x> What are the key benefits of semantic version control?
-```
-
-The assistant will respond, and T3x automatically:
-- Records the turn with a unique hash
-- Extracts semantic layers (clauses, relations, facets)
-- Links it to the conversation chain
-
-### View your turns
-
-```bash
-T3x> /turns --n 5
-```
-
-### Create a commit
-
-```bash
-T3x> /commit --api --msg "Initial exploration of SVC benefits"
-✓ Created commit: abc123...
-```
-
-### Check status
-
-```bash
-T3x> /status
-Project: my-first-project
-Branch: main
-Turns: 4
-Commits: 1
-Drafts: 0
-```
-
-## Next Steps
-
-- Learn about [Semantic Layers](/concepts/semantic-layers)
-- Explore [CLI Commands](/cli/commands)
-- Set up the [WebUI](/webui)
+- [Local alpha](./local) for the packaged local workflow.
+- [YOps](./yops) for deterministic YAML mutations.
+- [Release status](./release) for the current alpha publish status.
+- [WebUI](./webui) for the visual workflow.
+- [Preview surfaces](./preview/cli) for CLI, MCP, API, and runner workflows that
+  are not part of the committed public alpha surface yet.

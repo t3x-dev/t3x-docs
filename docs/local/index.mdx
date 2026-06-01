@@ -1,0 +1,47 @@
+---
+sidebar_position: 3
+---
+
+# Local Alpha
+
+`@t3x-dev/local` is the first-door package for trying T3X locally.
+
+:::caution v0.3.0 publish pending
+`@t3x-dev/local@0.3.0` is part of the intended public alpha release surface, but
+the npm publish is still in progress. The command below becomes available after
+publish completes.
+:::
+
+```bash
+npx -p @t3x-dev/local t3x-local start
+```
+
+Use it when you want the packaged local product experience instead of a source
+checkout. The local path is designed for trying the WebUI and no-key demo first,
+then adding provider keys when you want live extraction or chat.
+
+## What it gives you
+
+- A local T3X workspace.
+- A WebUI-first workflow.
+- A fixture demo path that does not require a model provider.
+- A path to configure providers later for live extraction and generation.
+
+## Screenshot
+
+<img
+  src="/img/screenshots/chat-light.png"
+  alt="T3X local WebUI chat landing page"
+/>
+
+## Source development
+
+Contributors should still use the monorepo source workflow:
+
+```bash
+git clone https://github.com/t3x-dev/t3x-core.git
+cd t3x-core
+pnpm install
+pnpm dev:api
+pnpm dev:webui
+```
