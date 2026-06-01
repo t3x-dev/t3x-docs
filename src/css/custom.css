@@ -101,3 +101,56 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Product docs */
+.docScreenshot {
+  display: block;
+  width: 100%;
+  margin: 1.25rem 0 1.75rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme='dark'] .docScreenshot {
+  border-color: #242436;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.narrowScreenshot {
+  max-width: 420px;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.featureCard {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.featureCard h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.featureCard p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.92rem;
+}
+
+.featureCard pre {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  background: var(--ifm-code-background);
+}

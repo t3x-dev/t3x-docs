@@ -4,20 +4,76 @@ sidebar_position: 2
 
 # Workflows
 
-T3X starts from source material and moves toward durable semantic commits.
+T3X starts from source material and moves toward durable semantic commits. The
+important product promise is not "the model answered"; it is "the extracted
+meaning can be reviewed, changed, committed, and reused."
 
-## Chat first
+## 1. Capture source
 
-The `/chat` view is the first workspace. Paste material into the composer and
-let T3X keep the source visible while extracting reviewable meaning.
+The `/chat` view is the first workspace. Paste a prompt, transcript, release
+note, or product discussion into the composer. T3X keeps the source material in
+the conversation instead of hiding it behind the extracted result.
 
-## Review before committing
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-chat-intake.png"
+  alt="T3X Chat intake screen with starter cards and composer"
+/>
 
-Extraction is not the final state. Review the proposed tree and YOps operations
-before creating a commit. The deterministic engine applies the final operations,
-so the committed state is auditable.
+What this gives the user:
 
-## Reuse committed meaning
+- A single place to paste real working material.
+- Starter intents for prompt comparison, note extraction, and reusable output.
+- A visible `Source -> Meaning -> Commit` path before any version is created.
 
-After committing, the same knowledge can feed leaves, comparison views, and
-future project work.
+## 2. Review YOps before commit
+
+Extraction is not the final state. The workspace panel shows both the operation
+list and the materialized tree so the user can inspect what will be committed.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-chat-review.png"
+  alt="T3X Chat review screen with extracted YAML and YOps workspace"
+/>
+
+What to check:
+
+- The source text is still visible on the left.
+- The YOps editor lists the operations that will be applied.
+- The output panel shows the tree that those operations produce.
+- The commit button names the target branch.
+
+## 3. Commit reviewed meaning
+
+Committing turns the reviewed tree into a semantic version. A commit keeps:
+
+- source references,
+- tree content,
+- relations,
+- branch placement,
+- provenance,
+- and the YOps log IDs that produced the state.
+
+This is the point where T3X becomes more like version control than chat history.
+
+## 4. Reuse the commit
+
+After committing, the same knowledge can feed:
+
+- a Canvas inspection view,
+- a diff or merge workflow,
+- a Leaf output,
+- future chats that inherit committed context.
+
+The user does not need to re-extract the same source each time. The commit is
+the reusable unit.
+
+## Workflow checkpoints
+
+| Checkpoint | User question | WebUI surface |
+| --- | --- | --- |
+| Source captured | "What did this come from?" | Chat source and source frames |
+| Meaning reviewed | "What will be changed?" | YOps editor and output preview |
+| Commit created | "What is the stable version?" | Commit modal and history |
+| Output generated | "Did the artifact preserve the meaning?" | Leaf coverage and assertions |

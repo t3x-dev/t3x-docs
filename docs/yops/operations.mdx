@@ -1,0 +1,96 @@
+---
+sidebar_position: 2
+---
+
+# Operation Reference
+
+YOps has 18 operations grouped into four families. Each operation is a small
+YAML-compatible object with exactly one operation name.
+
+## DDL: structure
+
+Use DDL operations when the shape of the document changes.
+
+| Operation | Use it when | Example |
+| --- | --- | --- |
+| `define` | Create an empty mapping at a path. | `- define: { path: release/guards }` |
+| `drop` | Remove a key and its subtree. | `- drop: { path: release/obsolete_note }` |
+| `rename` | Keep a value but change the key name. | `- rename: { path: release/copy, to: support_copy }` |
+
+## DML: values
+
+Use DML operations when the tree shape is mostly right and values need to change.
+
+| Operation | Use it when | Example |
+| --- | --- | --- |
+| `set` | Set one value. Missing mapping ancestors are created. | `- set: { path: release/version, value: "1.0.1" }` |
+| `unset` | Remove a key from a mapping. | `- unset: { path: release/temp_owner }` |
+| `populate` | Set several keys on the same mapping. | `- populate: { path: release/guards, values: { owner: payments, max_error: 0.02 } }` |
+| `append` | Add one item to a sequence. | `- append: { path: release/owners, value: payments }` |
+
+## DTL: transforms
+
+Use DTL operations when the meaning is present but the shape needs to be
+reorganized.
+
+| Operation | Use it when | Example |
+| --- | --- | --- |
+| `move` | Relocate an existing subtree. | `- move: { from: release/risk, to: release/guards/risk }` |
+| `clone` | Copy a subtree without removing the original. | `- clone: { from: release/template, to: release/us_template }` |
+| `nest` | Group sibling keys under a wrapper. | `- nest: { path: release, keys: [max_error, latency], under: guards }` |
+| `split` | Distribute keys into child mappings. | `- split: { path: release, into: { guards: [max_error, latency] } }` |
+| `fold` | Collapse a wrapper that has one child. | `- fold: { path: release/wrapper }` |
+| `merge` | Combine sibling mappings into a new mapping. | `- merge: { path: release, keys: [us, eu], into: markets }` |
+| `sort` | Sort a sequence, optionally by a field. | `- sort: { path: release/owners }` |
+| `unique` | Deduplicate a sequence, optionally by a field. | `- unique: { path: release/owners }` |
+| `pick` | Keep only selected keys in a mapping. | `- pick: { path: release/guards, keys: [max_error, latency] }` |
+| `omit` | Remove selected keys from a mapping. | `- omit: { path: release, keys: [scratchpad] }` |
+
+## DCL: checks
+
+Use DCL when a workflow needs to prove a condition before moving on. DCL does
+not mutate the document.
+
+| Operation | Use it when | Example |
+| --- | --- | --- |
+| `assert` | Validate existence, type, or exact value. | `- assert: { path: release/version, equals: "1.0.1" }` |
+
+## Choosing an operation
+
+<div className="featureGrid">
+  <div className="featureCard">
+    <h3>Creating a field?</h3>
+    <p>Use <code>set</code> for a scalar or <code>define</code> for an empty mapping.</p>
+  </div>
+  <div className="featureCard">
+    <h3>Adding several fields?</h3>
+    <p>Use <code>populate</code> when multiple values belong under the same path.</p>
+  </div>
+  <div className="featureCard">
+    <h3>Cleaning a list?</h3>
+    <p>Use <code>sort</code>, then <code>unique</code> when order and duplicates matter.</p>
+  </div>
+  <div className="featureCard">
+    <h3>Blocking a bad state?</h3>
+    <p>Use <code>assert</code> before committing or before generating a leaf.</p>
+  </div>
+</div>
+
+## Error behavior
+
+YOps validates fields before handlers run and stops at the first error. Common
+error categories include:
+
+| Code | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | The referenced path does not exist. |
+| `ALREADY_EXISTS` | The target already exists. |
+| `NOT_A_MAPPING` | The operation expected a mapping. |
+| `NOT_A_SEQUENCE` | The operation expected a sequence. |
+| `INVALID_PATH` | The path syntax or segment type is invalid. |
+| `INVALID_OP` | The operation has a missing, unknown, or invalid field. |
+| `ASSERTION_FAILED` | An `assert` condition did not pass. |
+| `UNKNOWN_OP` | The operation name is not recognized. |
+
+The canonical machine-readable spec is `packages/yops/yops.yaml` in the
+`t3x-core` repository.

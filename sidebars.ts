@@ -6,7 +6,12 @@ const sidebars: SidebarsConfig = {
     'quickstart',
     'release/index',
     'local/index',
-    'yops/index',
+    {
+      type: 'category',
+      label: 'YOps',
+      collapsed: false,
+      items: ['yops/index', 'yops/operations'],
+    },
     {
       type: 'category',
       label: 'Concepts',

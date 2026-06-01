@@ -4,7 +4,8 @@ sidebar_position: 4
 
 # YOps
 
-`@t3x-dev/yops` is the deterministic YAML operation engine used by T3X.
+`@t3x-dev/yops` is the deterministic YAML operation engine used by T3X. It
+expresses a change to a YAML-shaped document as a list of small operations.
 
 :::caution v0.3.0 publish pending
 `@t3x-dev/yops@0.3.0` is part of the intended public alpha release surface, but
@@ -16,39 +17,178 @@ available after publish completes.
 npm install @t3x-dev/yops
 ```
 
-YOps expresses tree mutations as declarative YAML-compatible operations. The
-engine validates and applies them deterministically, so mutation behavior is
-auditable and repeatable.
+## The short story
 
-## Example
+Imagine a checkout team writes this source note:
+
+> Retry eligible failed card charges once after 30 minutes. Start with a 10% US
+> canary. Block EU rollout until privacy review is approved. Roll back if
+> payment error rate reaches 2% or checkout p95 latency reaches 800ms.
+
+T3X wants to turn that note into structured meaning. Instead of directly
+mutating the tree with an LLM response, the LLM proposes YOps. The deterministic
+engine validates and applies them.
+
+## Before
+
+```yaml
+checkout_retry_v2_launch:
+  owner: payments
+  domain: checkout recovery
+  version: "1.0.0"
+  rollout:
+    first_market: US
+    canary_percent: 5
+    retry_delay_minutes: 30
+  guards:
+    max_payment_error_rate: 0.02
+```
+
+## YOps
+
+```yaml
+- set:
+    path: checkout_retry_v2_launch/version
+    value: "1.0.1"
+- set:
+    path: checkout_retry_v2_launch/rollout/canary_percent
+    value: 10
+- set:
+    path: checkout_retry_v2_launch/rollout/eu_status
+    value: blocked until privacy review is approved
+- set:
+    path: checkout_retry_v2_launch/guards/max_checkout_latency_ms
+    value: 800
+- populate:
+    path: checkout_retry_v2_launch/support_copy
+    values:
+      must_say: retry may help recover checkout
+      must_not_say: successful recovery is guaranteed
+      removed_language: safe to launch
+```
+
+## After
+
+```yaml
+checkout_retry_v2_launch:
+  owner: payments
+  domain: checkout recovery
+  version: "1.0.1"
+  rollout:
+    first_market: US
+    canary_percent: 10
+    retry_delay_minutes: 30
+    eu_status: blocked until privacy review is approved
+  guards:
+    max_payment_error_rate: 0.02
+    max_checkout_latency_ms: 800
+  support_copy:
+    must_say: retry may help recover checkout
+    must_not_say: successful recovery is guaranteed
+    removed_language: safe to launch
+```
+
+That is the core idea: **YAML in, YOps in the middle, YAML out**.
+
+## Use it from TypeScript
 
 ```ts
 import { applyYOps } from '@t3x-dev/yops';
 
-const document = {
-  project: {
-    goals: ['draft docs'],
+const doc = {
+  checkout_retry_v2_launch: {
+    version: '1.0.0',
+    rollout: {
+      first_market: 'US',
+      canary_percent: 5,
+    },
   },
 };
 
-const next = applyYOps(document, [
+const result = applyYOps(doc, [
   {
-    append: {
-      path: 'project/goals',
-      value: 'publish local alpha',
+    set: {
+      path: 'checkout_retry_v2_launch/version',
+      value: '1.0.1',
+    },
+  },
+  {
+    set: {
+      path: 'checkout_retry_v2_launch/rollout/canary_percent',
+      value: 10,
     },
   },
 ]);
+
+if (!result.ok) {
+  throw new Error(result.error?.message ?? 'YOps failed');
+}
+
+const nextDoc = result.doc;
 ```
+
+YOps execution is:
+
+- **sequential**: every operation sees the result of the previous operation,
+- **fail-fast**: execution stops at the first validation or runtime error,
+- **immutable**: the input document is not mutated,
+- **deterministic**: same document plus same operations produces the same result
+  or the same error.
 
 ## Operation families
 
-| Family | Examples | Purpose |
-| --- | --- | --- |
-| DDL | `define`, `drop`, `rename` | Create, remove, and rename keys. |
-| DML | `set`, `unset`, `populate`, `append` | Set values and add sequence items. |
-| DTL | `move`, `clone`, `nest`, `split`, `merge` | Reshape the tree. |
-| DCL | `assert` | Validate conditions without mutating. |
+<div className="featureGrid">
+  <div className="featureCard">
+    <h3>DDL: structure</h3>
+    <p>Create, remove, and rename keys.</p>
+    <pre>{`- define: { path: release/guards }
+- rename: { path: release/copy, to: support_copy }`}</pre>
+  </div>
+  <div className="featureCard">
+    <h3>DML: values</h3>
+    <p>Set values and append to sequences.</p>
+    <pre>{`- set: { path: release/status, value: ready }
+- append: { path: release/owners, value: payments }`}</pre>
+  </div>
+  <div className="featureCard">
+    <h3>DTL: transforms</h3>
+    <p>Move, clone, group, split, sort, and deduplicate structure.</p>
+    <pre>{`- move: { from: release/risk, to: release/guards/risk }
+- unique: { path: release/owners }`}</pre>
+  </div>
+  <div className="featureCard">
+    <h3>DCL: checks</h3>
+    <p>Validate state without mutating the document.</p>
+    <pre>{`- assert:
+    path: release/status
+    equals: ready`}</pre>
+  </div>
+</div>
+
+See [Operation Reference](./operations) for the full catalog.
+
+## Path syntax
+
+YOps paths are slash-separated addresses into a YAML document:
+
+```text
+config/database/host          # mapping keys
+items/[0]                     # array index
+users/[name=alice]/role       # first array item where name equals alice
+config/"db/prod"/host         # quoted key when a segment contains /
+```
+
+## Why T3X uses YOps
+
+T3X lets model output propose meaning, but it does not let model output mutate
+committed state directly. The mutation path is:
+
+```text
+LLM proposal -> YOps validation -> deterministic apply -> reviewable commit
+```
+
+This makes the review surface concrete. A user can inspect what will change,
+and the same operation list can be replayed later.
 
 The full runtime spec lives in the `t3x-core` repository at
 `packages/yops/yops.yaml`.
