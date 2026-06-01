@@ -81,6 +81,14 @@ Source -> Meaning -> Commit -> Leaf
     </p>
   </div>
   <div className="featureCard">
+    <h3>Semantic diff and merge</h3>
+    <p>
+      Compare commits as YAML-shaped meaning, then resolve branch differences in
+      a merge workspace that separates conflicts, auto-kept meaning, and
+      branch-only additions.
+    </p>
+  </div>
+  <div className="featureCard">
     <h3>Leaf output</h3>
     <p>
       Generate an artifact from a commit, then check semantic coverage,
@@ -98,7 +106,10 @@ them to explain the product in this order:
 | --- | --- |
 | Chat intake | T3X starts from raw source material, not from a hand-written schema. |
 | Chat review and YOps | Extraction is reviewable before commit. |
-| Commit inspection | A semantic version can be audited by source, tree, JSON, and relations. |
+| Canvas version path | Branches, commits, and leaf affordances live on one semantic graph. |
+| Commit audit | A semantic version can be audited by tree, YAML, JSON, hash chain, and relations. |
+| Semantic diff | Base and target commits are compared as meaning, with modified and added nodes called out. |
+| Merge workspace | Conflicts, auto-kept meaning, and branch-only additions are resolved before a merge commit. |
 | Commit history | A branch has semantic commits, not only raw chat logs. |
 | Leaf output | Outputs are tied back to committed meaning and checked by constraints. |
 

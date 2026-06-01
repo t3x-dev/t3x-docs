@@ -9,26 +9,86 @@ useful after you have source material, extracted knowledge, and at least one
 commit. It is not the first step for most users; Chat produces reviewed commits,
 then Canvas helps users inspect and reuse them.
 
-## Commit inspection
+## Version path
 
-Open a commit to audit the version. The modal groups the commit into source,
-tree, relations, branch, and comparison surfaces.
+Canvas shows the committed semantic versions as a branch graph. Each node is a
+commit that can be inspected, compared, merged, or reused as a Leaf source.
 
 <img
   className="docScreenshot"
-  src="/img/screenshots/webui-canvas-selected.png"
-  alt="T3X commit inspection modal with source frames and version metadata"
+  src="/img/screenshots/webui-canvas.png"
+  alt="T3X Canvas workspace with semantic commits, branches, and a leaf attached to a commit"
 />
 
 What to look for:
 
-- **Version info**: branch, hash, author, and commit timestamp.
-- **Pinned sources**: the conversation or import material that produced the
-  commit.
-- **Source context**: compact frames that show the semantic content in the
-  commit.
-- **Tabs**: source excerpt, JSON, tree graph, and relations for deeper review.
-- **Compare action**: select another commit when you need a semantic diff.
+- **Branch chips** summarize the active branches, commit count, and leaf count.
+- **Commit cards** show the commit message, branch, short hash, and semantic
+  tree size.
+- **Version edges** show how one committed meaning state leads to another.
+- **Leaf affordances** make output creation visible from the version that owns
+  the knowledge.
+
+## Commit audit
+
+Open a commit when you need to read the exact committed meaning. The audit page
+keeps the tree index, YAML view, structural graph, JSON, relations, hash chain,
+and leaf links together.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-commit-audit.png"
+  alt="T3X Commit Audit screen with YAML tree, diff badges, hash chain, and leaf links"
+/>
+
+What to look for:
+
+- **Tree index** on the left shows modified, added, and unchanged semantic
+  nodes.
+- **YAML view** is the human-readable committed tree, not raw chat text.
+- **Audit rail** shows evidence, YOps operation count, hash chain, and snapshot
+  metadata.
+- **Top actions** let users return to Canvas, view a diff, share, or export.
+
+## Semantic diff
+
+Diff compares two semantic commits. It answers "what meaning changed?" rather
+than only showing token-level changes in a transcript.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-diff.png"
+  alt="T3X semantic diff page showing modified and added YAML nodes between two commits"
+/>
+
+What to look for:
+
+- **Base and target** hashes are fixed in the header and right rail.
+- **Tree index** groups modified, added, removed, and identical nodes.
+- **Split YAML** shows old meaning on the left and new meaning on the right.
+- **Inline highlights** make changed slot values visible without reading the
+  full tree.
+- **Start Merge** creates a merge workspace from the same pair of commits.
+
+## Merge workspace
+
+Merge is the review surface for two branches of meaning. It separates conflicts
+from auto-kept meaning and from content that exists only on one side.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-merge.png"
+  alt="T3X merge workspace with conflicts, auto-kept semantic nodes, source-only nodes, and merge summary"
+/>
+
+What to look for:
+
+- **Conflict cards** place source and target slots side by side.
+- **Resolution buttons** let users keep source, keep target, or keep both
+  voices.
+- **Auto-kept nodes** show meaning that both branches already share.
+- **Source-only and target-only nodes** make branch-specific meaning explicit.
+- **Merge info and voices** summarize what will enter the final merge commit.
 
 ## Commit history
 
