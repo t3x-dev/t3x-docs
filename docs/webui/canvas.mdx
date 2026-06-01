@@ -4,16 +4,74 @@ sidebar_position: 3
 
 # Canvas Workspace
 
-The canvas is the visual workspace for committed meaning. It is useful after
-you have source material, extracted knowledge, and at least one commit.
+The Canvas workspace is the inspection surface for committed meaning. It is
+useful after you have source material, extracted knowledge, and at least one
+commit. It is not the first step for most users; Chat produces reviewed commits,
+then Canvas helps users inspect and reuse them.
 
-## What to look for
+## Commit inspection
 
-- Project context in the sidebar.
-- Committed knowledge nodes.
-- Commit and branch navigation.
-- Leaf entry points for reusable outputs.
+Open a commit to audit the version. The modal groups the commit into source,
+tree, relations, branch, and comparison surfaces.
 
-The canvas is not the first step for most users. Start in [Chat](./), review the
-extracted meaning, then open the project workspace when you want to inspect the
-semantic structure.
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-canvas-selected.png"
+  alt="T3X commit inspection modal with source frames and version metadata"
+/>
+
+What to look for:
+
+- **Version info**: branch, hash, author, and commit timestamp.
+- **Pinned sources**: the conversation or import material that produced the
+  commit.
+- **Source context**: compact frames that show the semantic content in the
+  commit.
+- **Tabs**: source excerpt, JSON, tree graph, and relations for deeper review.
+- **Compare action**: select another commit when you need a semantic diff.
+
+## Commit history
+
+History shows the semantic versions on a branch. This is where a user confirms
+that a project has moved from initial extracted meaning to a later reviewed
+state.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-history.png"
+  alt="T3X commit history screen with two commits on main"
+/>
+
+The history view should answer three questions quickly:
+
+- Which branch is this version on?
+- Which commit is the current head?
+- What changed at a human-readable level?
+
+## Leaf output
+
+Leaves are reusable artifacts generated from a commit. They keep constraints and
+assertions next to the output so the user can see whether the artifact preserved
+the committed meaning.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-leaf.png"
+  alt="T3X Leaf output screen with source frames, generated checklist, constraints, and assertions"
+/>
+
+What to look for:
+
+- **Source frames** on the left show the semantic content available to the
+  output.
+- **Output** in the center is the generated artifact.
+- **Review stack** on the right shows semantic coverage, constraints, and
+  assertion results.
+- **Commit verified** and assertion badges make the output's state visible
+  without reading every line.
+
+## When to use Canvas
+
+Use Canvas after a commit exists and the user needs to inspect, compare, or
+reuse that version. Use Chat when the user is still adding source material or
+reviewing pending extraction.

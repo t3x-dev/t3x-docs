@@ -4,15 +4,25 @@ sidebar_position: 1
 
 # WebUI Overview
 
-The T3X WebUI is the visual workflow for turning raw material into reviewed,
-versioned meaning.
+The T3X WebUI is the product surface for reviewing meaning before it becomes a
+semantic commit. It is intentionally not a generic chatbot skin: Chat is where
+source material enters, Workspace is where YOps and extracted meaning are
+reviewed, Canvas is where committed versions are inspected, and Leaf is where
+committed knowledge becomes an output artifact.
 
 <img
-  src="/img/screenshots/chat-light.png"
-  alt="T3X WebUI in light mode"
+  className="docScreenshot"
+  src="/img/screenshots/webui-chat-review.png"
+  alt="T3X Chat review screen with source material, YOps operations, and materialized output"
 />
 
-## Start it
+## Start the WebUI
+
+:::caution v0.3.0 publish pending
+The packaged local command becomes available after the v0.3.0 npm publish
+completes. Use the source-development commands below when contributing from the
+repository.
+:::
 
 For the packaged local alpha:
 
@@ -29,21 +39,79 @@ pnpm dev:webui
 
 Open `http://localhost:3000`.
 
-## Main workflow
+## Product loop
 
-1. Paste a prompt, transcript, release note, or design discussion.
-2. Review the extracted meaning.
-3. Commit the reviewed knowledge.
-4. Reuse committed knowledge in leaves, diffs, and future work.
+```text
+Source -> Meaning -> Commit -> Leaf
+```
 
-## Themes and mobile
+1. **Source** keeps the original prompt, transcript, release note, or design
+   discussion visible.
+2. **Meaning** is reviewed through the proposed YOps operations and the
+   materialized tree before commit.
+3. **Commit** stores reviewed meaning as a durable semantic version.
+4. **Leaf** turns that committed meaning into an output with constraints and
+   validation.
+
+## Core surfaces
+
+<div className="featureGrid">
+  <div className="featureCard">
+    <h3>Chat intake</h3>
+    <p>
+      Start from raw material without deciding the final schema up front. This is
+      the low-friction entry point for prompts, notes, specs, and release
+      discussions.
+    </p>
+  </div>
+  <div className="featureCard">
+    <h3>YOps review</h3>
+    <p>
+      Inspect the exact operations that will mutate the tree. The right rail
+      separates proposed YOps from the materialized output so review stays
+      concrete.
+    </p>
+  </div>
+  <div className="featureCard">
+    <h3>Commit inspection</h3>
+    <p>
+      A commit opens with source frames, source excerpts, JSON, tree graph, and
+      relations. This makes each semantic version auditable after the chat is
+      gone.
+    </p>
+  </div>
+  <div className="featureCard">
+    <h3>Leaf output</h3>
+    <p>
+      Generate an artifact from a commit, then check semantic coverage,
+      constraints, assertions, and source-backed paragraphs in one place.
+    </p>
+  </div>
+</div>
+
+## Screenshot guide
+
+The WebUI pages use a small screenshot set from the bundled demo fixture. Use
+them to explain the product in this order:
+
+| Screenshot | Use it to explain |
+| --- | --- |
+| Chat intake | T3X starts from raw source material, not from a hand-written schema. |
+| Chat review and YOps | Extraction is reviewable before commit. |
+| Commit inspection | A semantic version can be audited by source, tree, JSON, and relations. |
+| Commit history | A branch has semantic commits, not only raw chat logs. |
+| Leaf output | Outputs are tied back to committed meaning and checked by constraints. |
+
+## Light, dark, and mobile
 
 <img
+  className="docScreenshot"
   src="/img/screenshots/chat-dark.png"
   alt="T3X WebUI in dark mode"
 />
 
 <img
+  className="docScreenshot narrowScreenshot"
   src="/img/screenshots/chat-mobile.png"
   alt="T3X WebUI mobile chat landing page"
 />
