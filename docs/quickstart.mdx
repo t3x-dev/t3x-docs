@@ -2,67 +2,22 @@
 sidebar_position: 2
 ---
 
-# Quickstart
+# Quick Start
 
-Start with the public alpha surface:
+Use this path when you have the source repository checked out and want to see
+the product locally.
 
-- `@t3x-dev/local` for the packaged local experience and no-key demo.
-- `@t3x-dev/yops` for the deterministic YAML operation engine.
+## Requirements
 
-:::caution v0.3.0 publish pending
-The v0.3.0 release is being prepared. The npm commands below are the intended
-public entrypoints and become available after the publish workflow completes.
-:::
+- Node.js 20+
+- pnpm 10+
+- Docker if you want the compose path
+- `ANTHROPIC_API_KEY` for live extraction/generation
 
-Other packages in the monorepo are still restricted candidates until they are
-promoted through the release surface process.
+The WebUI includes a fixture demo path, so you can inspect the interface without
+an LLM key during local development.
 
-## Try T3X locally
-
-```bash
-npx -p @t3x-dev/local t3x-local start
-```
-
-This starts the local T3X experience. Open the printed local URL and use the
-fixture demo if you want to explore the workflow without configuring a model
-provider.
-
-<img
-  src="/img/screenshots/chat-light.png"
-  alt="T3X WebUI chat landing page"
-/>
-
-## Use YOps in your app
-
-```bash
-npm install @t3x-dev/yops
-```
-
-```ts
-import { applyYOps } from '@t3x-dev/yops';
-
-const input = {
-  project: {
-    status: 'draft',
-  },
-};
-
-const result = applyYOps(input, [
-  {
-    set: {
-      path: 'project/status',
-      value: 'committed',
-    },
-  },
-]);
-```
-
-YOps is deterministic: the same input document and same operation list produce
-the same output or the same validation error.
-
-## Develop from source
-
-Use this path when contributing to T3X itself.
+## Run From Source
 
 ```bash
 git clone https://github.com/t3x-dev/t3x-core.git
@@ -72,16 +27,99 @@ pnpm dev:api
 pnpm dev:webui
 ```
 
-The source WebUI runs at `http://localhost:3000`; the API runs at
-`http://localhost:8000`.
+Open:
 
-## What to read next
+- WebUI: `http://localhost:3000/chat`
+- API: `http://localhost:8000`
+- API reference: `http://localhost:8000/api/docs`
+- OpenAPI JSON: `http://localhost:8000/api/openapi.json`
 
-- [Local alpha](./local) for the packaged local workflow.
-- [YOps](./yops) for deterministic YAML mutations.
-- [YOps operation reference](./yops/operations) for the 18 operation catalog.
-- [Release status](./release) for the current alpha publish status.
-- [WebUI](./webui) and [WebUI workflows](./webui/workflows) for the visual
-  workflow.
-- [Preview surfaces](./preview/cli) for CLI, MCP, API, and runner workflows that
-  are not part of the committed public alpha surface yet.
+In source development, the app defaults to a local developer mode. To exercise
+the self-hosted login flow, start both API and WebUI with:
+
+```bash
+AUTH_DISABLED=false pnpm dev:api
+AUTH_DISABLED=false pnpm dev:webui
+```
+
+## Run With Docker
+
+```bash
+docker compose up -d --build
+```
+
+Docker starts Postgres, API, and WebUI:
+
+| Service | URL |
+| --- | --- |
+| WebUI | `http://localhost:3000` |
+| API | `http://localhost:8000` |
+| Postgres | `localhost:5432` |
+
+Optional profiles:
+
+```bash
+docker compose --profile runner up -d
+docker compose --profile n8n up -d
+```
+
+## Try The Guided WebUI Demo
+
+Open:
+
+```text
+http://localhost:3000/chat?introDemo=1
+```
+
+The demo uses recorded fixture data. It walks through:
+
+1. Create a project.
+2. Paste or prefill source material.
+3. Open Workspace.
+4. Extract a staged YOps proposal.
+5. Apply the YOps into a materialized tree.
+6. Move to Canvas.
+7. Open a Leaf output artifact.
+
+## Shared Local Access
+
+CLI and MCP read the same machine-local config file:
+
+```text
+~/.t3x/config.json
+```
+
+Lookup order:
+
+```text
+T3X_API_URL / T3X_API_KEY
+-> ~/.t3x/config.json
+-> built-in defaults
+```
+
+Useful commands:
+
+```bash
+t3x auth use-key t3xk_xxx
+t3x auth status
+t3x auth check
+t3x config set api-url http://localhost:8000/api
+t3x config show
+```
+
+## Build And Check
+
+```bash
+pnpm build
+pnpm test
+pnpm check
+```
+
+If a test cannot resolve `@t3x-dev/*`, rebuild the lower package and its
+consumers first.
+
+## Next
+
+- [WebUI Overview](./webui) for screenshots and feature value.
+- [YOps](./yops) for the YAML mutation language.
+- [MCP Preview](./preview/mcp) for agent workflows.

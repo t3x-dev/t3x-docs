@@ -29,6 +29,18 @@
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
+.alpha {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.preview {
+  background-color: rgba(20, 184, 166, 0.15);
+  color: #14b8a6;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
 .dev {
   background-color: rgba(251, 146, 60, 0.15);
   color: #fb923c;
@@ -58,6 +70,16 @@
 [data-theme='light'] .beta {
   background-color: rgba(59, 130, 246, 0.1);
   color: #2563eb;
+}
+
+[data-theme='light'] .alpha {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: #7e22ce;
+}
+
+[data-theme='light'] .preview {
+  background-color: rgba(20, 184, 166, 0.1);
+  color: #0f766e;
 }
 
 [data-theme='light'] .dev {

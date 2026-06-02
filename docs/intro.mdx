@@ -3,57 +3,67 @@ sidebar_position: 1
 slug: /
 ---
 
-# Introduction
+import DocBadges from '@site/src/components/DocBadges';
 
-**T3X is Git for meaning.** It turns unstructured material such as prompts,
-meeting notes, transcripts, specs, and conversations into structured knowledge
-that can be reviewed, committed, diffed, and reused.
+# T3X
 
-<img
-  src="/img/screenshots/chat-light.png"
-  alt="T3X chat landing page"
-/>
+<DocBadges status="alpha" verified="verified" />
 
-## Public alpha surface
+T3X is a structured source of truth for AI work. It keeps the original source
+text, extracts reviewable meaning into YAML-shaped knowledge, mutates that
+knowledge only through YOps, then saves it as commits that can be inspected,
+diffed, merged, and reused.
 
-The v0.3.0 public alpha surface is intentionally small and currently publish
-pending:
-
-| Package | Version | Use it for |
-| --- | --- | --- |
-| `@t3x-dev/local` | `0.3.0` | Running the packaged local T3X experience and no-key demo. |
-| `@t3x-dev/yops` | `0.3.0` | Applying deterministic YAML operations inside your own app. |
-
-Other packages in the repository may be useful internally, but they are not part
-of the current public contract.
-
-## Preview surfaces
-
-CLI, MCP, API, and runner workflows are documented as previews. They are useful
-for evaluation and integration work, but they are not release-committed public
-surfaces yet.
-
-## How T3X works
-
-T3X follows a reviewable pipeline:
+The shortest way to understand it:
 
 ```text
-Source -> Meaning -> Commit -> Leaf
+source text -> YOps proposal -> reviewed tree -> commit -> leaf output
 ```
 
-- **Source** keeps the original material visible.
-- **Meaning** extracts structured facts, decisions, risks, and relations.
-- **Commit** records reviewed knowledge in an immutable semantic snapshot.
-- **Leaf** turns committed knowledge into reusable outputs.
+This is not a markdown dump and not a chatbot transcript archive. T3X is built
+for the point where AI output needs to become trusted, replayable project
+knowledge.
 
-The mutation layer is deterministic. LLMs can propose YOps YAML, but the engine
-validates and applies those operations without relying on an LLM.
+![T3X chat landing](/img/screenshots/chat-light.png)
 
-## Next steps
+## What T3X Gives You
 
-- [Quickstart](./quickstart)
-- [Release status](./release)
-- [Local alpha](./local)
-- [YOps](./yops)
-- [WebUI](./webui)
-- [Preview surfaces](./preview/cli)
+| Surface | What it does | Value |
+| --- | --- | --- |
+| WebUI | Chat, review YOps, inspect Canvas, create Leaf output | Turns loose AI work into an auditable workflow |
+| YOps | 18 declarative YAML operations | Makes every tree mutation reviewable and replayable |
+| Local alpha | Packaged local entrypoint | Runs the self-hostable product without assembling every package manually |
+| CLI | Preview command path for project -> draft -> YOps -> commit -> leaf | Lets scripts and terminal users drive the same state machine |
+| MCP | Preview agent interface with 8 umbrella tools | Lets AI agents capture, edit, commit, diff, merge, and generate through T3X |
+| API | Hono route library and standalone server | Provides the self-hosted backend and extension point for cloud |
+
+## The Core Rule
+
+All knowledge-tree mutation goes through YOps.
+
+An LLM may propose a YAML operation list. A human or agent may edit that list.
+But the deterministic engine is the only layer that applies it. Diff, merge,
+validation, hash chains, and commit construction do not depend on an LLM.
+
+## Current Alpha Surface
+
+The current restricted alpha package surface is:
+
+- `@t3x-dev/local`
+- `@t3x-dev/yops`
+
+Restricted package visibility is expected during this alpha. If an npm package
+or release asset is not visible from an unauthenticated account, that usually
+means you do not have access to the private/restricted alpha distribution.
+
+CLI, MCP, API, WebUI, storage, core, and runner are available in this repository
+for source development and preview, but they are not all promoted as public npm
+entrypoints yet.
+
+## Next Steps
+
+- [Quick Start](./quickstart) - run the local source stack.
+- [Local Alpha](./local) - understand the restricted package entrypoint.
+- [YOps](./yops) - read the mutation story and operation board.
+- [WebUI](./webui) - see the full product workflow and screenshot map.
+- [MCP Preview](./preview/mcp) - connect T3X to AI agents.

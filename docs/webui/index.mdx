@@ -4,125 +4,146 @@ sidebar_position: 1
 
 # WebUI Overview
 
-The T3X WebUI is the product surface for reviewing meaning before it becomes a
-semantic commit. It is intentionally not a generic chatbot skin: Chat is where
-source material enters, Workspace is where YOps and extracted meaning are
-reviewed, Canvas is where committed versions are inspected, and Leaf is where
-committed knowledge becomes an output artifact.
-
-<img
-  className="docScreenshot"
-  src="/img/screenshots/webui-chat-review.png"
-  alt="T3X Chat review screen with source material, YOps operations, and materialized output"
-/>
-
-## Start the WebUI
-
-:::caution v0.3.0 publish pending
-The packaged local command becomes available after the v0.3.0 npm publish
-completes. Use the source-development commands below when contributing from the
-repository.
-:::
-
-For the packaged local alpha:
-
-```bash
-npx -p @t3x-dev/local t3x-local start
-```
-
-For source development:
+The WebUI is the T3X workbench. It starts like a chat surface, but the value is
+what happens after the first reply: source becomes YOps, YOps become a reviewed
+tree, the tree becomes a commit, and commits become reusable output artifacts.
 
 ```bash
 pnpm dev:api
 pnpm dev:webui
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000/chat`.
 
-## Product loop
+![Chat landing](/img/screenshots/chat-light.png)
 
-```text
-Source -> Meaning -> Commit -> Leaf
+## Core Workflow
+
+| Step | User sees | Value |
+| --- | --- | --- |
+| Chat | A lightweight place to paste a prompt, transcript, release note, or design discussion | Keeps the original source text instead of losing it in a generated answer |
+| Workspace | A right-side YOps editor and output panel | Makes extraction reviewable before project state changes |
+| Staged YOps | Pending YAML operations plus a dry-run output tree | Lets users inspect what the LLM proposed before Apply |
+| Applied YOps | Materialized operation count and semantic tree | Confirms the deterministic engine produced stable structure |
+| Canvas | Version graph with commit cards, branches, leaves, and pending work | Shows where meaning lives across project history |
+| Leaf | Source-backed output artifact with constraints and assertions | Turns committed meaning into reusable work: checklist, article, prompt, eval, agent config |
+
+## 1. Chat: Start From Source
+
+![Chat demo composer](/img/screenshots/webui-03-demo-composer.png)
+
+Chat is intentionally low-friction. Users paste the material they want T3X to
+make sense of. The source may be a prompt version, support note, meeting note,
+release plan, design discussion, or agent trace.
+
+Value produced:
+
+- Keeps the original source available.
+- Creates the first conversation context.
+- Gives users a natural path into extraction instead of asking them to model a
+  tree by hand.
+
+## 2. Workspace: Review The Mutation
+
+![Workspace empty](/img/screenshots/webui-05-yops-workspace-empty.png)
+
+Workspace is the precision surface. The left side remains conversational; the
+right side shows the mutation machinery.
+
+Value produced:
+
+- Separates natural-language discussion from structured state.
+- Keeps the YOps proposal visible.
+- Gives the user a place to apply, discard, continue editing, or commit.
+
+## 3. Staged YOps: See The Proposal
+
+![YOps staged](/img/screenshots/webui-06-yops-staged.png)
+
+After Extract, T3X shows a pending proposal. This is where the user should ask:
+"Is this what we want the project to remember?"
+
+Value produced:
+
+- Prevents silent mutation by model output.
+- Shows the exact YAML operations.
+- Shows the dry-run tree before it becomes materialized state.
+
+## 4. Applied YOps: Materialize Meaning
+
+![YOps applied](/img/screenshots/webui-07-yops-applied.png)
+
+Apply runs the deterministic engine. The screenshot shows the important state:
+materialized operations, pending count, source-backed rows, and the output tree.
+
+Value produced:
+
+- Confirms the proposal is no longer merely a draft.
+- Produces a stable tree that can be committed.
+- Preserves the operation log for audit.
+
+## 5. Canvas: Inspect Semantic Versions
+
+![Canvas selected](/img/screenshots/webui-09-canvas-selected.png)
+
+Canvas is not a decorative graph. It is the project version path: commits,
+branches, leaves, and pending work.
+
+Value produced:
+
+- Makes semantic history visible.
+- Shows which output leaves came from which commit.
+- Helps users inspect source, diff, leaves, and next actions from a selected
+  version.
+
+## 6. Leaf: Turn Commits Into Output
+
+![Leaf detail](/img/screenshots/webui-12-leaf-detail.png)
+
+Leaf is where committed meaning becomes a reusable artifact. A leaf has its own
+constraints, generated output, source coverage, quality checks, and export
+actions.
+
+Value produced:
+
+- Keeps output tied to a commit hash.
+- Shows which semantic points were included.
+- Tracks assertions and constraints separately from the commit itself.
+- Lets users retune output without mutating the underlying commit.
+
+## Screenshot Checklist
+
+These are the screenshots captured for the current WebUI docs pass.
+
+| File | Use |
+| --- | --- |
+| `chat-light.png` | Default Chat landing |
+| `chat-dark.png` | Dark-mode Chat landing |
+| `chat-mobile.png` | Mobile Chat landing |
+| `webui-01-intro-project.png` | Guided demo project creation hint |
+| `webui-02-new-project-dialog.png` | New project dialog |
+| `webui-03-demo-composer.png` | Prefilled demo source in composer |
+| `webui-04-chat-replay.png` | Chat reply before extraction |
+| `webui-05-yops-workspace-empty.png` | Workspace before extraction |
+| `webui-06-yops-staged.png` | Pending YOps proposal |
+| `webui-07-yops-applied.png` | Materialized YOps tree |
+| `webui-08-canvas.png` | Canvas guided entry |
+| `webui-09-canvas-selected.png` | Selected commit card |
+| `webui-10-canvas-controls.png` | Canvas zoom/control state |
+| `webui-11-leaf-index.png` | Leaf index |
+| `webui-12-leaf-detail.png` | Leaf output display |
+| `webui-13-leaf-generate.png` | Leaf generate/edit mode |
+
+The workflow screenshots are captured from the local guided demo path
+(`/chat?introDemo=1`) after starting the API and WebUI:
+
+```bash
+pnpm dev:api
+pnpm dev:webui
 ```
 
-1. **Source** keeps the original prompt, transcript, release note, or design
-   discussion visible.
-2. **Meaning** is reviewed through the proposed YOps operations and the
-   materialized tree before commit.
-3. **Commit** stores reviewed meaning as a durable semantic version.
-4. **Leaf** turns that committed meaning into an output with constraints and
-   validation.
+The stable landing-only set is regenerated with:
 
-## Core surfaces
-
-<div className="featureGrid">
-  <div className="featureCard">
-    <h3>Chat intake</h3>
-    <p>
-      Start from raw material without deciding the final schema up front. This is
-      the low-friction entry point for prompts, notes, specs, and release
-      discussions.
-    </p>
-  </div>
-  <div className="featureCard">
-    <h3>YOps review</h3>
-    <p>
-      Inspect the exact operations that will mutate the tree. The right rail
-      separates proposed YOps from the materialized output so review stays
-      concrete.
-    </p>
-  </div>
-  <div className="featureCard">
-    <h3>Commit inspection</h3>
-    <p>
-      A commit opens with source frames, source excerpts, JSON, tree graph, and
-      relations. This makes each semantic version auditable after the chat is
-      gone.
-    </p>
-  </div>
-  <div className="featureCard">
-    <h3>Semantic diff and merge</h3>
-    <p>
-      Compare commits as YAML-shaped meaning, then resolve branch differences in
-      a merge workspace that separates conflicts, auto-kept meaning, and
-      branch-only additions.
-    </p>
-  </div>
-  <div className="featureCard">
-    <h3>Leaf output</h3>
-    <p>
-      Generate an artifact from a commit, then check semantic coverage,
-      constraints, assertions, and source-backed paragraphs in one place.
-    </p>
-  </div>
-</div>
-
-## Screenshot guide
-
-The WebUI pages use a small screenshot set from the bundled demo fixture. Use
-them to explain the product in this order:
-
-| Screenshot | Use it to explain |
-| --- | --- |
-| Chat intake | T3X starts from raw source material, not from a hand-written schema. |
-| Chat review and YOps | Extraction is reviewable before commit. |
-| Canvas version path | Branches, commits, and leaf affordances live on one semantic graph. |
-| Commit audit | A semantic version can be audited by tree, YAML, JSON, hash chain, and relations. |
-| Semantic diff | Base and target commits are compared as meaning, with modified and added nodes called out. |
-| Merge workspace | Conflicts, auto-kept meaning, and branch-only additions are resolved before a merge commit. |
-| Commit history | A branch has semantic commits, not only raw chat logs. |
-| Leaf output | Outputs are tied back to committed meaning and checked by constraints. |
-
-## Light, dark, and mobile
-
-<img
-  className="docScreenshot"
-  src="/img/screenshots/chat-dark.png"
-  alt="T3X WebUI in dark mode"
-/>
-
-<img
-  className="docScreenshot narrowScreenshot"
-  src="/img/screenshots/chat-mobile.png"
-  alt="T3X WebUI mobile chat landing page"
-/>
+```bash
+pnpm screenshots:demo
+```
