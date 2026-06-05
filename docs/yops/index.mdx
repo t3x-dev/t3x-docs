@@ -13,9 +13,66 @@ The LLM can write a draft. The user can edit it. The engine applies it.
 raw source -> proposed YOps -> deterministic apply -> materialized tree
 ```
 
+## Use The Package
+
+The current npm package version is `@t3x-dev/yops@0.3.1`, and it is part of the
+current alpha package surface. Package availability follows
+[Release Status](../release).
+
+YOps is distributed as an npm package. A missing matching GitHub runtime release
+entry does not mean the YOps package is unpublished; GitHub runtime assets are
+only expected for `@t3x-dev/local`.
+
+Install it when you want the deterministic YAML operation engine inside your own
+app:
+
+```bash
+npm install @t3x-dev/yops
+```
+
+YOps does not require a model provider key. It is deterministic code: YAML-like
+document in, operation list in, updated document out.
+
+```typescript
+import { applyYOps } from '@t3x-dev/yops';
+
+const doc = {
+  config: {
+    host: 'old.example.com',
+  },
+};
+
+const result = applyYOps(doc, [
+  { set: { path: 'config/host', value: 'app.example.com' } },
+  { set: { path: 'config/port', value: 5432 } },
+  { define: { path: 'config/features' } },
+  {
+    populate: {
+      path: 'config/features',
+      values: { auth: true, logging: true },
+    },
+  },
+]);
+
+if (result.ok) {
+  console.log(result.doc);
+}
+```
+
+The package also exports helpers such as `validateOps`, `parseYOpsYaml`,
+`formatYOps`, and `classifyYOp` for validation, YAML parsing/formatting, and
+operation-family classification.
+
 ## A Small Story
 
-Imagine a support lead pastes this note into T3X:
+Imagine a support lead is preparing a Friday pilot for a customer support
+assistant. The team recently found that refund replies were too casual: the
+assistant sometimes skipped the order id, forgot to cite policy, or sounded like
+it had already approved a refund before manual review.
+
+The lead does not want this rule to live only in a chat transcript or a loose
+prompt. She wants it to become reviewable project knowledge, so she pastes this
+source note into T3X:
 
 ```text
 Refunds above $100 require manual review. Replies must ask for order id,
@@ -23,8 +80,9 @@ cite policy, and name the refund amount before deciding. Tone should be calm,
 precise, and policy-grounded. Do not invent policy details or guarantee outcomes.
 ```
 
-T3X does not immediately turn that note into a hidden database update. It first
-shows the proposed mutation as YAML:
+T3X does not immediately turn that note into a hidden database update. It keeps
+the original note visible and proposes a YOps mutation. The proposal turns one
+paragraph into named, reviewable facts:
 
 ```yaml
 yops:
@@ -35,6 +93,9 @@ yops:
       values:
         objective: tighten refund escalation behavior for a customer support assistant
         audience: customer support team
+        owner: support operations
+        source: support lead pilot note
+        status: draft
         rollout: pilot on Friday
   - define:
       path: support_escalation_review/refund_policy
@@ -42,6 +103,7 @@ yops:
       path: support_escalation_review/refund_policy
       values:
         threshold: Refunds above $100 require manual review
+        decision_state: review before deciding
         required_evidence:
           - order id
           - policy citation
@@ -60,8 +122,21 @@ yops:
           - guaranteeing outcomes
 ```
 
-That is the whole point: a user can read the proposal before it becomes project
-state.
+Before applying it, the user can inspect the YAML like a small change request:
+
+- Is the refund threshold captured exactly?
+- Are required evidence items separated from tone guidance?
+- Is the rollout scope still a Friday pilot, not a permanent policy?
+- Did the extraction invent anything that was not in the source note?
+
+If something is wrong, the user can edit the YOps, ask for a revised proposal,
+or discard it. Nothing becomes project state until Apply runs the deterministic
+engine.
+
+After Apply, the tree has explicit nodes for the pilot, refund policy, and tone
+rules. Commit records the source note, the reviewed YOps, and the resulting
+semantic tree together. A later policy change is no longer prompt archaeology;
+it becomes a diff against a named, auditable part of the project.
 
 ## What Happens In The WebUI
 
@@ -72,8 +147,6 @@ state.
 3. Extract produces a staged YOps proposal. It is marked pending/unapplied.
 4. Apply runs the deterministic engine. The output tree becomes materialized.
 5. Commit saves the reviewed semantic state.
-
-![YOps applied state](/img/screenshots/webui-07-yops-applied.png)
 
 ## Why YAML
 
@@ -106,8 +179,9 @@ See [Operation Board](./operations) for one example per operation.
 
 ## Runtime Source Of Truth
 
-The canonical operation contract is `packages/yops/yops.yaml` in the core repo.
-It defines:
+The canonical operation contract is
+[`packages/yops/yops.yaml`](https://github.com/t3x-dev/t3x-core/blob/dev/packages/yops/yops.yaml)
+in the core repo. It defines:
 
 - operation fields
 - validation rules
@@ -116,3 +190,33 @@ It defines:
 
 The TypeScript package is the reference implementation, but the spec is written
 so another language can implement a compatible engine.
+
+## Alpha Contract
+
+YOps is part of the current alpha surface. During this phase, the
+contract-bearing surface includes:
+
+- operation names
+- operation families (`ddl`, `dml`, `dtl`, `dcl`)
+- required and optional fields
+- field types and enum values
+- path syntax and path matching behavior
+- engine runtime error codes
+- validator diagnostic codes and severity
+- conformance cases in `yops.yaml`
+- recipes and examples that users or agents may copy
+
+Additive or non-breaking changes preserve existing valid input and behavior. For
+example, T3X may add an optional field, add an enum value, add a new operation,
+add a new runtime error for a new failure mode, add a validator diagnostic code,
+or add conformance cases that document existing behavior.
+
+Breaking changes alter the contract users or tools can rely on. Examples include
+removing or renaming an operation, moving an operation to another observable
+family, removing or renaming a field, changing path parsing, changing operation
+ordering or fail-fast behavior, removing an error or diagnostic code, escalating
+a diagnostic from advisory to blocking, or changing examples in a way that
+invalidates previously documented behavior.
+
+See [Stability Policy](../release/stability-policy) for the full release rule,
+including the review and conformance gate for future YOps tightening work.

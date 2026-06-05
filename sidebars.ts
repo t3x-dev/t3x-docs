@@ -4,7 +4,19 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     'intro',
     'quickstart',
-    'release/index',
+    {
+      type: 'category',
+      label: 'Alpha',
+      collapsed: false,
+      items: [
+        'release/index',
+        'release/stability',
+        'release/limitations',
+        'release/deployment',
+        'release/security',
+        'release/stability-policy',
+      ],
+    },
     'local/index',
     {
       type: 'category',
@@ -30,8 +42,13 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'webui/index',
-        'webui/workflows',
+        {
+          type: 'doc',
+          id: 'webui/workflows',
+          label: 'Chat Workspace',
+        },
         'webui/canvas',
+        'webui/leaf',
       ],
     },
     {

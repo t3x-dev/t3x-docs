@@ -12,10 +12,12 @@ the product locally.
 - Node.js 20+
 - pnpm 10+
 - Docker if you want the compose path
-- `ANTHROPIC_API_KEY` for live extraction/generation
+- One provider key for live extraction, generation, or chat:
+  `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or `GOOGLE_AI_STUDIO_KEY`
 
-The WebUI includes a fixture demo path, so you can inspect the interface without
-an LLM key during local development.
+The core engine and YOps do not require a model provider key. The WebUI also
+includes a fixture demo path, so you can inspect the interface without a key
+during local development.
 
 ## Run From Source
 
@@ -27,12 +29,12 @@ pnpm dev:api
 pnpm dev:webui
 ```
 
-Open:
+Open the URLs printed by the dev servers:
 
-- WebUI: `http://localhost:3000/chat`
-- API: `http://localhost:8000`
-- API reference: `http://localhost:8000/api/docs`
-- OpenAPI JSON: `http://localhost:8000/api/openapi.json`
+- WebUI: go to `/chat` on the WebUI URL.
+- API: use the API URL printed by `pnpm dev:api`.
+- API reference: append `/api/docs` to the API URL.
+- OpenAPI JSON: append `/api/openapi.json` to the API URL.
 
 In source development, the app defaults to a local developer mode. To exercise
 the self-hosted login flow, start both API and WebUI with:
@@ -50,11 +52,11 @@ docker compose up -d --build
 
 Docker starts Postgres, API, and WebUI:
 
-| Service | URL |
+| Service | Default host port |
 | --- | --- |
-| WebUI | `http://localhost:3000` |
-| API | `http://localhost:8000` |
-| Postgres | `localhost:5432` |
+| WebUI | `3000` |
+| API | `8000` |
+| Postgres | `5432` |
 
 Optional profiles:
 
@@ -63,12 +65,19 @@ docker compose --profile runner up -d
 docker compose --profile n8n up -d
 ```
 
+:::caution Self-hosting safety
+Docker and self-hosted runs keep auth on by default. Do not expose a deployment
+with `AUTH_DISABLED=true` to an untrusted network. Before sharing a host, review
+[Deployment](./release/deployment) for auth, backups, TLS, logs, and provider
+key handling.
+:::
+
 ## Try The Guided WebUI Demo
 
-Open:
+Open the WebUI URL exposed by your dev server or Docker host, then go to:
 
 ```text
-http://localhost:3000/chat?introDemo=1
+/chat?introDemo=1
 ```
 
 The demo uses recorded fixture data. It walks through:
@@ -103,7 +112,7 @@ Useful commands:
 t3x auth use-key t3xk_xxx
 t3x auth status
 t3x auth check
-t3x config set api-url http://localhost:8000/api
+t3x config set api-url <api-base-url>/api
 t3x config show
 ```
 

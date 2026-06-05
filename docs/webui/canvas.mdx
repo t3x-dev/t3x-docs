@@ -9,7 +9,7 @@ useful after you have source material, extracted knowledge, and at least one
 commit. It is not the first step for most users; Chat produces reviewed commits,
 then Canvas helps users inspect and reuse them.
 
-## Version path
+## 1. Version path
 
 Canvas shows the committed semantic versions as a branch graph. Each node is a
 commit that can be inspected, compared, merged, or reused as a Leaf source.
@@ -29,7 +29,7 @@ What to look for:
 - **Leaf affordances** make output creation visible from the version that owns
   the knowledge.
 
-## Commit audit
+## 2. Commit audit
 
 Open a commit when you need to read the exact committed meaning. The audit page
 keeps the tree index, YAML view, structural graph, JSON, relations, hash chain,
@@ -50,7 +50,7 @@ What to look for:
   metadata.
 - **Top actions** let users return to Canvas, view a diff, share, or export.
 
-## Semantic diff
+## 3. Semantic diff
 
 Diff compares two semantic commits. It answers "what meaning changed?" rather
 than only showing token-level changes in a transcript.
@@ -70,7 +70,7 @@ What to look for:
   full tree.
 - **Start Merge** creates a merge workspace from the same pair of commits.
 
-## Merge workspace
+## 4. Merge workspace
 
 Merge is the review surface for two branches of meaning. It separates conflicts
 from auto-kept meaning and from content that exists only on one side.
@@ -90,25 +90,7 @@ What to look for:
 - **Source-only and target-only nodes** make branch-specific meaning explicit.
 - **Merge info and voices** summarize what will enter the final merge commit.
 
-## Commit history
-
-History shows the semantic versions on a branch. This is where a user confirms
-that a project has moved from initial extracted meaning to a later reviewed
-state.
-
-<img
-  className="docScreenshot"
-  src="/img/screenshots/webui-history.png"
-  alt="T3X commit history screen with two commits on main"
-/>
-
-The history view should answer three questions quickly:
-
-- Which branch is this version on?
-- Which commit is the current head?
-- What changed at a human-readable level?
-
-## Leaf output
+## 5. Leaf output
 
 Leaves are reusable artifacts generated from a commit. They keep constraints and
 assertions next to the output so the user can see whether the artifact preserved

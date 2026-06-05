@@ -118,7 +118,12 @@ a:hover {
 }
 
 .narrowScreenshot {
-  max-width: 420px;
+  max-width: 720px;
+}
+
+.inlineScreenshot {
+  width: min(420px, 100%);
+  height: auto;
 }
 
 .featureGrid {

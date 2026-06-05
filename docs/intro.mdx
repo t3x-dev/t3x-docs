@@ -14,6 +14,10 @@ text, extracts reviewable meaning into YAML-shaped knowledge, mutates that
 knowledge only through YOps, then saves it as commits that can be inspected,
 diffed, merged, and reused.
 
+These docs are written for users of the future open-source distribution. Current
+alpha availability and package maturity are called out in
+[Release Status](./release).
+
 The shortest way to understand it:
 
 ```text
@@ -47,23 +51,29 @@ validation, hash chains, and commit construction do not depend on an LLM.
 
 ## Current Alpha Surface
 
-The current restricted alpha package surface is:
+The current alpha package surface is:
 
 - `@t3x-dev/local`
 - `@t3x-dev/yops`
 
-Restricted package visibility is expected during this alpha. If an npm package
-or release asset is not visible from an unauthenticated account, that usually
-means you do not have access to the private/restricted alpha distribution.
+Availability follows the current release status. During restricted alpha,
+package access may be limited; after public availability, the same package names
+and commands apply through the public distribution channels.
 
 CLI, MCP, API, WebUI, storage, core, and runner are available in this repository
 for source development and preview, but they are not all promoted as public npm
 entrypoints yet.
 
+The open-source `t3x-core` repository is the self-hostable core product, not the
+complete managed cloud SaaS layer. OAuth provider setup, billing, teams,
+managed tenant operations, and hosted cloud operations live outside the
+open-source repository. See [Alpha Limitations](./release/limitations) for the
+boundary.
+
 ## Next Steps
 
 - [Quick Start](./quickstart) - run the local source stack.
-- [Local Alpha](./local) - understand the restricted package entrypoint.
+- [Local Alpha](./local) - understand the packaged local entrypoint.
 - [YOps](./yops) - read the mutation story and operation board.
 - [WebUI](./webui) - see the full product workflow and screenshot map.
 - [MCP Preview](./preview/mcp) - connect T3X to AI agents.
