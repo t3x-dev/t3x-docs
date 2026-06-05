@@ -1,0 +1,81 @@
+---
+sidebar_position: 3
+slug: /release/limitations
+---
+
+# Alpha Limitations
+
+T3X is an alpha. These docs are written for users of the future open-source
+distribution, while this page records current limits that still matter for
+source development, local evaluation, and self-hosted testing.
+
+## Release Surface
+
+The current release-facing npm package surface is limited to:
+
+- `@t3x-dev/local`
+- `@t3x-dev/yops`
+
+Package availability follows the current release status. Other packages in
+`t3x-core` are preview or internal until promoted through the release process
+declared in
+[`RELEASE.md`](https://github.com/t3x-dev/t3x-core/blob/dev/RELEASE.md) and
+[`release/surface.yaml`](https://github.com/t3x-dev/t3x-core/blob/dev/release/surface.yaml).
+
+## Product Limitations
+
+- The open-source repository contains the self-hostable core product, not the
+  SaaS layer.
+- Cloud-only features such as OAuth provider setup, billing, teams, and managed
+  tenant operations live outside the open-source repository.
+- Docker Compose is the supported self-host evaluation path. High availability,
+  backup automation, hosted upgrades, managed monitoring, and multi-region
+  deployment are not claimed by this alpha.
+- Local alpha package behavior follows the runtime assets described by Release
+  Status.
+- CLI, MCP, API, runner, and storage package contracts may change before they
+  are promoted to the release surface.
+
+## Cloud And SaaS Boundary
+
+The open-source `t3x-core` repository is the self-hostable core product. It
+includes the local package, deterministic YOps engine, source-development
+WebUI/API, and preview integration surfaces.
+
+It does not include the complete managed cloud SaaS layer. OAuth provider
+configuration, billing, teams, tenant management, managed hosting, hosted
+upgrades, and cloud operations belong to the managed cloud layer. Public docs
+that mention cloud extension points describe boundaries, not a promise that the
+open-source repository contains a ready-to-run SaaS business stack.
+
+## Auth And Data Limitations
+
+- Docker and self-hosted runs keep username/password auth on by default.
+- Source development defaults to no auth for local convenience unless
+  `AUTH_DISABLED=false` is set before starting both dev processes.
+- Do not expose a source-dev or `AUTH_DISABLED=true` deployment to an untrusted
+  network.
+- Users are responsible for provider API keys, database credentials, backups,
+  and local machine access controls.
+
+## Documentation Limitations
+
+- `RELEASE.md` and `release/surface.yaml` are authoritative for package release
+  status.
+- [Stability Policy](./stability-policy) is authoritative for stability and
+  contract-change expectations.
+- Preview docs may describe internal or candidate surfaces before those surfaces
+  are promoted.
+- Screenshot assets used by public docs live outside the core repository unless
+  a committed asset is explicitly reviewed.
+
+## YOps Limitations
+
+YOps is the deterministic mutation language for T3X and is part of the current
+alpha surface. Its runtime source of truth is
+[`packages/yops/yops.yaml`](https://github.com/t3x-dev/t3x-core/blob/dev/packages/yops/yops.yaml).
+
+Spec changes are allowed during alpha, but contract-bearing changes
+must follow the stability policy. Future YOps tightening work should proceed in
+small PRs, one spec contraction at a time, with executable conformance
+coverage.

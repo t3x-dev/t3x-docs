@@ -2,13 +2,32 @@
 sidebar_position: 2
 ---
 
-# Workflows
+# Chat Workspace
 
 T3X starts from source material and moves toward durable semantic commits. The
 important product promise is not "the model answered"; it is "the extracted
 meaning can be reviewed, changed, committed, and reused."
 
-## 1. Capture source
+## 1. Choose the working branch
+
+Start by choosing the branch or project context where the next piece of meaning
+should land. T3X treats branch choice as part of the review surface: the user
+should know whether they are adding meaning to `main`, testing an alternate
+interpretation, or preparing a comparison path.
+
+<img
+  className="docScreenshot inlineScreenshot"
+  src="/img/screenshots/webui-branch-selector.png"
+  alt="T3X WebUI branch selector with a new branch name being entered"
+/>
+
+What this gives the user:
+
+- A clear target before extraction starts.
+- A way to keep experiments away from stable project meaning.
+- A future comparison path for semantic diff and merge.
+
+## 2. Capture source
 
 The `/chat` view is the first workspace. Paste a prompt, transcript, release
 note, or product discussion into the composer. T3X keeps the source material in
@@ -26,10 +45,61 @@ What this gives the user:
 - Starter intents for prompt comparison, note extraction, and reusable output.
 - A visible `Source -> Meaning -> Commit` path before any version is created.
 
-## 2. Review YOps before commit
+## 3. Inspect source
+
+Before extraction becomes project state, the user should be able to inspect the
+source that produced it. Source review answers the basic provenance question:
+"What did this meaning come from?"
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-source-panel.png"
+  alt="T3X WebUI source panel showing inherited baseline context and preview"
+/>
+
+What to check:
+
+- The visible source matches the material the user intended to preserve.
+- The source frame has enough context to explain the extracted meaning later.
+- Links, pasted notes, transcripts, and generated replies are still traceable.
+
+The YAML/output area can also show which field or node corresponds to the
+original source text. Selecting a source-backed node highlights the relevant
+span on the left, so users can verify that a generated field was grounded in the
+right part of the source instead of appearing as an unsupported model claim.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-source-field-linking.png"
+  alt="T3X WebUI showing a YAML node linked to a highlighted span in the original source text"
+/>
+
+## 4. Edit source when the input is wrong
+
+If the original text is incomplete, misleading, or too noisy, fix the source
+before committing meaning derived from it. Source edits are different from YOps
+edits: source edits change the evidence; YOps edits change how that evidence is
+structured into the semantic tree.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-source-edit.png"
+  alt="T3X WebUI source edit controls for inserting, replacing, or deleting source text before regenerating YOps"
+/>
+
+Use source edits when:
+
+- A pasted note has a typo or missing sentence.
+- A transcript contains irrelevant boilerplate that should not drive extraction.
+- The user wants the committed meaning to point back to corrected evidence.
+
+## 5. Review generated YOps and output tree
 
 Extraction is not the final state. The workspace panel shows both the operation
 list and the materialized tree so the user can inspect what will be committed.
+When previous committed meaning exists, `Show Previous` lets the user compare
+the current materialized output against the earlier version before saving a new
+commit.
 
 <img
   className="docScreenshot"
@@ -37,16 +107,70 @@ list and the materialized tree so the user can inspect what will be committed.
   alt="T3X Chat review screen with extracted YAML and YOps workspace"
 />
 
+When a baseline or previous commit exists, compare before saving. The previous
+view shows the earlier tree beside the current output so the user can see which
+fields were added, preserved, changed, or removed.
+
+<img
+  className="docScreenshot narrowScreenshot"
+  src="/img/screenshots/webui-show-previous-compare.png"
+  alt="T3X WebUI Show Previous comparison with previous tree on the left and current output on the right"
+/>
+
 What to check:
 
 - The source text is still visible on the left.
 - The YOps editor lists the operations that will be applied.
 - The output panel shows the tree that those operations produce.
+- `Show Previous` reveals the prior output or baseline for comparison.
 - The commit button names the target branch.
 
-## 3. Commit reviewed meaning
+## 6. Edit YOps or YAML directly
+
+When the structure is almost right but not exact, edit the YOps/YAML before
+commit. This keeps the correction explicit and replayable instead of hiding it
+inside a follow-up chat reply.
+
+YOps edits change the operation log itself. Use them when the path, operation
+shape, or extracted value needs to be corrected before the tree is committed.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-yops-edit.png"
+  alt="T3X WebUI YOps editor with manual operation edits reflected in the output preview"
+/>
+
+Use YOps edits when:
+
+- A path name should be clearer.
+- A field should be moved, renamed, split, or nested.
+- A value should be corrected without changing the underlying source.
+- The user wants to add an assertion or remove an invented detail before commit.
+
+YAML/output edits change the materialized tree view directly. Use them when the
+reviewed structure is correct but one field or scalar needs a small correction
+inside the output tree.
+
+<img
+  className="docScreenshot"
+  src="/img/screenshots/webui-yaml-output-edit.png"
+  alt="T3X WebUI output YAML editor with a scalar field being edited before commit"
+/>
+
+The output preview should update from the edited operations so the user can
+review the resulting tree before saving it. If `Show Previous` is available,
+use it again after edits to confirm whether the change is additive, corrective,
+or a removal.
+
+## 7. Commit reviewed meaning
 
 Committing turns the reviewed tree into a semantic version. A commit keeps:
+
+<img
+  className="docScreenshot narrowScreenshot"
+  src="/img/screenshots/webui-commit-dialog.png"
+  alt="T3X WebUI commit dialog asking the user to name a reviewed semantic commit"
+/>
 
 - source references,
 - tree content,
@@ -57,7 +181,7 @@ Committing turns the reviewed tree into a semantic version. A commit keeps:
 
 This is the point where T3X becomes more like version control than chat history.
 
-## 4. Reuse the commit
+## 8. Reuse the commit
 
 After committing, the same knowledge can feed:
 
@@ -73,8 +197,16 @@ the reusable unit.
 
 | Checkpoint | User question | WebUI surface |
 | --- | --- | --- |
+| Branch selected | "Where will this meaning land?" | Branch selector and project context |
 | Source captured | "What did this come from?" | Chat source and source frames |
+| Source inspected | "Is the evidence correct?" | Source view and source frame detail |
+| Field grounded | "Which source span supports this field?" | YAML/output selection linked to highlighted source text |
+| Source edited | "Does the evidence need correction?" | Source editor or editable source frame |
 | Meaning reviewed | "What will be changed?" | YOps editor and output preview |
+| Previous compared | "What changed from the prior version?" | `Show Previous` diff/reference view |
+| YOps edited | "Is the operation log exact?" | YOps editor and materialized preview |
+| YAML edited | "Is the output tree exact?" | Output YAML editor and materialized preview |
+| Commit named | "What should this reviewed version be called?" | Commit confirmation dialog |
 | Commit created | "What is the stable version?" | Canvas graph, commit audit, and history |
 | Versions compared | "What meaning changed between these commits?" | Semantic diff and merge workspace |
 | Output generated | "Did the artifact preserve the meaning?" | Leaf coverage and assertions |

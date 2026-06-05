@@ -13,9 +13,9 @@ pnpm dev:api
 pnpm dev:webui
 ```
 
-Open `http://localhost:3000/chat`.
+Open the WebUI URL printed by `pnpm dev:webui`, then go to `/chat`.
 
-![Chat landing](/img/screenshots/chat-light.png)
+![Chat landing with guided walkthrough](/img/screenshots/webui-chat-empty-walkthrough.png)
 
 ## Core Workflow
 
@@ -23,8 +23,8 @@ Open `http://localhost:3000/chat`.
 | --- | --- | --- |
 | Chat | A lightweight place to paste a prompt, transcript, release note, or design discussion | Keeps the original source text instead of losing it in a generated answer |
 | Workspace | A right-side YOps editor and output panel | Makes extraction reviewable before project state changes |
-| Staged YOps | Pending YAML operations plus a dry-run output tree | Lets users inspect what the LLM proposed before Apply |
-| Applied YOps | Materialized operation count and semantic tree | Confirms the deterministic engine produced stable structure |
+| YOps Review | Pending YAML operations, dry-run output, and applied tree | Lets users inspect and materialize what the LLM proposed before state is saved |
+| Commit | Commit action and review checkpoint | Turns reviewed meaning into a stable semantic version |
 | Canvas | Version graph with commit cards, branches, leaves, and pending work | Shows where meaning lives across project history |
 | Leaf | Source-backed output artifact with constraints and assertions | Turns committed meaning into reusable work: checklist, article, prompt, eval, agent config |
 
@@ -45,7 +45,7 @@ Value produced:
 
 ## 2. Workspace: Review The Mutation
 
-![Workspace empty](/img/screenshots/webui-05-yops-workspace-empty.png)
+![Workspace console walkthrough](/img/screenshots/webui-workspace-console-walkthrough.png)
 
 Workspace is the precision surface. The left side remains conversational; the
 right side shows the mutation machinery.
@@ -56,35 +56,43 @@ Value produced:
 - Keeps the YOps proposal visible.
 - Gives the user a place to apply, discard, continue editing, or commit.
 
-## 3. Staged YOps: See The Proposal
+## 3. YOps Review: See And Apply The Proposal
 
 ![YOps staged](/img/screenshots/webui-06-yops-staged.png)
 
 After Extract, T3X shows a pending proposal. This is where the user should ask:
-"Is this what we want the project to remember?"
+"Is this what we want the project to remember?" The user can inspect the YAML,
+compare it with the dry-run output, edit or discard the proposal, and only then
+apply it.
+
+Apply runs the deterministic engine. Operations are applied, pending count
+drops, source-backed rows are preserved, and the output tree becomes ready for
+commit.
 
 Value produced:
 
 - Prevents silent mutation by model output.
-- Shows the exact YAML operations.
-- Shows the dry-run tree before it becomes materialized state.
+- Shows the exact YAML operations and dry-run tree.
+- Materializes reviewed meaning without relying on another model call.
 
-## 4. Applied YOps: Materialize Meaning
+## 4. Commit: Save Reviewed Meaning
 
-![YOps applied](/img/screenshots/webui-07-yops-applied.png)
+![Commit walkthrough](/img/screenshots/webui-commit-walkthrough.png)
 
-Apply runs the deterministic engine. The screenshot shows the important state:
-materialized operations, pending count, source-backed rows, and the output tree.
+Commit is the review checkpoint. It takes the applied output tree and saves it
+as a stable semantic version. Canvas should come after this step: before commit,
+the user is still reviewing proposed meaning; after commit, the project has a
+versioned state that leaves and future diffs can reference.
 
 Value produced:
 
-- Confirms the proposal is no longer merely a draft.
-- Produces a stable tree that can be committed.
-- Preserves the operation log for audit.
+- Turns reviewed meaning into a durable commit.
+- Preserves the source note, YOps operation log, and materialized tree together.
+- Gives Canvas and Leaf a stable version to inspect, compare, and reuse.
 
 ## 5. Canvas: Inspect Semantic Versions
 
-![Canvas selected](/img/screenshots/webui-09-canvas-selected.png)
+![Canvas commit card walkthrough](/img/screenshots/webui-canvas-commit-card-walkthrough.png)
 
 Canvas is not a decorative graph. It is the project version path: commits,
 branches, leaves, and pending work.
@@ -117,6 +125,7 @@ These are the screenshots captured for the current WebUI docs pass.
 
 | File | Use |
 | --- | --- |
+| `webui-chat-empty-walkthrough.png` | Default Chat landing with guided walkthrough |
 | `chat-light.png` | Default Chat landing |
 | `chat-dark.png` | Dark-mode Chat landing |
 | `chat-mobile.png` | Mobile Chat landing |
@@ -124,15 +133,20 @@ These are the screenshots captured for the current WebUI docs pass.
 | `webui-02-new-project-dialog.png` | New project dialog |
 | `webui-03-demo-composer.png` | Prefilled demo source in composer |
 | `webui-04-chat-replay.png` | Chat reply before extraction |
+| `webui-workspace-console-walkthrough.png` | Workspace console walkthrough |
 | `webui-05-yops-workspace-empty.png` | Workspace before extraction |
 | `webui-06-yops-staged.png` | Pending YOps proposal |
-| `webui-07-yops-applied.png` | Materialized YOps tree |
+| `webui-commit-walkthrough.png` | Commit review checkpoint |
 | `webui-08-canvas.png` | Canvas guided entry |
+| `webui-canvas-commit-card-walkthrough.png` | Canvas commit card walkthrough |
 | `webui-09-canvas-selected.png` | Selected commit card |
 | `webui-10-canvas-controls.png` | Canvas zoom/control state |
 | `webui-11-leaf-index.png` | Leaf index |
 | `webui-12-leaf-detail.png` | Leaf output display |
 | `webui-13-leaf-generate.png` | Leaf generate/edit mode |
+| `webui-leaf-workspace-index.png` | Leaf Workspace artifact index |
+| `webui-leaf-workspace-display.png` | Leaf Workspace display and review stack |
+| `webui-leaf-workspace-generate.png` | Leaf Workspace generation mode |
 
 The workflow screenshots are captured from the local guided demo path
 (`/chat?introDemo=1`) after starting the API and WebUI:

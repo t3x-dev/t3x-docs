@@ -83,7 +83,7 @@ const config: Config = {
         },
         {
           to: '/release',
-          label: 'v0.3.0 pending',
+          label: 'v0.3.1 alpha',
           position: 'right',
         },
         {
@@ -99,9 +99,9 @@ const config: Config = {
       ],
     },
     announcementBar: {
-      id: 'alpha-0-3-0-pending',
+      id: 'alpha-0-3-1-docs',
       content:
-        'T3X alpha v0.3.0 is being prepared. npm commands become available after publish completes.',
+        'T3X alpha docs track the v0.3.1 package surface. See Release Status for availability and governance.',
       backgroundColor: '#fef3c7',
       textColor: '#111827',
       isCloseable: false,

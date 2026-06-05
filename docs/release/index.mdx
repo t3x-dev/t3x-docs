@@ -5,21 +5,38 @@ slug: /release
 
 # Release Status
 
-## Restricted alpha surface
+These docs are written for users of the future open-source distribution. This
+page records the current alpha release state so package install commands,
+runtime assets, and stability promises do not get mixed together.
+
+## Alpha Package Surface
+
+The release package surface is defined by
+[`release/surface.yaml`](https://github.com/t3x-dev/t3x-core/blob/dev/release/surface.yaml),
+with [`RELEASE.md`](https://github.com/t3x-dev/t3x-core/blob/dev/RELEASE.md)
+as the human-readable release summary. For this alpha, only `@t3x-dev/local`
+and `@t3x-dev/yops` are release-facing restricted alpha packages.
 
 | Package | Version | Status | Purpose |
 | --- | --- | --- | --- |
 | `@t3x-dev/local` | `0.3.1` | Restricted alpha | Packaged local T3X experience and no-key demo entrypoint. |
 | `@t3x-dev/yops` | `0.3.1` | Restricted alpha | Deterministic YAML operation engine. |
 
+Versions in this table are npm package versions. GitHub product releases
+(`t3x-v*`) and runtime release assets are separate records; runtime GitHub
+releases are expected for `@t3x-dev/local`, while `@t3x-dev/yops` is consumed
+from npm.
+
 Restricted package visibility is expected during this alpha. If an npm package
-or runtime asset is not visible from an unauthenticated account, the account
-probably does not have access to the restricted alpha distribution.
+or runtime asset is not visible from an unauthenticated account, treat that as
+an availability status of the current alpha distribution, not a different
+package name or release contract.
 
 ## Preview surfaces
 
-CLI, MCP, API, and runner workflows are documented as previews. They are useful
-for evaluation and integration work, but they are not part of the current
+Core, API, storage, CLI, MCP, and runner workflows are documented as internal or
+preview surfaces. They are useful for source development, self-hosted
+evaluation, and integration work, but they are not part of the current
 restricted alpha package surface.
 
 ## Current commands
