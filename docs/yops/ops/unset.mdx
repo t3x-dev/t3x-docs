@@ -1,0 +1,62 @@
+---
+sidebar_position: 5
+sidebar_label: unset
+---
+
+# unset
+
+`unset` is a DML operation that removes one key from a mapping.
+
+Use it for idempotent cleanup when a missing key should not be an error.
+
+## YOp
+
+```yaml
+- unset:
+    path: config/database/password
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the mapping key to remove. |
+
+## Behavior
+
+- Removes the final key when it exists.
+- Does nothing when the final key is absent.
+- Requires the parent to be a mapping.
+- Rejects final sequence index or match selectors because it removes mapping keys.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `NOT_A_MAPPING` | The parent is not a mapping. |
+
+## Example
+
+```yaml
+yops:
+  - unset:
+      path: config/database/password
+```
+
+Input:
+
+```yaml
+config:
+  database:
+    host: localhost
+    password: secret
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+

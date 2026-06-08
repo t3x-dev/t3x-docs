@@ -1,0 +1,72 @@
+---
+sidebar_position: 18
+sidebar_label: assert
+---
+
+# assert
+
+`assert` is a DCL operation that checks document state without mutating it.
+
+Use it as a guardrail before later operations. If the assertion fails, execution
+stops.
+
+## YOp
+
+```yaml
+- assert:
+    path: config/database/host
+    exists: true
+    type: scalar
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to check. |
+| `equals` | any | no | Expected value for a deep equality check. |
+| `exists` | boolean | no | `true` requires the path to exist. `false` requires it to be absent. |
+| `type` | string | no | Expected value type. Allowed values are `mapping`, `sequence`, and `scalar`. |
+
+At least one of `equals`, `exists`, or `type` must be provided.
+
+## Behavior
+
+- Reads the document without changing it.
+- All provided conditions must pass.
+- Fails fast with `ASSERTION_FAILED` if a condition is not met.
+- Can check values, existence, types, sequence indexes, and match paths.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `ASSERTION_FAILED` | A declared condition was not met. |
+| `INVALID_OP` | No assertion condition was provided. |
+
+## Example
+
+```yaml
+yops:
+  - assert:
+      path: config/database/host
+      exists: true
+      type: scalar
+```
+
+Input:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+

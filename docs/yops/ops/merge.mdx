@@ -1,0 +1,73 @@
+---
+sidebar_position: 13
+sidebar_label: merge
+---
+
+# merge
+
+`merge` is a DTL operation that combines sibling mappings into one mapping.
+
+Use it when separate sibling objects should become one object.
+
+## YOp
+
+```yaml
+- merge:
+    path: config
+    keys: [db_primary, db_replica]
+    into: database
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the parent mapping. |
+| `keys` | sequence of strings | yes | Sibling keys to combine. |
+| `into` | string | yes | Key name for the merged result. |
+
+## Behavior
+
+- Requires `path` to exist and be a mapping.
+- Requires every listed key to exist as a sibling.
+- Combines the listed values into the `into` mapping.
+- Removes the original sibling keys.
+- If merged mappings contain the same key, later listed keys win.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Parent path does not exist. |
+| `NOT_A_MAPPING` | Parent is not a mapping. |
+| `NOT_SIBLINGS` | One or more listed keys are not siblings in the parent. |
+
+## Example
+
+```yaml
+yops:
+  - merge:
+      path: config
+      keys: [primary, replica]
+      into: database
+```
+
+Input:
+
+```yaml
+config:
+  primary:
+    host: primary.example.com
+  replica:
+    port: 5432
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: primary.example.com
+    port: 5432
+```
+

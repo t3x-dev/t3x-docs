@@ -1,0 +1,64 @@
+---
+sidebar_position: 12
+sidebar_label: fold
+---
+
+# fold
+
+`fold` is a DTL operation that collapses a single-child mapping by promoting its
+only child.
+
+Use it to remove unnecessary wrapper nodes.
+
+## YOp
+
+```yaml
+- fold:
+    path: config/wrapper
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the wrapper mapping. It must have exactly one child key. |
+
+## Behavior
+
+- Requires the path to exist.
+- Requires the target to be a mapping with exactly one key.
+- Removes the wrapper key.
+- Promotes the single child to the wrapper's former position.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_FOLDABLE` | The mapping has zero keys or more than one key. |
+
+## Example
+
+```yaml
+yops:
+  - fold:
+      path: config/wrapper
+```
+
+Input:
+
+```yaml
+config:
+  wrapper:
+    actual:
+      data: 1
+```
+
+Output:
+
+```yaml
+config:
+  actual:
+    data: 1
+```
+

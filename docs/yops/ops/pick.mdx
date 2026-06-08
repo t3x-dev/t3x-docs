@@ -1,0 +1,67 @@
+---
+sidebar_position: 16
+sidebar_label: pick
+---
+
+# pick
+
+`pick` is a DTL operation that keeps only specific keys in a mapping and removes
+the rest.
+
+Use it when a mapping should be reduced to an allowlist.
+
+## YOp
+
+```yaml
+- pick:
+    path: user
+    keys: [name, email]
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the mapping to filter. |
+| `keys` | sequence of strings | yes | Keys to keep. Missing keys are ignored. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a mapping.
+- Removes keys that are not listed.
+- Ignores listed keys that do not exist.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_MAPPING` | Target is not a mapping. |
+
+## Example
+
+```yaml
+yops:
+  - pick:
+      path: config
+      keys: [host, port]
+```
+
+Input:
+
+```yaml
+config:
+  host: localhost
+  port: 5432
+  secret: abc
+```
+
+Output:
+
+```yaml
+config:
+  host: localhost
+  port: 5432
+```
+

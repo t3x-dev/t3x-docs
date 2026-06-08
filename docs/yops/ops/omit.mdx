@@ -1,0 +1,66 @@
+---
+sidebar_position: 17
+sidebar_label: omit
+---
+
+# omit
+
+`omit` is a DTL operation that removes specific keys from a mapping and keeps
+the rest.
+
+Use it when a mapping should be filtered by a denylist.
+
+## YOp
+
+```yaml
+- omit:
+    path: user
+    keys: [password, internal_id]
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the mapping to filter. |
+| `keys` | sequence of strings | yes | Keys to remove. Missing keys are ignored. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a mapping.
+- Removes listed keys.
+- Ignores listed keys that do not exist.
+- Idempotent for missing keys.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_MAPPING` | Target is not a mapping. |
+
+## Example
+
+```yaml
+yops:
+  - omit:
+      path: config
+      keys: [secret, missing]
+```
+
+Input:
+
+```yaml
+config:
+  host: localhost
+  secret: abc
+```
+
+Output:
+
+```yaml
+config:
+  host: localhost
+```
+

@@ -4,46 +4,47 @@ sidebar_position: 2
 
 # Operation Board
 
-This board gives one concrete example for each YOps operation. The examples use
-the same support-escalation tree from the overview.
+This board is the entry point for the 18 YOps operations. Use it to choose the
+operation family first, then open the operation page for parameters, behavior,
+errors, and examples.
 
 ## DDL: Structure
 
-| Op | Use it when | Example |
+| Op | Use it when | Reference |
 | --- | --- | --- |
-| `define` | Create a new mapping path | `define: { path: support_escalation_review/refund_policy }` |
-| `drop` | Remove a node or subtree | `drop: { path: support_escalation_review/legacy_copy }` |
-| `rename` | Rename a key without rewriting the subtree | `rename: { path: support_escalation_review/refund_policy, to: escalation_policy }` |
+| [`define`](./ops/define) | Create a new empty mapping path | Strict container creation |
+| [`drop`](./ops/drop) | Remove a node or subtree that must exist | Strict deletion |
+| [`rename`](./ops/rename) | Rename a key without moving its value | Same-parent key rename |
 
 ## DML: Values
 
-| Op | Use it when | Example |
+| Op | Use it when | Reference |
 | --- | --- | --- |
-| `set` | Set one scalar, list, or mapping value | `set: { path: support_escalation_review/rollout, value: pilot on Friday }` |
-| `unset` | Remove one key but keep the parent | `unset: { path: support_escalation_review/refund_policy/draft_note }` |
-| `populate` | Fill several fields on the same mapping | `populate: { path: support_escalation_review, values: { audience: customer support team, objective: tighten refund escalation } }` |
-| `append` | Add one item to a sequence | `append: { path: support_escalation_review/refund_policy/required_evidence, value: agent name }` |
+| [`set`](./ops/set) | Set one scalar, list, or mapping value | Upsert with lazy mapping creation |
+| [`unset`](./ops/unset) | Remove one key but keep the parent | Idempotent key cleanup |
+| [`populate`](./ops/populate) | Fill several fields on the same existing mapping | Multi-field mapping write |
+| [`append`](./ops/append) | Add one item to a sequence | Sequence append |
 
 ## DTL: Reshape
 
-| Op | Use it when | Example |
+| Op | Use it when | Reference |
 | --- | --- | --- |
-| `move` | Relocate a subtree | `move: { from: support_escalation_review/tone, to: support_escalation_review/tone_and_safety/tone }` |
-| `clone` | Copy an existing subtree | `clone: { from: support_escalation_review/refund_policy, to: support_escalation_review/qa_policy }` |
-| `nest` | Group sibling keys under a new wrapper | `nest: { path: support_escalation_review, keys: [tone, avoid], under: tone_and_safety }` |
-| `split` | Split one mapping into named children | `split: { path: support_escalation_review, into: { refund_policy: [threshold, required_evidence], tone_and_safety: [tone, avoid] } }` |
-| `fold` | Collapse a single-child wrapper | `fold: { path: support_escalation_review/wrapper }` |
-| `merge` | Combine sibling mappings | `merge: { path: support_escalation_review, keys: [refund_policy, qa_policy], into: review_policy }` |
-| `sort` | Sort a sequence | `sort: { path: support_escalation_review/refund_policy/required_evidence }` |
-| `unique` | Deduplicate a sequence | `unique: { path: support_escalation_review/refund_policy/required_evidence }` |
-| `pick` | Keep only specific keys | `pick: { path: support_escalation_review/refund_policy, keys: [threshold, required_evidence] }` |
-| `omit` | Remove specific keys | `omit: { path: support_escalation_review/refund_policy, keys: [temporary_note] }` |
+| [`move`](./ops/move) | Relocate a subtree | Source removed, destination created |
+| [`clone`](./ops/clone) | Copy an existing subtree | Deep copy |
+| [`nest`](./ops/nest) | Group sibling keys under a new wrapper | Flat to nested |
+| [`split`](./ops/split) | Split one mapping into named children | One mapping to multiple groups |
+| [`fold`](./ops/fold) | Collapse a single-child wrapper | Nested to flatter |
+| [`merge`](./ops/merge) | Combine sibling mappings | Multiple mappings to one |
+| [`sort`](./ops/sort) | Sort a sequence | Deterministic sequence ordering |
+| [`unique`](./ops/unique) | Deduplicate a sequence | Keep first occurrence |
+| [`pick`](./ops/pick) | Keep only specific keys | Mapping allowlist |
+| [`omit`](./ops/omit) | Remove specific keys | Mapping denylist |
 
 ## DCL: Check
 
-| Op | Use it when | Example |
+| Op | Use it when | Reference |
 | --- | --- | --- |
-| `assert` | Verify state without changing it | `assert: { path: support_escalation_review/refund_policy/threshold, equals: Refunds above $100 require manual review }` |
+| [`assert`](./ops/assert) | Verify state without changing it | Read-only guardrail |
 
 ## How To Read The Board
 
