@@ -5,18 +5,21 @@ slug: /release/deployment
 
 # Deployment Guide
 
-This guide describes the supported alpha deployment paths for the open-source
+This guide describes the alpha and preview deployment paths for the open-source
 T3X repository. It does not describe the managed SaaS deployment.
 
-## Supported Alpha Paths
+## Alpha And Preview Paths
 
 | Path | Command | Intended use |
 | --- | --- | --- |
-| Local alpha package | `npx -p @t3x-dev/local t3x-local start` | Packaged local evaluation |
-| Docker Compose | `docker compose up -d --build` | Self-hosted WebUI + API + Postgres evaluation |
+| Local alpha package | `npx -p @t3x-dev/local t3x-local start` | Primary packaged local evaluation |
+| Docker Compose preview | `docker compose up -d --build` | Preview self-hosted WebUI + API + Postgres evaluation |
 | Source development | `pnpm dev:api` and `pnpm dev:webui` | Contributor and implementation work |
 
-## Docker Self-Hosting
+## Docker Self-Hosting Preview
+
+Docker Compose is a preview evaluation path. It is not the primary promised
+entry point for users.
 
 Docker Compose starts:
 

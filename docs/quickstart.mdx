@@ -4,22 +4,33 @@ sidebar_position: 2
 
 # Quick Start
 
-Use this path when you have the source repository checked out and want to see
-the product locally.
+Use `@t3x-dev/local` as the primary local entry point for trying T3X. Source,
+Docker, CLI, and MCP paths are available for development or preview workflows.
 
 ## Requirements
 
 - Node.js 20+
-- pnpm 10+
-- Docker if you want the compose path
 - One provider key for live extraction, generation, or chat:
   `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or `GOOGLE_AI_STUDIO_KEY`
+- pnpm 10+ if you want the source-development path
+- Docker if you want the Docker preview path
 
 The core engine and YOps do not require a model provider key. The WebUI also
 includes a fixture demo path, so you can inspect the interface without a key
 during local development.
 
+## Run The Local Package
+
+```bash
+npx -p @t3x-dev/local t3x-local start
+```
+
+This is the primary user-facing local path. Use it when you want the packaged
+local product experience instead of assembling the monorepo source stack.
+
 ## Run From Source
+
+Use source development when you are changing the repository itself.
 
 ```bash
 git clone https://github.com/t3x-dev/t3x-core.git
@@ -44,7 +55,11 @@ AUTH_DISABLED=false pnpm dev:api
 AUTH_DISABLED=false pnpm dev:webui
 ```
 
-## Run With Docker
+## Run With Docker Preview
+
+Docker Compose is a preview evaluation path. It is useful for trying a
+self-hosted WebUI + API + Postgres stack, but it is not the primary promised
+entry point for users.
 
 ```bash
 docker compose up -d --build
@@ -90,9 +105,10 @@ The demo uses recorded fixture data. It walks through:
 6. Move to Canvas.
 7. Open a Leaf output artifact.
 
-## Shared Local Access
+## CLI And MCP Preview
 
-CLI and MCP read the same machine-local config file:
+CLI and MCP are preview surfaces. They read the same machine-local config file
+when you are testing command-line or agent workflows:
 
 ```text
 ~/.t3x/config.json
@@ -130,5 +146,7 @@ consumers first.
 ## Next
 
 - [WebUI Overview](./webui) for screenshots and feature value.
+- [Local Alpha](./local) for the packaged local entrypoint.
 - [YOps](./yops) for the YAML mutation language.
+- [CLI Preview](./preview/cli) for command-line workflow status.
 - [MCP Preview](./preview/mcp) for agent workflows.
