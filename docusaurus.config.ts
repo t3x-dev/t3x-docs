@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'T3X Documentation',
-  tagline: 'Git for meaning',
+  tagline: 'Version control for structured state',
   favicon: 'img/favicon.svg',
 
   future: {
@@ -161,7 +161,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `T3X — Git for meaning`,
+      copyright: `T3X — Version control for structured state`,
     },
     prism: {
       theme: prismThemes.github,

@@ -4,15 +4,15 @@ sidebar_position: 2
 
 # Chat Workspace
 
-T3X starts from source material and moves toward durable semantic commits. The
-important product promise is not "the model answered"; it is "the extracted
-meaning can be reviewed, changed, committed, and reused."
+T3X starts from source material and moves toward durable structured-state
+commits. The important product promise is not "the model answered"; it is "the
+state change can be reviewed, changed, committed, and reused."
 
 ## 1. Choose the working branch
 
-Start by choosing the branch or project context where the next piece of meaning
+Start by choosing the branch or project context where the next state change
 should land. T3X treats branch choice as part of the review surface: the user
-should know whether they are adding meaning to `main`, testing an alternate
+should know whether they are adding state to `main`, testing an alternate
 interpretation, or preparing a comparison path.
 
 <img
@@ -24,7 +24,7 @@ interpretation, or preparing a comparison path.
 What this gives the user:
 
 - A clear target before extraction starts.
-- A way to keep experiments away from stable project meaning.
+- A way to keep experiments away from stable project state.
 - A future comparison path for semantic diff and merge.
 
 ## 2. Capture source
@@ -43,13 +43,13 @@ What this gives the user:
 
 - A single place to paste real working material.
 - Starter intents for prompt comparison, note extraction, and reusable output.
-- A visible `Source -> Meaning -> Commit` path before any version is created.
+- A visible `Source -> YOps -> Commit` path before any version is created.
 
 ## 3. Inspect source
 
 Before extraction becomes project state, the user should be able to inspect the
 source that produced it. Source review answers the basic provenance question:
-"What did this meaning come from?"
+"What did this state come from?"
 
 <img
   className="docScreenshot"
@@ -60,7 +60,7 @@ source that produced it. Source review answers the basic provenance question:
 What to check:
 
 - The visible source matches the material the user intended to preserve.
-- The source frame has enough context to explain the extracted meaning later.
+- The source frame has enough context to explain the extracted state later.
 - Links, pasted notes, transcripts, and generated replies are still traceable.
 
 The YAML/output area can also show which field or node corresponds to the
@@ -77,7 +77,7 @@ right part of the source instead of appearing as an unsupported model claim.
 ## 4. Edit source when the input is wrong
 
 If the original text is incomplete, misleading, or too noisy, fix the source
-before committing meaning derived from it. Source edits are different from YOps
+before committing state derived from it. Source edits are different from YOps
 edits: source edits change the evidence; YOps edits change how that evidence is
 structured into the semantic tree.
 
@@ -91,13 +91,13 @@ Use source edits when:
 
 - A pasted note has a typo or missing sentence.
 - A transcript contains irrelevant boilerplate that should not drive extraction.
-- The user wants the committed meaning to point back to corrected evidence.
+- The user wants the committed state to point back to corrected evidence.
 
 ## 5. Review generated YOps and output tree
 
 Extraction is not the final state. The workspace panel shows both the operation
 list and the materialized tree so the user can inspect what will be committed.
-When previous committed meaning exists, `Show Previous` lets the user compare
+When previous committed state exists, `Show Previous` lets the user compare
 the current materialized output against the earlier version before saving a new
 commit.
 
@@ -162,9 +162,9 @@ review the resulting tree before saving it. If `Show Previous` is available,
 use it again after edits to confirm whether the change is additive, corrective,
 or a removal.
 
-## 7. Commit reviewed meaning
+## 7. Commit reviewed state
 
-Committing turns the reviewed tree into a semantic version. A commit keeps:
+Committing turns the reviewed tree into a stable project version. A commit keeps:
 
 <img
   className="docScreenshot narrowScreenshot"
@@ -183,7 +183,7 @@ This is the point where T3X becomes more like version control than chat history.
 
 ## 8. Reuse the commit
 
-After committing, the same knowledge can feed:
+After committing, the same state can feed:
 
 - a Canvas inspection view,
 - a semantic diff or merge workflow,
@@ -197,16 +197,16 @@ the reusable unit.
 
 | Checkpoint | User question | WebUI surface |
 | --- | --- | --- |
-| Branch selected | "Where will this meaning land?" | Branch selector and project context |
+| Branch selected | "Where will this state land?" | Branch selector and project context |
 | Source captured | "What did this come from?" | Chat source and source frames |
 | Source inspected | "Is the evidence correct?" | Source view and source frame detail |
 | Field grounded | "Which source span supports this field?" | YAML/output selection linked to highlighted source text |
 | Source edited | "Does the evidence need correction?" | Source editor or editable source frame |
-| Meaning reviewed | "What will be changed?" | YOps editor and output preview |
+| State reviewed | "What will be changed?" | YOps editor and output preview |
 | Previous compared | "What changed from the prior version?" | `Show Previous` diff/reference view |
 | YOps edited | "Is the operation log exact?" | YOps editor and materialized preview |
 | YAML edited | "Is the output tree exact?" | Output YAML editor and materialized preview |
 | Commit named | "What should this reviewed version be called?" | Commit confirmation dialog |
 | Commit created | "What is the stable version?" | Canvas graph, commit audit, and history |
-| Versions compared | "What meaning changed between these commits?" | Semantic diff and merge workspace |
-| Output generated | "Did the artifact preserve the meaning?" | Leaf coverage and assertions |
+| Versions compared | "What state changed between these commits?" | Semantic diff and merge workspace |
+| Output generated | "Did the artifact preserve the committed state?" | Leaf coverage and assertions |

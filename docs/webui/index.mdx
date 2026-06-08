@@ -26,16 +26,16 @@ Open the WebUI URL printed by `pnpm dev:webui`, then go to `/chat`.
 | Chat | A lightweight place to paste a prompt, transcript, release note, or design discussion | Keeps the original source text instead of losing it in a generated answer |
 | Workspace | A right-side YOps editor and output panel | Makes extraction reviewable before project state changes |
 | YOps Review | Pending YAML operations, dry-run output, and applied tree | Lets users inspect and materialize what the LLM proposed before state is saved |
-| Commit | Commit action and review checkpoint | Turns reviewed meaning into a stable semantic version |
-| Canvas | Version graph with commit cards, branches, leaves, and pending work | Shows where meaning lives across project history |
-| Leaf | Source-backed output artifact with constraints and assertions | Turns committed meaning into reusable work: checklist, article, prompt, eval, agent config |
+| Commit | Commit action and review checkpoint | Turns reviewed state into a stable project version |
+| Canvas | Version graph with commit cards, branches, leaves, and pending work | Shows where state lives across project history |
+| Leaf | Source-backed output artifact with constraints and assertions | Turns committed state into reusable work: checklist, article, prompt, eval, agent config |
 
 ## 1. Chat: Start From Source
 
 ![Chat demo composer](/img/screenshots/webui-03-demo-composer.png)
 
 Chat is intentionally low-friction. Users paste the material they want T3X to
-make sense of. The source may be a prompt version, support note, meeting note,
+structure. The source may be a prompt version, support note, meeting note,
 release plan, design discussion, or agent trace.
 
 Value produced:
@@ -75,20 +75,20 @@ Value produced:
 
 - Prevents silent mutation by model output.
 - Shows the exact YAML operations and dry-run tree.
-- Materializes reviewed meaning without relying on another model call.
+- Materializes reviewed state without relying on another model call.
 
-## 4. Commit: Save Reviewed Meaning
+## 4. Commit: Save Reviewed State
 
 ![Commit walkthrough](/img/screenshots/webui-commit-walkthrough.png)
 
 Commit is the review checkpoint. It takes the applied output tree and saves it
-as a stable semantic version. Canvas should come after this step: before commit,
-the user is still reviewing proposed meaning; after commit, the project has a
+as a stable project version. Canvas should come after this step: before commit,
+the user is still reviewing proposed state; after commit, the project has a
 versioned state that leaves and future diffs can reference.
 
 Value produced:
 
-- Turns reviewed meaning into a durable commit.
+- Turns reviewed state into a durable commit.
 - Preserves the source note, YOps operation log, and materialized tree together.
 - Gives Canvas and Leaf a stable version to inspect, compare, and reuse.
 
@@ -101,7 +101,7 @@ branches, leaves, and pending work.
 
 Value produced:
 
-- Makes semantic history visible.
+- Makes structured history visible.
 - Shows which output leaves came from which commit.
 - Helps users inspect source, diff, leaves, and next actions from a selected
   version.
@@ -110,7 +110,7 @@ Value produced:
 
 ![Leaf detail](/img/screenshots/webui-12-leaf-detail.png)
 
-Leaf is where committed meaning becomes a reusable artifact. A leaf has its own
+Leaf is where committed state becomes a reusable artifact. A leaf has its own
 constraints, generated output, source coverage, quality checks, and export
 actions.
 
