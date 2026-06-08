@@ -9,10 +9,9 @@ import DocBadges from '@site/src/components/DocBadges';
 
 <DocBadges status="alpha" verified="verified" />
 
-T3X is a structured source of truth for AI work. It keeps the original source
-text, extracts reviewable meaning into YAML-shaped knowledge, mutates that
-knowledge only through YOps, then saves it as commits that can be inspected,
-diffed, merged, and reused.
+T3X is version control for structured state. It records schema-backed YAML
+changes as deterministic YOps patches, then versions the result with commits,
+diffs, merges, provenance, and generated outputs.
 
 These docs are written for users of the future open-source distribution. Current
 alpha availability and package maturity are called out in
@@ -21,12 +20,12 @@ alpha availability and package maturity are called out in
 The shortest way to understand it:
 
 ```text
-source text -> YOps proposal -> reviewed tree -> commit -> leaf output
+source evidence -> YOps patch -> reviewed YAML state -> commit -> leaf output
 ```
 
 This is not a markdown dump and not a chatbot transcript archive. T3X is built
-for the point where AI output needs to become trusted, replayable project
-knowledge.
+for the point where source evidence, AI output, or human edits need to become
+trusted, replayable project state.
 
 ![T3X chat landing](/img/screenshots/chat-light.png)
 
@@ -34,7 +33,7 @@ knowledge.
 
 | Surface | What it does | Value |
 | --- | --- | --- |
-| WebUI | Chat, review YOps, inspect Canvas, create Leaf output | Turns loose AI work into an auditable workflow |
+| WebUI | Chat, review YOps, inspect Canvas, create Leaf output | Turns loose source material into an auditable workflow |
 | YOps | 18 declarative YAML operations | Makes every tree mutation reviewable and replayable |
 | Local alpha | Packaged local entrypoint | Runs the self-hostable product without assembling every package manually |
 | CLI | Preview command path for project -> draft -> YOps -> commit -> leaf | Lets scripts and terminal users drive the same state machine |
@@ -43,7 +42,7 @@ knowledge.
 
 ## The Core Rule
 
-All knowledge-tree mutation goes through YOps.
+All structured-state mutation goes through YOps.
 
 An LLM may propose a YAML operation list. A human or agent may edit that list.
 But the deterministic engine is the only layer that applies it. Diff, merge,

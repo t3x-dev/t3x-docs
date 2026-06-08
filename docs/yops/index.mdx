@@ -5,7 +5,7 @@ sidebar_position: 1
 # YOps
 
 YOps is the mutation language of T3X. It is a small YAML operation list that
-says exactly how a knowledge tree should change.
+says exactly how structured state should change.
 
 The LLM can write a draft. The user can edit it. The engine applies it.
 
@@ -71,7 +71,7 @@ assistant sometimes skipped the order id, forgot to cite policy, or sounded like
 it had already approved a refund before manual review.
 
 The lead does not want this rule to live only in a chat transcript or a loose
-prompt. She wants it to become reviewable project knowledge, so she pastes this
+prompt. She wants it to become reviewable project state, so she pastes this
 source note into T3X:
 
 ```text
@@ -135,7 +135,7 @@ engine.
 
 After Apply, the tree has explicit nodes for the pilot, refund policy, and tone
 rules. Commit records the source note, the reviewed YOps, and the resulting
-semantic tree together. A later policy change is no longer prompt archaeology;
+state tree together. A later policy change is no longer prompt archaeology;
 it becomes a diff against a named, auditable part of the project.
 
 ## What Happens In The WebUI
@@ -146,7 +146,7 @@ it becomes a diff against a named, auditable part of the project.
 2. Workspace opens the YOps editor and output panel.
 3. Extract produces a staged YOps proposal. It is marked pending/unapplied.
 4. Apply runs the deterministic engine. The output tree becomes materialized.
-5. Commit saves the reviewed semantic state.
+5. Commit saves the reviewed structured state.
 
 ## Why YAML
 
@@ -163,7 +163,7 @@ YAML is useful here because it is:
 All tree mutation goes through YOps.
 
 That includes WebUI edits, CLI edits, MCP edits, extraction repair, inline source
-edits, and generated fixes. If a feature needs to change the knowledge tree, it
+edits, and generated fixes. If a feature needs to change structured state, it
 should emit YOps and let the engine validate/apply them.
 
 ## Operation Families
