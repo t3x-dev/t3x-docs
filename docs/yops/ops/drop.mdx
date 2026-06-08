@@ -1,0 +1,61 @@
+---
+sidebar_position: 2
+sidebar_label: drop
+---
+
+# drop
+
+`drop` is a DDL operation that removes a path and its entire subtree.
+
+Use it when the target must exist and missing data should be treated as an
+error. For idempotent cleanup, use [`unset`](./unset) or [`omit`](./omit).
+
+## YOp
+
+```yaml
+- drop:
+    path: config/legacy_settings
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the key or sequence item to remove. The path must exist. |
+
+## Behavior
+
+- Removes the target value and all nested values below it.
+- Fails if the path does not exist.
+- Can be used for strict deletion when missing state should stop execution.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | The target path does not exist. |
+
+## Example
+
+```yaml
+yops:
+  - drop:
+      path: config/legacy_settings
+```
+
+Input:
+
+```yaml
+config:
+  host: app.example.com
+  legacy_settings:
+    mode: old
+```
+
+Output:
+
+```yaml
+config:
+  host: app.example.com
+```
+

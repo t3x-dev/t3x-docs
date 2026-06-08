@@ -1,0 +1,65 @@
+---
+sidebar_position: 1
+sidebar_label: define
+---
+
+# define
+
+`define` is a DDL operation that creates an empty mapping at a path.
+
+Use it when you need a strict container creation step. It behaves like `mkdir`
+for one mapping key: the parent must already exist and the final key must be
+absent.
+
+## YOp
+
+```yaml
+- define:
+    path: config/database
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to create. The parent must exist and be a mapping. The final segment is created as `{}`. |
+
+## Behavior
+
+- Creates the final path segment as an empty mapping.
+- Does not create missing ancestors.
+- Rejects index and match path segments such as `items/[0]`.
+- Stops the operation list if the parent is missing, the parent is not a mapping, or the target key already exists.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Parent path does not exist. |
+| `ALREADY_EXISTS` | The target key already exists. |
+| `NOT_A_MAPPING` | The parent is not a mapping. |
+| `INVALID_PATH` | The path uses a non-key segment. |
+
+## Example
+
+```yaml
+yops:
+  - define:
+      path: config
+  - define:
+      path: config/database
+```
+
+Input:
+
+```yaml
+{}
+```
+
+Output:
+
+```yaml
+config:
+  database: {}
+```
+

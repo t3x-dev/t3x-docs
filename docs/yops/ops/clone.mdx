@@ -1,0 +1,65 @@
+---
+sidebar_position: 9
+sidebar_label: clone
+---
+
+# clone
+
+`clone` is a DTL operation that deep copies a subtree to a new path.
+
+Use it when the original should remain and the new subtree should be independent.
+
+## YOp
+
+```yaml
+- clone:
+    from: config/production
+    to: config/staging
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `from` | string | yes | Source path to copy. |
+| `to` | string | yes | Destination path for the copy. |
+
+## Behavior
+
+- Requires the source path to exist.
+- Requires the destination path to be absent.
+- Performs a deep copy.
+- Leaves the original subtree unchanged.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Source path does not exist. |
+| `ALREADY_EXISTS` | Destination path already exists. |
+
+## Example
+
+```yaml
+yops:
+  - clone:
+      from: defaults
+      to: production
+```
+
+Input:
+
+```yaml
+defaults:
+  timeout: 30
+```
+
+Output:
+
+```yaml
+defaults:
+  timeout: 30
+production:
+  timeout: 30
+```
+

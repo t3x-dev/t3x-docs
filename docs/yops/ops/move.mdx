@@ -1,0 +1,67 @@
+---
+sidebar_position: 8
+sidebar_label: move
+---
+
+# move
+
+`move` is a DTL operation that relocates a subtree from one path to another.
+
+Use it when information should change location and the original location should
+be removed.
+
+## YOp
+
+```yaml
+- move:
+    from: config/old_db
+    to: config/database
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `from` | string | yes | Source path to read and remove. |
+| `to` | string | yes | Destination path to create. |
+
+## Behavior
+
+- Requires the source path to exist.
+- Requires the destination path to be absent.
+- Removes the source after creating the destination.
+- Rejects moving a path into its own subtree.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Source path does not exist. |
+| `ALREADY_EXISTS` | Destination path already exists. |
+| `INVALID_PATH` | Destination is inside the source subtree. |
+
+## Example
+
+```yaml
+yops:
+  - move:
+      from: config/old_db
+      to: config/database
+```
+
+Input:
+
+```yaml
+config:
+  old_db:
+    host: localhost
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+

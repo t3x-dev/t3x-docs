@@ -1,0 +1,64 @@
+---
+sidebar_position: 7
+sidebar_label: append
+---
+
+# append
+
+`append` is a DML operation that adds one value to the end of a sequence.
+
+Use it when the target sequence already exists and order matters.
+
+## YOp
+
+```yaml
+- append:
+    path: config/allowed_hosts
+    value: "*.example.com"
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the target sequence. |
+| `value` | any | yes | YAML value to append. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a sequence.
+- Appends the value after existing items.
+- Does not deduplicate. Use [`unique`](./unique) after `append` when uniqueness is required.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_SEQUENCE` | Target is not a sequence. |
+
+## Example
+
+```yaml
+yops:
+  - append:
+      path: tags
+      value: reviewed
+```
+
+Input:
+
+```yaml
+tags:
+  - draft
+```
+
+Output:
+
+```yaml
+tags:
+  - draft
+  - reviewed
+```
+

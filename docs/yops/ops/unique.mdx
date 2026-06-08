@@ -1,0 +1,70 @@
+---
+sidebar_position: 15
+sidebar_label: unique
+---
+
+# unique
+
+`unique` is a DTL operation that deduplicates a sequence while keeping the first
+occurrence.
+
+Use it after appends or extraction passes that may repeat values.
+
+## YOp
+
+```yaml
+- unique:
+    path: tags
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the sequence to deduplicate. |
+| `by` | string | no | Key to deduplicate by when the sequence contains mappings. Omit for full-value equality. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a sequence.
+- Keeps the first occurrence and removes later duplicates.
+- If `by` is provided, every item must be a mapping containing that key.
+- Equality uses canonical encoding, so mapping key order does not affect equality.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_SEQUENCE` | Target is not a sequence. |
+| `INVALID_OP` | `by` was provided but an item is not a mapping or lacks that key. |
+
+## Example
+
+```yaml
+yops:
+  - unique:
+      path: tags
+```
+
+Input:
+
+```yaml
+tags:
+  - a
+  - b
+  - a
+  - c
+  - b
+```
+
+Output:
+
+```yaml
+tags:
+  - a
+  - b
+  - c
+```
+

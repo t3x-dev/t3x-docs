@@ -1,0 +1,69 @@
+---
+sidebar_position: 6
+sidebar_label: populate
+---
+
+# populate
+
+`populate` is a DML operation that sets multiple keys on an existing mapping.
+
+Use it after [`define`](./define) when you have several fields for the same
+object.
+
+## YOp
+
+```yaml
+- populate:
+    path: config/database
+    values:
+      host: localhost
+      port: 5432
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the target mapping. |
+| `values` | mapping | yes | Key-value pairs to set on the mapping. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a mapping.
+- Sets every key in `values`.
+- Overwrites existing keys with the same names.
+- Fails if a nested value key collides with a scalar or null intermediate.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_MAPPING` | Target is not a mapping. |
+| `INVALID_PATH` | A value key cannot be written because an existing intermediate blocks traversal. |
+
+## Example
+
+```yaml
+yops:
+  - define:
+      path: config
+  - define:
+      path: config/database
+  - populate:
+      path: config/database
+      values:
+        host: localhost
+        port: 5432
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+    port: 5432
+```
+

@@ -1,0 +1,67 @@
+---
+sidebar_position: 3
+sidebar_label: rename
+---
+
+# rename
+
+`rename` is a DDL operation that changes a key name without moving its value.
+
+Use it when the value should stay under the same parent, but the key name should
+change.
+
+## YOp
+
+```yaml
+- rename:
+    path: config/db
+    to: database
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the key to rename. |
+| `to` | string | yes | New key name among the same siblings. |
+
+## Behavior
+
+- Preserves the value and all children.
+- Fails if the source path does not exist.
+- Fails if the target sibling key already exists.
+- Rejects paths that end with an index or match segment.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Source path does not exist. |
+| `ALREADY_EXISTS` | Target key already exists among siblings. |
+| `INVALID_PATH` | The path ends with a non-key segment. |
+
+## Example
+
+```yaml
+yops:
+  - rename:
+      path: config/db
+      to: database
+```
+
+Input:
+
+```yaml
+config:
+  db:
+    host: localhost
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+

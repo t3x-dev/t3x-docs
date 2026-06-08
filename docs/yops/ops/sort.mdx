@@ -1,0 +1,71 @@
+---
+sidebar_position: 14
+sidebar_label: sort
+---
+
+# sort
+
+`sort` is a DTL operation that sorts a sequence in place.
+
+Use it to make ordered lists deterministic, either by item value or by a key in
+mapping items.
+
+## YOp
+
+```yaml
+- sort:
+    path: users
+    by: name
+    order: asc
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the sequence to sort. |
+| `by` | string | no | Key to sort by when the sequence contains mappings. Omit for scalar sequences. |
+| `order` | string | no | Sort direction. Allowed values are `asc` and `desc`. Default is `asc`. |
+
+## Behavior
+
+- Requires the target path to exist.
+- Requires the target to be a sequence.
+- If `by` is provided, every item must be a mapping containing that key.
+- Uses deterministic comparison: type rank is null, boolean, number, string, array, mapping.
+- Strings sort by Unicode codepoint, not locale collation.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path does not exist. |
+| `NOT_A_SEQUENCE` | Target is not a sequence. |
+| `INVALID_OP` | `by` was provided but an item is not a mapping or lacks that key. |
+
+## Example
+
+```yaml
+yops:
+  - sort:
+      path: items
+```
+
+Input:
+
+```yaml
+items:
+  - cherry
+  - apple
+  - banana
+```
+
+Output:
+
+```yaml
+items:
+  - apple
+  - banana
+  - cherry
+```
+

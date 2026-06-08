@@ -1,0 +1,78 @@
+---
+sidebar_position: 11
+sidebar_label: split
+---
+
+# split
+
+`split` is a DTL operation that distributes keys from one mapping into new child
+mappings.
+
+Use it when one mapping contains several groups of fields that should become
+separate named children.
+
+## YOp
+
+```yaml
+- split:
+    path: config
+    into:
+      database: [host, port]
+      cache: [redis_url, ttl]
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the mapping to split. |
+| `into` | mapping | yes | Mapping from new child key names to lists of existing source keys. |
+
+## Behavior
+
+- Requires `path` to exist and be a mapping.
+- Requires every referenced source key to exist.
+- Moves referenced keys into the requested child mappings.
+- Leaves unlisted keys on the original mapping.
+- Rejects assigning the same source key to more than one child.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Target path or a referenced source key does not exist. |
+| `NOT_A_MAPPING` | Target is not a mapping. |
+| `ALREADY_EXISTS` | A child group name collides with an unmoved key. |
+| `INVALID_OP` | A source key is assigned to multiple groups. |
+
+## Example
+
+```yaml
+yops:
+  - split:
+      path: config
+      into:
+        db: [host, port]
+        log: [level]
+```
+
+Input:
+
+```yaml
+config:
+  host: localhost
+  port: 5432
+  level: debug
+```
+
+Output:
+
+```yaml
+config:
+  db:
+    host: localhost
+    port: 5432
+  log:
+    level: debug
+```
+

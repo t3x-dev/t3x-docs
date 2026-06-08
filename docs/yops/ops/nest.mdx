@@ -1,0 +1,73 @@
+---
+sidebar_position: 10
+sidebar_label: nest
+---
+
+# nest
+
+`nest` is a DTL operation that groups sibling keys under a new wrapper mapping.
+
+Use it when flat fields should become a nested object.
+
+## YOp
+
+```yaml
+- nest:
+    path: config
+    keys: [host, port]
+    under: database
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Path to the parent mapping that contains the sibling keys. |
+| `keys` | sequence of strings | yes | Existing sibling keys to move under the wrapper. |
+| `under` | string | yes | New wrapper key name. |
+
+## Behavior
+
+- Requires `path` to exist and be a mapping.
+- Requires every listed key to exist as a sibling in that mapping.
+- Requires the wrapper key to be absent.
+- Moves the listed keys under the new wrapper.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `PATH_NOT_FOUND` | Parent path does not exist. |
+| `NOT_A_MAPPING` | Parent is not a mapping. |
+| `NOT_SIBLINGS` | One or more listed keys are not siblings in the parent. |
+| `ALREADY_EXISTS` | Wrapper key already exists. |
+
+## Example
+
+```yaml
+yops:
+  - nest:
+      path: config
+      keys: [host, port]
+      under: database
+```
+
+Input:
+
+```yaml
+config:
+  host: localhost
+  port: 5432
+  debug: true
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+    port: 5432
+  debug: true
+```
+

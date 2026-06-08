@@ -1,0 +1,63 @@
+---
+sidebar_position: 4
+sidebar_label: set
+---
+
+# set
+
+`set` is a DML operation that writes one value at a path.
+
+Use it for upserts: it creates missing mapping ancestors and overwrites the
+final value if it already exists.
+
+## YOp
+
+```yaml
+- set:
+    path: config/database/host
+    value: localhost
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | yes | Target path to write. |
+| `value` | any | yes | YAML value to write. Scalars, sequences, mappings, booleans, and null are valid. |
+
+## Behavior
+
+- Creates missing intermediate mapping keys.
+- Overwrites an existing value at the final path.
+- Fails if an intermediate value is a scalar or null and cannot be traversed.
+- It is the only operation that lazily creates missing ancestors.
+
+## Errors
+
+| Error | Meaning |
+| --- | --- |
+| `INVALID_PATH` | The path cannot be traversed, usually because an intermediate is not a mapping or sequence that supports the next segment. |
+
+## Example
+
+```yaml
+yops:
+  - set:
+      path: config/database/host
+      value: localhost
+```
+
+Input:
+
+```yaml
+{}
+```
+
+Output:
+
+```yaml
+config:
+  database:
+    host: localhost
+```
+
