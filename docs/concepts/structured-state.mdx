@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+---
+
+# Structured State
+
+T3X stores reviewed project state as YAML-shaped content, not as raw chat
+transcripts. Source material stays visible as evidence, but the committed state
+is a structured tree produced through reviewed YOps.
+
+## Source, YOps, state, commit
+
+| Stage | Purpose |
+| --- | --- |
+| Source | Preserve the original text, prompt, notes, or transcript. |
+| YOps | Describe the exact YAML mutation to review and apply. |
+| State | Materialize the updated structured YAML tree. |
+| Commit | Version the reviewed state with parents, operation logs, and provenance. |
+
+## Why this matters
+
+Text can drift across chats, docs, specs, and prompt runs. T3X makes the durable
+part explicit: the structured state you want to review, compare, merge, and
+reuse.
+
+Instead of hiding an update inside a generated answer or a database write, T3X
+keeps the change as a reviewable YOps patch. The same input state plus the same
+YOps list produces the same output state.
+
+## Deterministic mutation
+
+LLMs may propose YOps, and humans or agents may edit them. The engine is still
+the only layer that applies mutations. Validation, apply, diff, merge, hash
+construction, and commit creation remain deterministic.

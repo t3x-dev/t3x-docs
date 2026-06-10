@@ -4,8 +4,8 @@ sidebar_position: 3
 
 # Branching
 
-Branches let you explore alternative semantic states without losing the stable
-line of work.
+Branches let you explore alternative structured-state histories without losing
+the stable line of work.
 
 ```text
 main:      commit_1 -> commit_2
@@ -13,11 +13,12 @@ main:      commit_1 -> commit_2
 experiment:               commit_3 -> commit_4
 ```
 
-Use branches when you want to compare possible interpretations, product
-directions, prompt versions, or document revisions before merging the useful
-knowledge back.
+Use branches when you want to compare product directions, prompt versions,
+document revisions, or extraction strategies before merging the useful state
+back.
 
-## Branches are semantic
+## Branches point at commits
 
-In T3X, branches point at commits of meaning. They are not separate copies of
-raw text; they are alternate reviewed semantic histories.
+In T3X, branches point at committed structured state. They are not separate
+copies of raw text; they are alternate histories of reviewed state transitions.
+Each transition still goes through YOps before it becomes a commit.

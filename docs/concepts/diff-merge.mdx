@@ -4,24 +4,25 @@ sidebar_position: 4
 
 # Diff and Merge
 
-T3X compares semantic content rather than only text.
+T3X compares committed structured state rather than only raw text.
 
 ## Diff
 
-A semantic diff answers questions like:
+A structured diff answers questions like:
 
-- Which decisions were added?
+- Which fields were added?
 - Which constraints disappeared?
-- Which risks changed wording but kept the same meaning?
-- Which relation now contradicts another relation?
+- Which list items changed order or value?
+- Which branch changed the same path in a conflicting way?
 
 ## Merge
 
-A merge combines two semantic histories. Identical content can be kept
-automatically. Similar or conflicting content should be reviewed before it
+A merge combines two structured-state histories. Identical content can be kept
+automatically. Different or conflicting content should be reviewed before it
 becomes a new commit.
 
 ## Review is the point
 
-T3X is not trying to hide ambiguity. It surfaces change and conflict so a human
-or agent can decide what should become durable knowledge.
+T3X is not trying to hide ambiguity. It surfaces state changes and conflicts so
+a human or agent can decide which reviewed YOps should produce the next durable
+state.

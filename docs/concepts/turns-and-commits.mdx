@@ -4,32 +4,38 @@ sidebar_position: 2
 
 # Turns and Commits
 
-T3X separates source history from reviewed semantic state.
+T3X separates source evidence from reviewed structured state.
 
 ## Turns
 
-A turn is one source event: a message, assistant response, tool result, or other
-piece of source material. Turns preserve provenance so committed knowledge can
-trace back to evidence.
+A turn is one source event: a message, assistant response, tool result, pasted
+note, imported document, or other piece of source material. Turns preserve
+provenance so committed state can trace back to evidence.
 
 ## Commits
 
-A commit is a reviewed snapshot of semantic content:
+A commit is a reviewed checkpoint of structured state:
 
 ```json
 {
   "schema": "t3x/commit",
   "parents": ["sha256:..."],
   "content": {
-    "trees": [],
-    "relations": []
+    "trees": []
+  },
+  "operations": {
+    "yops": []
+  },
+  "provenance": {
+    "sources": []
   }
 }
 ```
 
-The hash covers first-class semantic fields, so the same reviewed content
-produces the same commit identity.
+The hash covers the committed state and commit metadata that define the
+checkpoint. The same reviewed content produces the same commit identity.
 
 ## Practical habit
 
-Use turns as evidence. Use commits as durable checkpoints.
+Use turns as evidence. Use YOps as the reviewed change. Use commits as durable
+state checkpoints.

@@ -25,7 +25,7 @@ What this gives the user:
 
 - A clear target before extraction starts.
 - A way to keep experiments away from stable project state.
-- A future comparison path for semantic diff and merge.
+- A future comparison path for structured diff and merge.
 
 ## 2. Capture source
 
@@ -79,7 +79,7 @@ right part of the source instead of appearing as an unsupported model claim.
 If the original text is incomplete, misleading, or too noisy, fix the source
 before committing state derived from it. Source edits are different from YOps
 edits: source edits change the evidence; YOps edits change how that evidence is
-structured into the semantic tree.
+structured into the state tree.
 
 <img
   className="docScreenshot"
@@ -169,7 +169,7 @@ Committing turns the reviewed tree into a stable project version. A commit keeps
 <img
   className="docScreenshot narrowScreenshot"
   src="/img/screenshots/webui-commit-dialog.png"
-  alt="T3X WebUI commit dialog asking the user to name a reviewed semantic commit"
+  alt="T3X WebUI commit dialog asking the user to name a reviewed state commit"
 />
 
 - source references,
@@ -186,7 +186,7 @@ This is the point where T3X becomes more like version control than chat history.
 After committing, the same state can feed:
 
 - a Canvas inspection view,
-- a semantic diff or merge workflow,
+- a structured diff or merge workflow,
 - a Leaf output,
 - future chats that inherit committed context.
 
@@ -208,5 +208,5 @@ the reusable unit.
 | YAML edited | "Is the output tree exact?" | Output YAML editor and materialized preview |
 | Commit named | "What should this reviewed version be called?" | Commit confirmation dialog |
 | Commit created | "What is the stable version?" | Canvas graph, commit audit, and history |
-| Versions compared | "What state changed between these commits?" | Semantic diff and merge workspace |
+| Versions compared | "What state changed between these commits?" | Structured diff and merge workspace |
 | Output generated | "Did the artifact preserve the committed state?" | Leaf coverage and assertions |

@@ -57,7 +57,7 @@ const sidebars: SidebarsConfig = {
       label: 'Concepts',
       collapsed: false,
       items: [
-        'concepts/semantic-layers',
+        'concepts/structured-state',
         'concepts/turns-and-commits',
         'concepts/branching',
         'concepts/diff-merge',

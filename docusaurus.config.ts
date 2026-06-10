@@ -138,8 +138,8 @@ const config: Config = {
           title: 'Concepts',
           items: [
             {
-              label: 'Semantic Layers',
-              to: '/concepts/semantic-layers',
+              label: 'Structured State',
+              to: '/concepts/structured-state',
             },
             {
               label: 'Diff & Merge',

@@ -4,15 +4,15 @@ sidebar_position: 4
 
 # Leaf Workspace
 
-The Leaf workspace turns a committed semantic version into an output artifact.
-Chat is where users capture and review meaning. Canvas is where users inspect
-semantic history. Leaf is where that reviewed meaning becomes something useful:
+The Leaf workspace turns a committed structured-state version into an output artifact.
+Chat is where users capture and review structured state. Canvas is where users inspect
+structured-state history. Leaf is where that reviewed state becomes something useful:
 a checklist, article, prompt, eval case, agent configuration, release note, or
 other source-backed artifact.
 
 A leaf does not replace the commit. It points at a commit and gives the user a
 separate place to generate, review, constrain, share, and export output without
-mutating the underlying semantic tree.
+mutating the underlying state tree.
 
 ## 1. Open a leaf artifact
 
@@ -34,9 +34,9 @@ What this gives the user:
 
 ## 2. Review the commit-backed artifact
 
-The detail view keeps the artifact, source frames, semantic coverage, constraints,
+The detail view keeps the artifact, source frames, state coverage, constraints,
 assertions, and publish actions in one place. The header keeps the commit hash,
-artifact type, semantic point count, verification state, and assertion state
+artifact type, state point count, verification state, and assertion state
 visible so the user can see which reviewed version produced the output.
 
 <img
@@ -47,37 +47,37 @@ visible so the user can see which reviewed version produced the output.
 
 What to check:
 
-- Which semantic nodes are included.
+- Which state nodes are included.
 - Which fields are available to the artifact.
-- Whether every required semantic point is represented.
+- Whether every required state point is represented.
 - Whether constraints or assertions still need review.
 
-The key point is provenance: output should be explainable from committed meaning,
+The key point is provenance: output should be explainable from committed state,
 not from an untracked prompt reply.
 
 ## 3. Generate, verify, and ship
 
 The center workspace is where the artifact is generated. Users write generation
-instructions and run generation against the selected semantic frames. Generation
+instructions and run generation against the selected structured-state frames. Generation
 changes the leaf output, not the commit that the leaf points to.
 
 <img
   className="docScreenshot"
   src="/img/screenshots/webui-leaf-workspace-generate.png"
-  alt="T3X Leaf workspace generate mode with source frames, generation instructions, semantic points, constraints, and actions"
+  alt="T3X Leaf workspace generate mode with source frames, generation instructions, state points, constraints, and actions"
 />
 
 After generation, Leaf should make the review state visible:
 
 - **Commit verified** means the artifact is tied to the selected commit.
-- **Semantic points** show how much committed meaning is included.
+- **State points** show how much committed state is included.
 - **Assertions** check whether required claims or constraints passed.
 - **Draft and review states** let users keep output separate from committed
-  meaning until it is ready.
+  state until it is ready.
 
 Leaf also has its own review layer. Constraints tell generation what shape the
 artifact should take. Assertions check whether the generated artifact preserved
-the meaning that matters. The publish controls stay next to that review state so
+the state that matters. The publish controls stay next to that review state so
 users do not copy, share, or export output without seeing its coverage.
 
 Use constraints for output policy:
@@ -91,24 +91,24 @@ Use constraints for output policy:
 
 Use assertions for review:
 
-- required semantic points are present,
+- required state points are present,
 - unsupported claims are not introduced,
 - important caveats are preserved,
 - the artifact matches the requested format.
 
 This is why Leaf is separate from Chat. Chat can discuss and revise. Leaf should
-produce an artifact that can be checked against committed meaning.
+produce an artifact that can be checked against committed state.
 
 Leaf output should answer three questions before it leaves T3X:
 
 - Which commit produced this artifact?
-- Which semantic points were included?
+- Which state points were included?
 - Which constraints or assertions still need review?
 
 ## When to use Leaf
 
-Use Leaf when the user has reviewed and committed meaning, then needs an output
+Use Leaf when the user has reviewed and committed state, then needs an output
 that can be reused outside the chat thread. Use Chat when the source or
-extracted meaning is still being corrected. Use Canvas when the user needs to
-inspect commits, compare versions, or merge semantic branches before generating
+extracted state is still being corrected. Use Canvas when the user needs to
+inspect commits, compare versions, or merge structured-state branches before generating
 output.

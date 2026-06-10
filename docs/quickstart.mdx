@@ -4,8 +4,21 @@ sidebar_position: 2
 
 # Quick Start
 
-Use `@t3x-dev/local` as the primary local entry point for trying T3X. Source,
-Docker, CLI, and MCP paths are available for development or preview workflows.
+Use `@t3x-dev/local` as the primary local entry point if your npm account has
+restricted alpha access. If you do not have alpha package access yet, use the
+source-development path.
+
+Source, Docker, CLI, and MCP paths are available for development or preview
+workflows.
+
+## Choose A Path
+
+| Goal | Use this path |
+| --- | --- |
+| Try the packaged local alpha | `@t3x-dev/local` with alpha package access |
+| Develop from source | clone the repo, then run `pnpm dev:api` and `pnpm dev:webui` |
+| Use deterministic YAML operations | `@t3x-dev/yops` with alpha package access |
+| Evaluate self-hosting | Docker Compose, not a production-readiness claim |
 
 ## Requirements
 
@@ -25,12 +38,17 @@ during local development.
 npx -p @t3x-dev/local t3x-local start
 ```
 
-This is the primary user-facing local path. Use it when you want the packaged
-local product experience instead of assembling the monorepo source stack.
+This is the primary user-facing local path for alpha users with package access.
+Use it when you want the packaged local product experience instead of assembling
+the monorepo source stack.
+
+If the package cannot be resolved, your npm account may not have restricted
+alpha access yet. Use the source path below.
 
 ## Run From Source
 
-Use source development when you are changing the repository itself.
+Use source development when you are changing the repository itself or when you
+do not have alpha package access.
 
 ```bash
 git clone https://github.com/t3x-dev/t3x-core.git
@@ -54,6 +72,44 @@ the self-hosted login flow, start both API and WebUI with:
 AUTH_DISABLED=false pnpm dev:api
 AUTH_DISABLED=false pnpm dev:webui
 ```
+
+## A Small Source -> YOps -> Commit Example
+
+```yaml
+source:
+  text: Move launch region from US to EU and add security review before release.
+
+state_before:
+  launch:
+    region: us
+    gates:
+      - qa
+
+yops:
+  - set:
+      path: launch/region
+      value: eu
+  - append:
+      path: launch/gates
+      value: security_review
+
+state_after:
+  launch:
+    region: eu
+    gates:
+      - qa
+      - security_review
+
+commit:
+  parents:
+    - sha256:...
+  provenance:
+    source: launch-note
+```
+
+The source is evidence. YOps is the reviewed mutation. The resulting YAML tree
+is the structured state. The commit preserves that state with parents,
+operation logs, and provenance.
 
 ## Run With Docker Preview
 
@@ -82,9 +138,9 @@ docker compose --profile n8n up -d
 
 :::caution Self-hosting safety
 Docker and self-hosted runs keep auth on by default. Do not expose a deployment
-with `AUTH_DISABLED=true` to an untrusted network. Before sharing a host, review
-[Deployment](./release/deployment) for auth, backups, TLS, logs, and provider
-key handling.
+with `AUTH_DISABLED=true` to an untrusted network. Before sharing a host,
+review [Deployment](./release/deployment) for auth, backups, TLS, logs, and
+provider key handling.
 :::
 
 ## Try The Guided WebUI Demo

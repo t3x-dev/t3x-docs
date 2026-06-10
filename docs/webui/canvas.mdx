@@ -4,34 +4,33 @@ sidebar_position: 3
 
 # Canvas Workspace
 
-The Canvas workspace is the inspection surface for committed meaning. It is
-useful after you have source material, extracted knowledge, and at least one
+The Canvas workspace is the inspection surface for committed structured state. It is
+useful after you have source material, reviewed state, and at least one
 commit. It is not the first step for most users; Chat produces reviewed commits,
 then Canvas helps users inspect and reuse them.
 
 ## 1. Version path
 
-Canvas shows the committed semantic versions as a branch graph. Each node is a
+Canvas shows the committed structured-state versions as a branch graph. Each node is a
 commit that can be inspected, compared, merged, or reused as a Leaf source.
 
 <img
   className="docScreenshot"
   src="/img/screenshots/webui-canvas.png"
-  alt="T3X Canvas workspace with semantic commits, branches, and a leaf attached to a commit"
+  alt="T3X Canvas workspace with structured-state commits, branches, and a leaf attached to a commit"
 />
 
 What to look for:
 
 - **Branch chips** summarize the active branches, commit count, and leaf count.
-- **Commit cards** show the commit message, branch, short hash, and semantic
-  tree size.
-- **Version edges** show how one committed meaning state leads to another.
+- **Commit cards** show the commit message, branch, short hash, and state tree size.
+- **Version edges** show how one committed structured state leads to another.
 - **Leaf affordances** make output creation visible from the version that owns
-  the knowledge.
+  that state.
 
 ## 2. Commit audit
 
-Open a commit when you need to read the exact committed meaning. The audit page
+Open a commit when you need to read the exact committed structured state. The audit page
 keeps the tree index, YAML view, structural graph, JSON, relations, hash chain,
 and leaf links together.
 
@@ -43,42 +42,41 @@ and leaf links together.
 
 What to look for:
 
-- **Tree index** on the left shows modified, added, and unchanged semantic
-  nodes.
+- **Tree index** on the left shows modified, added, and unchanged state nodes.
 - **YAML view** is the human-readable committed tree, not raw chat text.
 - **Audit rail** shows evidence, YOps operation count, hash chain, and snapshot
   metadata.
 - **Top actions** let users return to Canvas, view a diff, share, or export.
 
-## 3. Semantic diff
+## 3. Structured diff
 
-Diff compares two semantic commits. It answers "what meaning changed?" rather
+Diff compares two structured-state commits. It answers "what state changed?" rather
 than only showing token-level changes in a transcript.
 
 <img
   className="docScreenshot"
   src="/img/screenshots/webui-diff.png"
-  alt="T3X semantic diff page showing modified and added YAML nodes between two commits"
+  alt="T3X structured diff page showing modified and added YAML nodes between two commits"
 />
 
 What to look for:
 
 - **Base and target** hashes are fixed in the header and right rail.
 - **Tree index** groups modified, added, removed, and identical nodes.
-- **Split YAML** shows old meaning on the left and new meaning on the right.
+- **Split YAML** shows old state on the left and new state on the right.
 - **Inline highlights** make changed slot values visible without reading the
   full tree.
 - **Start Merge** creates a merge workspace from the same pair of commits.
 
 ## 4. Merge workspace
 
-Merge is the review surface for two branches of meaning. It separates conflicts
-from auto-kept meaning and from content that exists only on one side.
+Merge is the review surface for two branches of structured state. It separates conflicts
+from auto-kept state and from content that exists only on one side.
 
 <img
   className="docScreenshot"
   src="/img/screenshots/webui-merge.png"
-  alt="T3X merge workspace with conflicts, auto-kept semantic nodes, source-only nodes, and merge summary"
+  alt="T3X merge workspace with conflicts, auto-kept state nodes, source-only nodes, and merge summary"
 />
 
 What to look for:
@@ -86,15 +84,15 @@ What to look for:
 - **Conflict cards** place source and target slots side by side.
 - **Resolution buttons** let users keep source, keep target, or keep both
   voices.
-- **Auto-kept nodes** show meaning that both branches already share.
-- **Source-only and target-only nodes** make branch-specific meaning explicit.
+- **Auto-kept nodes** show state that both branches already share.
+- **Source-only and target-only nodes** make branch-specific state explicit.
 - **Merge info and voices** summarize what will enter the final merge commit.
 
 ## 5. Leaf output
 
 Leaves are reusable artifacts generated from a commit. They keep constraints and
 assertions next to the output so the user can see whether the artifact preserved
-the committed meaning.
+the committed structured state.
 
 <img
   className="docScreenshot"
@@ -104,10 +102,9 @@ the committed meaning.
 
 What to look for:
 
-- **Source frames** on the left show the semantic content available to the
-  output.
+- **Source frames** on the left show the structured state available to the output.
 - **Output** in the center is the generated artifact.
-- **Review stack** on the right shows semantic coverage, constraints, and
+- **Review stack** on the right shows state coverage, constraints, and
   assertion results.
 - **Commit verified** and assertion badges make the output's state visible
   without reading every line.
