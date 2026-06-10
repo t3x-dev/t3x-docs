@@ -83,7 +83,7 @@ const config: Config = {
         },
         {
           to: '/release',
-          label: 'v0.3.1 alpha',
+          label: 'v0.4.1 alpha',
           position: 'right',
         },
         {
@@ -99,9 +99,9 @@ const config: Config = {
       ],
     },
     announcementBar: {
-      id: 'alpha-0-3-1-docs',
+      id: 'alpha-0-4-1-docs',
       content:
-        'T3X alpha docs track the v0.3.1 package surface. See Release Status for availability and governance.',
+        'T3X alpha docs track the v0.4.1 package surface. See Release Status for availability and governance.',
       backgroundColor: '#fef3c7',
       textColor: '#111827',
       isCloseable: false,
