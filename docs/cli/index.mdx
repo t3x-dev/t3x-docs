@@ -13,7 +13,17 @@ promotion.
 This legacy URL is kept so older links do not break. For the current preview
 page, see [CLI Preview](../preview/cli).
 
-For the current alpha path, start with:
+For the current alpha path without npm package access, start from source:
+
+```bash
+git clone https://github.com/t3x-dev/t3x-core.git
+cd t3x-core
+pnpm install
+pnpm dev:api
+pnpm dev:webui
+```
+
+If your npm account has restricted alpha access, the packaged local entry is:
 
 ```bash
 npx -p @t3x-dev/local t3x-local start

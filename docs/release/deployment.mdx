@@ -12,9 +12,9 @@ T3X repository. It does not describe the managed SaaS deployment.
 
 | Path | Command | Intended use |
 | --- | --- | --- |
-| Local alpha package | `npx -p @t3x-dev/local t3x-local start` | Primary packaged local evaluation |
+| Source development | `pnpm dev:api` and `pnpm dev:webui` | Contributor and implementation work; no restricted npm access required |
+| Local alpha package | `npx -p @t3x-dev/local t3x-local start` | Packaged local evaluation; restricted alpha npm access required |
 | Docker Compose preview | `docker compose up -d --build` | Preview self-hosted WebUI + API + Postgres evaluation |
-| Source development | `pnpm dev:api` and `pnpm dev:webui` | Contributor and implementation work |
 
 ## Docker Self-Hosting Preview
 

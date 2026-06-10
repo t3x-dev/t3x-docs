@@ -41,6 +41,18 @@ restricted alpha package surface.
 
 ## Current commands
 
+Source development works without restricted npm package access:
+
+```bash
+git clone https://github.com/t3x-dev/t3x-core.git
+cd t3x-core
+pnpm install
+pnpm dev:api
+pnpm dev:webui
+```
+
+These package commands require restricted alpha npm access:
+
 ```bash
 npx -p @t3x-dev/local t3x-local start
 npm install @t3x-dev/yops

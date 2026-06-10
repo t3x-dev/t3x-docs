@@ -17,7 +17,18 @@ promotion.
 The CLI is intended for command-line workflows around extraction, commits,
 diffs, merges, and local workspace automation.
 
-For the current alpha path, start with:
+For the current alpha path without npm package access, start from source:
+
+```bash
+git clone https://github.com/t3x-dev/t3x-core.git
+cd t3x-core
+pnpm install
+pnpm dev:api
+pnpm dev:webui
+```
+
+If your npm account has restricted alpha access, you can use the packaged local
+entry instead:
 
 ```bash
 npx -p @t3x-dev/local t3x-local start

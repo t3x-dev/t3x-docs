@@ -4,9 +4,8 @@ sidebar_position: 2
 
 # Quick Start
 
-Use `@t3x-dev/local` as the primary local entry point if your npm account has
-restricted alpha access. If you do not have alpha package access yet, use the
-source-development path.
+Start from source if you do not have restricted alpha npm package access yet.
+Use `@t3x-dev/local` only when your npm account has alpha access.
 
 Source, Docker, CLI, and MCP paths are available for development or preview
 workflows.
@@ -15,9 +14,9 @@ workflows.
 
 | Goal | Use this path |
 | --- | --- |
-| Try the packaged local alpha | `@t3x-dev/local` with alpha package access |
 | Develop from source | clone the repo, then run `pnpm dev:api` and `pnpm dev:webui` |
-| Use deterministic YAML operations | `@t3x-dev/yops` with alpha package access |
+| Try the packaged local alpha | `@t3x-dev/local` with restricted alpha npm access |
+| Use deterministic YAML operations | `@t3x-dev/yops` with restricted alpha npm access |
 | Evaluate self-hosting | Docker Compose, not a production-readiness claim |
 
 ## Requirements
@@ -31,19 +30,6 @@ workflows.
 The core engine and YOps do not require a model provider key. The WebUI also
 includes a fixture demo path, so you can inspect the interface without a key
 during local development.
-
-## Run The Local Package
-
-```bash
-npx -p @t3x-dev/local t3x-local start
-```
-
-This is the primary user-facing local path for alpha users with package access.
-Use it when you want the packaged local product experience instead of assembling
-the monorepo source stack.
-
-If the package cannot be resolved, your npm account may not have restricted
-alpha access yet. Use the source path below.
 
 ## Run From Source
 
@@ -72,6 +58,18 @@ the self-hosted login flow, start both API and WebUI with:
 AUTH_DISABLED=false pnpm dev:api
 AUTH_DISABLED=false pnpm dev:webui
 ```
+
+## Run The Local Package
+
+This command requires restricted alpha npm access. If npm returns 404 or cannot
+resolve the package, use the source-development path above.
+
+```bash
+npx -p @t3x-dev/local t3x-local start
+```
+
+Use it when you want the packaged local product experience instead of assembling
+the monorepo source stack.
 
 ## A Small Source -> YOps -> Commit Example
 
