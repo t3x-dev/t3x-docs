@@ -11,7 +11,7 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://t3x-docs.vercel.app',
+  url: 'https://docs.t3x.dev',
   baseUrl: '/',
 
   organizationName: 't3x-dev',
@@ -87,7 +87,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://t3x.dev',
+          href: 'https://www.t3x.dev',
           label: 'Home',
           position: 'right',
         },

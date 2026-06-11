@@ -20,4 +20,4 @@ T3X core WebUI on port `3000`.
 npm run build
 ```
 
-The site is currently deployed at <https://t3x-docs.vercel.app>.
+The site is currently deployed at <https://docs.t3x.dev>.
