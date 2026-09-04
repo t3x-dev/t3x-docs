@@ -4,8 +4,9 @@ sidebar_position: 2
 
 # Quick Start
 
-Start from source if you do not have restricted alpha npm package access yet.
-Use `@t3x-dev/local` only when your npm account has alpha access.
+Start from source for development, or use the public alpha packages for
+evaluation. See [Release Status](./release) for availability and Local's paused
+release train.
 
 Source, Docker, CLI, and MCP paths are available for development or preview
 workflows.
@@ -15,8 +16,8 @@ workflows.
 | Goal | Use this path |
 | --- | --- |
 | Develop from source | clone the repo, then run `pnpm dev:api` and `pnpm dev:webui` |
-| Try the packaged local alpha | `@t3x-dev/local` with restricted alpha npm access |
-| Use deterministic YAML operations | `@t3x-dev/yops` with restricted alpha npm access |
+| Try the packaged local alpha | `@t3x-dev/local`; verify matching runtime assets |
+| Use deterministic YAML operations | `@t3x-dev/yops` |
 | Evaluate self-hosting | Docker Compose, not a production-readiness claim |
 
 ## Requirements
@@ -33,8 +34,8 @@ during local development.
 
 ## Run From Source
 
-Use source development when you are changing the repository itself or when you
-do not have alpha package access.
+Use source development when changing the repository itself or evaluating work
+that is not included in a published package.
 
 ```bash
 git clone https://github.com/t3x-dev/t3x-core.git
@@ -61,8 +62,9 @@ AUTH_DISABLED=false pnpm dev:webui
 
 ## Run The Local Package
 
-This command requires restricted alpha npm access. If npm returns 404 or cannot
-resolve the package, use the source-development path above.
+The package is public alpha, but its release train is paused. Check the package
+version and matching runtime assets before using it. If installation fails,
+investigate availability or use the source-development path above.
 
 ```bash
 npx -p @t3x-dev/local t3x-local start
