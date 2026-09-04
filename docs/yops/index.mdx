@@ -15,30 +15,22 @@ raw source -> proposed YOps -> deterministic apply -> materialized tree
 
 ## Use The Package
 
-The current npm package version is `@t3x-dev/yops@0.4.1`, and it is part of the
-current alpha package surface. Package availability follows
-[Release Status](../release), and npm may return 404 for accounts without
-restricted alpha access.
+`@t3x-dev/yops` is a public alpha package. See [Release Status](../release) for
+release policy, and consult the package registry for exact published versions.
 
 YOps is distributed as an npm package. A missing matching GitHub runtime release
 entry does not mean the YOps package is unpublished; GitHub runtime assets are
 only expected for `@t3x-dev/local`.
 
 Install it when you want the deterministic YAML operation engine inside your own
-app and your npm account has restricted alpha access:
+app:
 
 ```bash
 npm install @t3x-dev/yops
 ```
 
-If npm cannot resolve the package, use the source workspace until package
-access is granted.
-
-If npm cannot resolve the package, use the source workspace until package
-access is granted.
-
-If npm cannot resolve the package, use the source workspace until package
-access is granted.
+If npm cannot resolve the package, check the registry, version, and network,
+or use the source workspace for evaluation.
 
 YOps does not require a model provider key. It is deterministic code: YAML-like
 document in, operation list in, updated document out.

@@ -5,43 +5,49 @@ slug: /release
 
 # Release Status
 
-These docs are written for users of the future open-source distribution. This
-page records the current alpha release state so package install commands,
-runtime assets, and stability promises do not get mixed together.
+This page summarizes the public alpha package policy. Package availability,
+runtime assets, and production-readiness are separate concerns.
 
 ## Alpha Package Surface
 
 The release package surface is defined by
 [`release/surface.yaml`](https://github.com/t3x-dev/t3x-core/blob/main/release/surface.yaml),
 with [`RELEASE.md`](https://github.com/t3x-dev/t3x-core/blob/main/RELEASE.md)
-as the human-readable release summary. For this alpha, only `@t3x-dev/local`
-and `@t3x-dev/yops` are release-facing restricted alpha packages.
+as the human-readable release summary. The public alpha surface contains four
+packages:
 
-| Package | Version | Status | Purpose |
+| Package | Access | Release train | Purpose |
 | --- | --- | --- | --- |
-| `@t3x-dev/local` | `0.4.1` | Restricted alpha | Packaged local T3X experience and no-key demo entrypoint. |
-| `@t3x-dev/yops` | `0.4.1` | Restricted alpha | Deterministic YAML operation engine. |
+| `@t3x-dev/local` | Public alpha | Paused | Existing local installer; runtime artifacts remain explicit. |
+| `@t3x-dev/yops` | Public alpha | Active | Deterministic YAML operation engine. |
+| `@t3x-dev/transition` | Public alpha | Active | Transition contracts, replay, identity, and integrity verification. |
+| `@t3x-dev/yschema` | Public alpha | Active | Schema validation for structured state. |
 
-Versions in this table are npm package versions. GitHub product releases
+Paused means excluded from default automated release preparation, not private
+or unpublished. Public alpha is not a stable API or production-support promise.
+
+For exact versions, consult the package registry and release records rather than
+a shared documentation version banner. GitHub product releases
 (`t3x-v*`) and runtime release assets are separate records; runtime GitHub
 releases are expected for `@t3x-dev/local`, while `@t3x-dev/yops` is consumed
 from npm.
 
-Restricted package visibility is expected during this alpha. If an npm package
-or runtime asset is not visible from an unauthenticated account, treat that as
-an availability status of the current alpha distribution, not a different
-package name or release contract.
+This page records repository policy, not a live availability probe. If an install
+fails, check the registry, requested version, network, and (for Local) matching
+runtime assets. Do not assume restricted npm access is required. Source
+development remains an alternative for evaluation.
 
 ## Preview surfaces
 
 Core, API, storage, CLI, MCP, and runner workflows are documented as internal or
 preview surfaces. They are useful for source development, self-hosted
 evaluation, and integration work, but they are not part of the current
-restricted alpha package surface.
+public alpha package surface. Public package access also does not establish
+hosted Cloud launch readiness.
 
 ## Current commands
 
-Source development works without restricted npm package access:
+Source development:
 
 ```bash
 git clone https://github.com/t3x-dev/t3x-core.git
@@ -51,9 +57,10 @@ pnpm dev:api
 pnpm dev:webui
 ```
 
-These package commands require restricted alpha npm access:
+Public package commands (Local additionally depends on its runtime assets):
 
 ```bash
 npx -p @t3x-dev/local t3x-local start
 npm install @t3x-dev/yops
+npm install @t3x-dev/transition @t3x-dev/yschema
 ```
